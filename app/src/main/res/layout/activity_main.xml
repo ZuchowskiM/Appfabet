@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.appfabet.DrawArea
+    <com.appfabet.Models.DrawArea
         android:id="@+id/drawing"
         android:layout_width="333dp"
         android:layout_height="383dp"

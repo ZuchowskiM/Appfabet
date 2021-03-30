@@ -1,4 +1,4 @@
-package com.appfabet;
+package com.appfabet.Models;
 
 import android.content.Context;
 import android.graphics.Canvas;

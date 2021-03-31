@@ -5,11 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.view.MotionEvent;
@@ -20,10 +23,13 @@ import androidx.annotation.NonNull;
 
 import com.appfabet.ml.Model;
 
+import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.image.TensorImage;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,22 +101,62 @@ public class DrawArea extends View
             Bitmap bitmap = this.getBitmapFromView();
 
             Bitmap scaledBitmap = getResizedBitmap(bitmap, 32, 32);
+
+
+            //scaledBitmap = toGrayscale(scaledBitmap);
             //scaledBitmap.setWidth(32);
+//
+//
+//
+//            System.out.println("testoviron");
+//            System.out.println(scaledBitmap.getHeight());
+//            System.out.println(scaledBitmap.getWidth());
+//
+//
+//
+//            TensorImage image = TensorImage.fromBitmap(scaledBitmap);
+//
+//            // Runs model inference and gets result.
+//            Model.Outputs outputs = model.process(image.getTensorBuffer());
+//            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+//
+//            System.out.println(outputFeature0);
+//
+//            // Releases model resources if no longer used.
+//            model.close();
 
+            ByteBuffer byteBuffer = ByteBuffer.allocate(1*32*32*1*4);
+            byteBuffer.rewind();
 
-            System.out.println("testoviron");
-            System.out.println(scaledBitmap.getHeight());
-            System.out.println(scaledBitmap.getWidth());
+//            System.out.println(scaledBitmap.getAllocationByteCount());
+//
+            if (scaledBitmap != null) {
+                System.out.println("copying to buffer");
+                scaledBitmap.copyPixelsToBuffer(byteBuffer);
+            }
 
-
-
-            TensorImage image = TensorImage.fromBitmap(scaledBitmap);
+            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 32, 32, 1}, DataType.FLOAT32);
+            inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            Model.Outputs outputs = model.process(image.getTensorBuffer());
+            Model.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
-            System.out.println(outputFeature0);
+            float num = 0;
+            int numerator =0;
+            int finalnum =0;
+            for(float i: outputFeature0.getFloatArray())
+            {
+                numerator++;
+                System.out.println(numerator + " - " + i);
+
+                if(i>num){
+                    num = i;
+                    finalnum = numerator;
+                }
+            }
+
+            System.out.println(finalnum + " - " + num);
 
             // Releases model resources if no longer used.
             model.close();
@@ -148,6 +194,23 @@ public class DrawArea extends View
                 bm, 0, 0, width, height, matrix, false);
         bm.recycle();
         return resizedBitmap;
+    }
+
+    private Bitmap toGrayscale(Bitmap bmpOriginal)
+    {
+        int width, height;
+        height = bmpOriginal.getHeight();
+        width = bmpOriginal.getWidth();
+
+        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bmpGrayscale);
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(0);
+        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+        paint.setColorFilter(f);
+        c.drawBitmap(bmpOriginal, 0, 0, paint);
+        return bmpGrayscale;
     }
 
 

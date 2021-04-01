@@ -24,12 +24,16 @@ import androidx.annotation.NonNull;
 import com.appfabet.ml.Model;
 
 import org.tensorflow.lite.DataType;
+import org.tensorflow.lite.support.image.ImageProcessor;
 import org.tensorflow.lite.support.image.TensorImage;
+import org.tensorflow.lite.support.image.ops.ResizeOp;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +82,7 @@ public class DrawArea extends View
         drawPaint = new Paint();
         drawPaint.setColor(paintColor);
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(5);
+        drawPaint.setStrokeWidth(20);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
         drawPaint.setStyle(Paint.Style.STROKE);
@@ -102,49 +106,54 @@ public class DrawArea extends View
 
             Bitmap scaledBitmap = getResizedBitmap(bitmap, 32, 32);
 
+            //exportBitmapToAppFiles(scaledBitmap);
 
-            //scaledBitmap = toGrayscale(scaledBitmap);
-            //scaledBitmap.setWidth(32);
-//
-//
-//
-//            System.out.println("testoviron");
-//            System.out.println(scaledBitmap.getHeight());
-//            System.out.println(scaledBitmap.getWidth());
-//
-//
-//
-//            TensorImage image = TensorImage.fromBitmap(scaledBitmap);
-//
-//            // Runs model inference and gets result.
-//            Model.Outputs outputs = model.process(image.getTensorBuffer());
-//            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-//
-//            System.out.println(outputFeature0);
-//
-//            // Releases model resources if no longer used.
-//            model.close();
 
             ByteBuffer byteBuffer = ByteBuffer.allocate(1*32*32*1*4);
             byteBuffer.rewind();
 
-//            System.out.println(scaledBitmap.getAllocationByteCount());
-//
             if (scaledBitmap != null) {
                 System.out.println("copying to buffer");
                 scaledBitmap.copyPixelsToBuffer(byteBuffer);
             }
 
+            int[] intValues = new int[32 * 32];
+            bitmap.getPixels(intValues, 0, scaledBitmap.getWidth(), 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight());
+
+            for (int i=0; i<(32*32*4); i+=4)
+            {
+                if(byteBuffer.array()[i] == -12)
+                {
+                    byteBuffer.array()[i] = 0;
+                    byteBuffer.array()[i+1] = 0;
+                    byteBuffer.array()[i+2] = 0;
+                    byteBuffer.array()[i+3] = 0;
+                }
+                else {
+                    byteBuffer.array()[i] = 1;
+                    byteBuffer.array()[i+1] = 1;
+                    byteBuffer.array()[i+2] = 1;
+                    byteBuffer.array()[i+3] = 1;
+                }
+            }
+
+
+            //ByteBuffer byteBuffer = convertBitmapToByteBuffer(scaledBitmap);
+
+
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 32, 32, 1}, DataType.FLOAT32);
             inputFeature0.loadBuffer(byteBuffer);
+
+            //TensorImage tensorImage = TensorImage.fromBitmap(scaledBitmap);
 
             // Runs model inference and gets result.
             Model.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
+
             float num = 0;
             int numerator =0;
-            int finalnum =0;
+            int finalNum =0;
             for(float i: outputFeature0.getFloatArray())
             {
                 numerator++;
@@ -152,11 +161,12 @@ public class DrawArea extends View
 
                 if(i>num){
                     num = i;
-                    finalnum = numerator;
+                    finalNum = numerator;
                 }
             }
 
-            System.out.println(finalnum + " - " + num);
+            System.out.println(finalNum + " - " + num);
+            System.out.println(Environment.getExternalStorageDirectory().toString());
 
             // Releases model resources if no longer used.
             model.close();
@@ -192,7 +202,7 @@ public class DrawArea extends View
         // "RECREATE" THE NEW BITMAP
         Bitmap resizedBitmap = Bitmap.createBitmap(
                 bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
+        //bm.recycle();
         return resizedBitmap;
     }
 
@@ -211,6 +221,34 @@ public class DrawArea extends View
         paint.setColorFilter(f);
         c.drawBitmap(bmpOriginal, 0, 0, paint);
         return bmpGrayscale;
+    }
+
+    private ByteBuffer convertBitmapToByteBuffer(Bitmap bitmap) {
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * 1 * 32 * 32 * 1);
+        byteBuffer.order(ByteOrder.nativeOrder());
+        int[] intValues = new int[32 * 32];
+        bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+        int pixel = 0;
+        for (int i = 0; i < 32; ++i) {
+            for (int j = 0; j < 32; ++j) {
+                final int val = intValues[pixel++];
+                byteBuffer.putFloat((((val >> 16) & 0xFF)-128)/128f);
+                byteBuffer.putFloat((((val >> 8) & 0xFF)-128)/128f);
+                byteBuffer.putFloat((((val) & 0xFF)-128)/128f);
+            }
+        }
+        return byteBuffer;
+    }
+
+    private void exportBitmapToAppFiles(Bitmap bitmap)
+    {
+        try {
+            FileOutputStream fileOutputStream = this.getContext().openFileOutput("bitmap.png", Context.MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            fileOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -8,12 +8,14 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="208dp"
-        android:layout_height="99dp"
+        android:layout_width="294dp"
+        android:layout_height="109dp"
         android:layout_marginTop="68dp"
+        android:fontFamily="@font/nerkoone_regular"
         android:gravity="center"
         android:text="Appfabet"
-        android:textSize="36sp"
+        android:textColor="@color/appfabetOrange"
+        android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +26,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="108dp"
+        android:background="@color/appfabetOrange"
         android:text="Zaczynajmy!"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />

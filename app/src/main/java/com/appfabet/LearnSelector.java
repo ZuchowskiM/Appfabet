@@ -16,6 +16,7 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 
 import com.appfabet.Adapters.LearnAdapter;
+import com.appfabet.Models.Initializer;
 import com.appfabet.Models.LearnType;
 
 import java.io.Serializable;
@@ -25,6 +26,7 @@ public class LearnSelector extends Activity {
 
     GridView gridView;
     ArrayList<LearnType> learnTypesList = new ArrayList<>();
+    Initializer initializer = new Initializer();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,12 +36,7 @@ public class LearnSelector extends Activity {
         gridView = (GridView) findViewById(R.id.gridView);
 
         //inicjalizacja listy nauczania
-        LearnType alfabet = new LearnType("Alfabet",R.drawable.alphabet_pic);
-        LearnType cyferki = new LearnType("Cyferki",R.drawable.numbers_pic);
-
-        learnTypesList.add(alfabet);
-        learnTypesList.add(cyferki);
-
+       learnTypesList = (ArrayList<LearnType>) initializer.initLearnTypesAndLevels(getApplicationContext(), this);
 
         //adapter
         LearnAdapter myAdapter=new LearnAdapter(this,R.layout.grid_view_items,learnTypesList);

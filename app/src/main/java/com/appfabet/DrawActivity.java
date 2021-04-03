@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import com.appfabet.Models.DrawArea;
 import com.appfabet.Models.LearnType;
+import com.appfabet.Models.Level;
 
 public class DrawActivity extends Activity {
 
@@ -20,6 +21,13 @@ public class DrawActivity extends Activity {
 
         Button button = findViewById(R.id.button2);
         DrawArea drawArea = findViewById(R.id.drawing);
+
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("TYPE");
+        Level learnType = (Level) args.getSerializable("TYPEOBJECT");
+
+
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

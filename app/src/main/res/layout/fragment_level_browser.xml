@@ -5,17 +5,27 @@
     android:layout_height="match_parent"
     tools:context=".LevelBrowser">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/title"
-        android:layout_width="243dp"
-        android:layout_height="73dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="87dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="81dp"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="@color/appfabetOrange"
+        android:fontFamily="@font/nerkoone_regular"
+        android:gravity="center"
+        android:text="Wybierz poziom"
+        android:textColor="@color/white"
+        android:textSize="36sp" />
 
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="1dp"
+        android:horizontalSpacing="5dp"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="5dp">
+
+    </GridView>
 </RelativeLayout>

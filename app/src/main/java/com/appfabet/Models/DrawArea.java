@@ -117,6 +117,7 @@ public class DrawArea extends View
                 scaledBitmap.copyPixelsToBuffer(byteBuffer);
             }
 
+            /*
             int[] intValues = new int[32 * 32];
             bitmap.getPixels(intValues, 0, scaledBitmap.getWidth(), 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight());
 
@@ -136,9 +137,9 @@ public class DrawArea extends View
                     byteBuffer.array()[i+3] = 1;
                 }
             }
+*/
 
-
-            //ByteBuffer byteBuffer = convertBitmapToByteBuffer(scaledBitmap);
+           // ByteBuffer byteBuffer = convertBitmapToByteBuffer(scaledBitmap);
 
 
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 32, 32, 1}, DataType.FLOAT32);

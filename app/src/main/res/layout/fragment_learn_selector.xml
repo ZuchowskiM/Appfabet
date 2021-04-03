@@ -5,11 +5,25 @@
     android:layout_height="match_parent"
     tools:context=".LearnSelector">
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:background="@color/appfabetOrange"
+        android:fontFamily="@font/nerkoone_regular"
+        android:gravity="center"
+        android:text="Czego się dzisiaj uczymy?"
+        android:textColor="@color/white"
+        android:textSize="34sp" />
+
     <GridView
         android:id="@+id/gridView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:numColumns="1"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="1dp"
         android:columnWidth="80dp"
-        android:listSelector="#0f0"/>
+        android:numColumns="1" />
 </RelativeLayout>

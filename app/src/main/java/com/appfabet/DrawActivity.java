@@ -20,6 +20,7 @@ public class DrawActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         Button button = findViewById(R.id.button2);
+        Button clearButton = findViewById(R.id.clearButton);
         DrawArea drawArea = findViewById(R.id.drawing);
 
         Intent intent = getIntent();
@@ -33,6 +34,13 @@ public class DrawActivity extends Activity {
             @Override
             public void onClick(View v) {
                 drawArea.checkModel();
+            }
+        });
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawArea.clearArea();
             }
         });
 

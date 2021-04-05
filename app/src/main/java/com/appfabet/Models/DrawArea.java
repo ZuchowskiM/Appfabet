@@ -12,16 +12,20 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 
+import android.graphics.PorterDuff;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Base64;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 
 
 import androidx.annotation.NonNull;
 
+import com.appfabet.R;
 import com.appfabet.ml.Model;
+import com.appfabet.ml.ModelRGBA;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.image.ImageProcessor;
@@ -41,19 +45,26 @@ public class DrawArea extends View
 {
     private final int paintColor = Color.BLACK;
     private Paint drawPaint;
-    private List<Point> circlePoints;
     private Path path = new Path();
+    private boolean isToClear = false;
 
     public DrawArea(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         setupPaint();
-        circlePoints = new ArrayList<Point>();
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        canvas.drawPath(path, drawPaint);
+    protected void onDraw(Canvas canvas)
+    {
+        if(isToClear)
+        {
+            isToClear = false;
+        }
+        else {
+            canvas.drawPath(path, drawPaint);
+        }
+
     }
 
     @Override
@@ -78,11 +89,18 @@ public class DrawArea extends View
         return true;
     }
 
+    public void clearArea() {
+        isToClear = true;
+        path = new Path();
+        this.invalidate();
+
+    }
+
     private void setupPaint() {
         drawPaint = new Paint();
         drawPaint.setColor(paintColor);
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(20);
+        drawPaint.setStrokeWidth(30);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
         drawPaint.setStyle(Paint.Style.STROKE);
@@ -105,9 +123,9 @@ public class DrawArea extends View
             Bitmap bitmap = this.getBitmapFromView();
 
             Bitmap scaledBitmap = getResizedBitmap(bitmap, 32, 32);
+            System.out.println(scaledBitmap.getAllocationByteCount());
 
             //exportBitmapToAppFiles(scaledBitmap);
-
 
             ByteBuffer byteBuffer = ByteBuffer.allocate(1*32*32*1*4);
             byteBuffer.rewind();
@@ -117,29 +135,68 @@ public class DrawArea extends View
                 scaledBitmap.copyPixelsToBuffer(byteBuffer);
             }
 
-            /*
-            int[] intValues = new int[32 * 32];
-            bitmap.getPixels(intValues, 0, scaledBitmap.getWidth(), 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight());
 
+//            int[] intValues = new int[32 * 32];
+//            bitmap.getPixels(intValues, 0, scaledBitmap.getWidth(), 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight());
+
+//            for (int i=0; i<(32*32*4); i+=4)
+//            {
+//                if(byteBuffer.array()[i] == -12)
+//                {
+//                    byteBuffer.array()[i] = 0;
+//                    byteBuffer.array()[i+1] = 0;
+//                    byteBuffer.array()[i+2] = 0;
+//                    byteBuffer.array()[i+3] = 0;
+//                }
+//                else {
+//                    byteBuffer.array()[i] = -1;
+//                    byteBuffer.array()[i+1] = -1;
+//                    byteBuffer.array()[i+2] = -1;
+//                    byteBuffer.array()[i+3] = -1;
+//                }
+//            }
+
+            byteBuffer.rewind();
+            byteBuffer.order(ByteOrder.nativeOrder());
             for (int i=0; i<(32*32*4); i+=4)
             {
                 if(byteBuffer.array()[i] == -12)
                 {
-                    byteBuffer.array()[i] = 0;
-                    byteBuffer.array()[i+1] = 0;
-                    byteBuffer.array()[i+2] = 0;
-                    byteBuffer.array()[i+3] = 0;
+                    byteBuffer.putFloat(0.0f);
                 }
                 else {
-                    byteBuffer.array()[i] = 1;
-                    byteBuffer.array()[i+1] = 1;
-                    byteBuffer.array()[i+2] = 1;
-                    byteBuffer.array()[i+3] = 1;
+                    byteBuffer.putFloat(1.0f);
                 }
             }
-*/
+            byteBuffer.rewind();
 
-           // ByteBuffer byteBuffer = convertBitmapToByteBuffer(scaledBitmap);
+//            for (int i=0; i<(32*32*4); i++)
+//            {
+//
+//                byteBuffer.array()[i] = (byte) (byteBuffer.array()[i] & 0xff);
+//
+//            }
+
+
+//            ByteBuffer byteBuffer2 = ByteBuffer.allocate(1*32*32*1);
+//            byteBuffer2.rewind();
+//            int j = 0;
+//
+//            for (int i=0; i<(32*32*4); i+=4)
+//            {
+//                if(byteBuffer.array()[i] == 0)
+//                {
+//                    byteBuffer2.array()[j] = 0;
+//                }
+//                else {
+//                    byteBuffer2.array()[j] = (byte) 255;
+//                }
+//                j++;
+//            }
+
+
+//            byteBuffer.rewind();
+//            byteBuffer = convertBitmapToByteBuffer(scaledBitmap);
 
 
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 32, 32, 1}, DataType.FLOAT32);

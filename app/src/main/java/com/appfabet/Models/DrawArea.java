@@ -2,7 +2,6 @@ package com.appfabet.Models;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
@@ -10,27 +9,22 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Point;
 
-import android.graphics.PorterDuff;
+
+
 import android.os.Environment;
 import android.util.AttributeSet;
-import android.util.Base64;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 
 
-import androidx.annotation.NonNull;
-
-import com.appfabet.R;
+import com.appfabet.ml.MnistModel;
 import com.appfabet.ml.Model;
 import com.appfabet.ml.ModelRGBA;
 
 import org.tensorflow.lite.DataType;
-import org.tensorflow.lite.support.image.ImageProcessor;
-import org.tensorflow.lite.support.image.TensorImage;
-import org.tensorflow.lite.support.image.ops.ResizeOp;
+import org.tensorflow.lite.Interpreter;
+
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.File;
@@ -38,8 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class DrawArea extends View
 {
@@ -47,6 +40,7 @@ public class DrawArea extends View
     private Paint drawPaint;
     private Path path = new Path();
     private boolean isToClear = false;
+    private Interpreter interpreter;
 
     public DrawArea(Context context, AttributeSet attrs)
     {
@@ -100,7 +94,7 @@ public class DrawArea extends View
         drawPaint = new Paint();
         drawPaint.setColor(paintColor);
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(30);
+        drawPaint.setStrokeWidth(50);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
         drawPaint.setStyle(Paint.Style.STROKE);
@@ -117,18 +111,19 @@ public class DrawArea extends View
     public void checkModel()
     {
         try {
-            Model model = Model.newInstance(this.getContext());
+            MnistModel model = MnistModel.newInstance(this.getContext());
 
             // Creates inputs for reference.
             Bitmap bitmap = this.getBitmapFromView();
 
-            Bitmap scaledBitmap = getResizedBitmap(bitmap, 32, 32);
-            System.out.println(scaledBitmap.getAllocationByteCount());
+            Bitmap scaledBitmap = getResizedBitmap(bitmap, 28, 28);
+            //System.out.println(scaledBitmap.getAllocationByteCount());
 
-            //exportBitmapToAppFiles(scaledBitmap);
+            exportBitmapToAppFiles(scaledBitmap);
 
-            ByteBuffer byteBuffer = ByteBuffer.allocate(1*32*32*1*4);
+            ByteBuffer byteBuffer = ByteBuffer.allocate(1*28*28*1*4);
             byteBuffer.rewind();
+            byteBuffer.order(ByteOrder.nativeOrder());
 
             if (scaledBitmap != null) {
                 System.out.println("copying to buffer");
@@ -158,17 +153,19 @@ public class DrawArea extends View
 
             byteBuffer.rewind();
             byteBuffer.order(ByteOrder.nativeOrder());
-            for (int i=0; i<(32*32*4); i+=4)
+            for (int i=0; i<(28*28*4); i+=4)
             {
                 if(byteBuffer.array()[i] == -12)
                 {
                     byteBuffer.putFloat(0.0f);
                 }
                 else {
-                    byteBuffer.putFloat(1.0f);
+                    byteBuffer.putFloat(0.5f);
                 }
             }
-            byteBuffer.rewind();
+
+
+            //byteBuffer.rewind();
 
 //            for (int i=0; i<(32*32*4); i++)
 //            {
@@ -195,17 +192,19 @@ public class DrawArea extends View
 //            }
 
 
-//            byteBuffer.rewind();
-//            byteBuffer = convertBitmapToByteBuffer(scaledBitmap);
+            //byteBuffer.rewind();
+            //byteBuffer = convertBitmapToByteBuffer(scaledBitmap);
+
+            //convertBitmapToByteBufferYep(scaledBitmap, byteBuffer);
 
 
-            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 32, 32, 1}, DataType.FLOAT32);
+            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 28, 28}, DataType.FLOAT32);
             inputFeature0.loadBuffer(byteBuffer);
 
             //TensorImage tensorImage = TensorImage.fromBitmap(scaledBitmap);
 
             // Runs model inference and gets result.
-            Model.Outputs outputs = model.process(inputFeature0);
+            MnistModel.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
 
@@ -214,13 +213,15 @@ public class DrawArea extends View
             int finalNum =0;
             for(float i: outputFeature0.getFloatArray())
             {
-                numerator++;
+
                 System.out.println(numerator + " - " + i);
+
 
                 if(i>num){
                     num = i;
                     finalNum = numerator;
                 }
+                numerator++;
             }
 
             System.out.println(finalNum + " - " + num);
@@ -231,6 +232,33 @@ public class DrawArea extends View
 
         } catch (IOException e) {
             // TODO Handle the exception
+        }
+    }
+
+    public void validateModel(){
+
+        File model = new File("/home/michal/AndroidStudioProjects/Appfabet/app/src/main/ml");
+        interpreter = new Interpreter(model);
+
+        Bitmap bitmap = this.getBitmapFromView();
+
+        Bitmap scaledBitmap = getResizedBitmap(bitmap, 32, 32);
+
+        ByteBuffer byteBuffer = ByteBuffer.allocate(1*32*32*1*4);
+        byteBuffer.rewind();
+
+        if (scaledBitmap != null) {
+            System.out.println("copying to buffer");
+            scaledBitmap.copyPixelsToBuffer(byteBuffer);
+        }
+
+        TensorBuffer outputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 32, 32, 4}, DataType.FLOAT32);
+
+        try {
+            interpreter.run(byteBuffer, outputFeature0);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -296,6 +324,31 @@ public class DrawArea extends View
             }
         }
         return byteBuffer;
+    }
+
+
+    private void convertBitmapToByteBufferYep(Bitmap bitmap, ByteBuffer imgData) {
+        if (imgData == null) {
+            return;
+        }
+        imgData.rewind();
+
+        int[] intValues = new int[32 * 32];
+        bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+
+        // Convert the image to floating point.
+        int pixel = 0;
+
+        for (int i = 0; i < 32; ++i) {
+            for (int j = 0; j < 32; ++j) {
+                final int val = intValues[pixel++];
+
+                imgData.putFloat(((val>> 16) & 0xFF) / 255.f);
+                imgData.putFloat(((val>> 8) & 0xFF) / 255.f);
+                imgData.putFloat((val & 0xFF) / 255.f);
+            }
+        }
     }
 
     private void exportBitmapToAppFiles(Bitmap bitmap)

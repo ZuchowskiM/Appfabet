@@ -8,7 +8,6 @@ import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import com.appfabet.Models.DrawArea;
-import com.appfabet.Models.LearnType;
 import com.appfabet.Models.Level;
 
 public class DrawActivity extends Activity {
@@ -43,11 +42,6 @@ public class DrawActivity extends Activity {
                 drawArea.clearArea();
             }
         });
-
-
-
-
-        //System.out.println(drawArea.getBitmapFromView());
 
     }
 

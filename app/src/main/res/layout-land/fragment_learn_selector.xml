@@ -3,30 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LevelBrowser">
+    tools:context=".LearnSelector">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="66dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
         android:background="@color/appfabetOrange"
         android:fontFamily="@font/nerkoone_regular"
         android:gravity="center"
-        android:text="@string/levelBar"
+        android:text="@string/learnBar"
         android:textColor="@color/white"
-        android:textSize="36sp" />
+        android:textSize="34sp" />
 
     <GridView
         android:id="@+id/gridView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/textView4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView3"
         android:layout_marginTop="10dp"
-        android:horizontalSpacing="5dp"
+        android:columnWidth="80dp"
         android:listSelector="#28DE401E"
-        android:numColumns="2"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="5dp">
-
-    </GridView>
+        android:numColumns="1" />
 </RelativeLayout>

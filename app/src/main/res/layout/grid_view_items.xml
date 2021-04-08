@@ -18,14 +18,14 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="101dp"
-        android:layout_height="48dp"
+        android:layout_width="272dp"
+        android:layout_height="56dp"
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="13dp"
         android:fontFamily="@font/nerkoone_regular"
         android:gravity="center"
         android:text="Demo"
-        android:textColor="#000"
+        android:textColor="@color/appfabetOrange"
         android:textSize="30sp" />
 </RelativeLayout>

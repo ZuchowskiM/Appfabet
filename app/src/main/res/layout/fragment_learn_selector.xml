@@ -14,16 +14,17 @@
         android:background="@color/appfabetOrange"
         android:fontFamily="@font/nerkoone_regular"
         android:gravity="center"
-        android:text="Czego się dzisiaj uczymy?"
+        android:text="@string/learnBar"
         android:textColor="@color/white"
-        android:textSize="34sp" />
+        android:textSize="32sp" />
 
     <GridView
         android:id="@+id/gridView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView3"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="10dp"
         android:columnWidth="80dp"
+        android:listSelector="#28DE401E"
         android:numColumns="1" />
 </RelativeLayout>

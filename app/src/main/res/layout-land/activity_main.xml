@@ -9,28 +9,25 @@
 
     <com.appfabet.Models.DrawArea
         android:id="@+id/drawing"
-        android:layout_width="0dp"
-        android:layout_height="400dp"
+        android:layout_width="382dp"
+        android:layout_height="255dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="40dp"
         android:background="@drawable/grid_item_border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/patternPic"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="125dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="50dp"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/rounded_things"
         android:fontFamily="@font/nerkoone_regular"
         android:text="Submit"
@@ -38,16 +35,19 @@
         android:textColorHighlight="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textColorLink="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drawing" />
+        app:layout_constraintTop_toBottomOf="@+id/patternPic"
+        app:layout_constraintVertical_bias="0.828" />
 
     <Button
         android:id="@+id/clearButton"
-        android:layout_width="125dp"
-        android:layout_height="75dp"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="50dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/rounded_things"
         android:fontFamily="@font/nerkoone_regular"
         android:text="Clear"
@@ -55,30 +55,33 @@
         android:textColorHighlight="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textColorLink="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drawing" />
+        app:layout_constraintEnd_toStartOf="@+id/drawing"
+        app:layout_constraintTop_toBottomOf="@+id/patternPic"
+        app:layout_constraintVertical_bias="0.617" />
 
     <ImageView
         android:id="@+id/patternPic"
-        android:layout_width="154dp"
-        android:layout_height="153dp"
-        android:layout_marginTop="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="173dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/drawing"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/speaker"
+        app:layout_constraintVertical_bias="0.021"
         tools:src="@tools:sample/avatars" />
 
     <ImageView
         android:id="@+id/speaker"
         android:layout_width="102dp"
         android:layout_height="87dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginStart="100dp"
         android:src="@drawable/speaker"
-        app:layout_constraintBottom_toTopOf="@+id/drawing"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
-        app:layout_constraintStart_toEndOf="@+id/patternPic" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

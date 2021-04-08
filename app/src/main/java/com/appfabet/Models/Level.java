@@ -10,19 +10,29 @@ public class Level implements Serializable {
     private boolean completed;
     private int rating;
     private int logo;
+    private int resource;
 
-    public Level(String name, String description, int level, boolean completed, int logo) {
+    public Level(String name, String description, int level, boolean completed, int logo,int resource) {
         this.name = name;
         this.description = description;
         this.level = level;
         this.completed = completed;
         this.logo = logo;
+        this.resource = resource;
     }
 
     public Level() {
 
     }
 
+
+    public int getResource() {
+        return resource;
+    }
+
+    public void setResource(int resource) {
+        this.resource = resource;
+    }
 
     public int getLogo() {
         return logo;

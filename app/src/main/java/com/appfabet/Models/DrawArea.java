@@ -35,7 +35,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-
+///MATI NIE DOTYKAJ DRAW AREA///////
+///A W XML ZAPYTAC PRZED WPROWADZANIEM ZMIAN DO DRAWING///
 public class DrawArea extends View
 {
     private final int paintColor = Color.BLACK;
@@ -110,6 +111,8 @@ public class DrawArea extends View
         return b;
     }
 
+    ///MATI NIE DOTYKAJ DRAW AREA///////
+    ///A W XML ZAPYTAC PRZED WPROWADZANIEM ZMIAN DO DRAWING///
     public void checkModel()
     {
         try {
@@ -157,13 +160,28 @@ public class DrawArea extends View
             byteBuffer.order(ByteOrder.nativeOrder());
             for (int i=0; i<(28*28*4); i+=4)
             {
-                if(byteBuffer.array()[i] == -12)
+                if(byteBuffer.array()[i+3] != 0)
                 {
-                    byteBuffer.putFloat(0.0f);
-                }
-                else {
                     byteBuffer.putFloat(255.0f);
                 }
+                else {
+                    byteBuffer.putFloat(0.0f);
+                }
+            }
+
+            int k=0;
+            float toPrint;
+            byteBuffer.rewind();
+
+            for(int i=0; i< 28; i++)
+            {
+                for(int j=0; j<28; j++){
+
+                    toPrint = byteBuffer.getFloat();
+                    System.out.print(toPrint + " ");
+                    k++;
+                }
+                System.out.println();
             }
 
 

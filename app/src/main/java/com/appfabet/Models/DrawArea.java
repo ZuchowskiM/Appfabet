@@ -18,6 +18,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
+import com.appfabet.ml.EmnistModel1;
+import com.appfabet.ml.Mnist2;
 import com.appfabet.ml.MnistModel;
 import com.appfabet.ml.Model;
 import com.appfabet.ml.ModelRGBA;
@@ -111,7 +113,7 @@ public class DrawArea extends View
     public void checkModel()
     {
         try {
-            MnistModel model = MnistModel.newInstance(this.getContext());
+            EmnistModel1 model = EmnistModel1.newInstance(this.getContext());
 
             // Creates inputs for reference.
             Bitmap bitmap = this.getBitmapFromView();
@@ -160,7 +162,7 @@ public class DrawArea extends View
                     byteBuffer.putFloat(0.0f);
                 }
                 else {
-                    byteBuffer.putFloat(0.5f);
+                    byteBuffer.putFloat(255.0f);
                 }
             }
 
@@ -204,7 +206,7 @@ public class DrawArea extends View
             //TensorImage tensorImage = TensorImage.fromBitmap(scaledBitmap);
 
             // Runs model inference and gets result.
-            MnistModel.Outputs outputs = model.process(inputFeature0);
+            EmnistModel1.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
 

@@ -10,26 +10,16 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 
-
-
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
 
 import com.appfabet.ml.EmnistModel1;
-import com.appfabet.ml.Mnist2;
-import com.appfabet.ml.MnistModel;
-import com.appfabet.ml.Model;
-import com.appfabet.ml.ModelRGBA;
 
 import org.tensorflow.lite.DataType;
-import org.tensorflow.lite.Interpreter;
-
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -43,7 +33,6 @@ public class DrawArea extends View
     private Paint drawPaint;
     private Path path = new Path();
     private boolean isToClear = false;
-    private Interpreter interpreter;
 
     public DrawArea(Context context, AttributeSet attrs)
     {
@@ -122,9 +111,10 @@ public class DrawArea extends View
             Bitmap bitmap = this.getBitmapFromView();
 
             Bitmap scaledBitmap = getResizedBitmap(bitmap, 28, 28);
-            //System.out.println(scaledBitmap.getAllocationByteCount());
 
-            exportBitmapToAppFiles(scaledBitmap);
+            //DEBUG
+            //System.out.println(scaledBitmap.getAllocationByteCount());
+            //exportBitmapToAppFiles(scaledBitmap);
 
             ByteBuffer byteBuffer = ByteBuffer.allocate(1*28*28*1*4);
             byteBuffer.rewind();
@@ -134,27 +124,6 @@ public class DrawArea extends View
                 System.out.println("copying to buffer");
                 scaledBitmap.copyPixelsToBuffer(byteBuffer);
             }
-
-
-//            int[] intValues = new int[32 * 32];
-//            bitmap.getPixels(intValues, 0, scaledBitmap.getWidth(), 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight());
-
-//            for (int i=0; i<(32*32*4); i+=4)
-//            {
-//                if(byteBuffer.array()[i] == -12)
-//                {
-//                    byteBuffer.array()[i] = 0;
-//                    byteBuffer.array()[i+1] = 0;
-//                    byteBuffer.array()[i+2] = 0;
-//                    byteBuffer.array()[i+3] = 0;
-//                }
-//                else {
-//                    byteBuffer.array()[i] = -1;
-//                    byteBuffer.array()[i+1] = -1;
-//                    byteBuffer.array()[i+2] = -1;
-//                    byteBuffer.array()[i+3] = -1;
-//                }
-//            }
 
             byteBuffer.rewind();
             byteBuffer.order(ByteOrder.nativeOrder());
@@ -169,85 +138,21 @@ public class DrawArea extends View
                 }
             }
 
-            int k=0;
-            float toPrint;
-            byteBuffer.rewind();
-
-            for(int i=0; i< 28; i++)
-            {
-                for(int j=0; j<28; j++){
-
-                    toPrint = byteBuffer.getFloat();
-                    System.out.print(toPrint + " ");
-                    k++;
-                }
-                System.out.println();
-            }
-
-
-            //byteBuffer.rewind();
-
-//            for (int i=0; i<(32*32*4); i++)
-//            {
-//
-//                byteBuffer.array()[i] = (byte) (byteBuffer.array()[i] & 0xff);
-//
-//            }
-
-
-//            ByteBuffer byteBuffer2 = ByteBuffer.allocate(1*32*32*1);
-//            byteBuffer2.rewind();
-//            int j = 0;
-//
-//            for (int i=0; i<(32*32*4); i+=4)
-//            {
-//                if(byteBuffer.array()[i] == 0)
-//                {
-//                    byteBuffer2.array()[j] = 0;
-//                }
-//                else {
-//                    byteBuffer2.array()[j] = (byte) 255;
-//                }
-//                j++;
-//            }
-
-
-            //byteBuffer.rewind();
-            //byteBuffer = convertBitmapToByteBuffer(scaledBitmap);
-
-            //convertBitmapToByteBufferYep(scaledBitmap, byteBuffer);
-
+            //DEBUG
+            //printByteBufferAs2DArray(byteBuffer);
 
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 28, 28}, DataType.FLOAT32);
             inputFeature0.loadBuffer(byteBuffer);
-
-            //TensorImage tensorImage = TensorImage.fromBitmap(scaledBitmap);
 
             // Runs model inference and gets result.
             EmnistModel1.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
+            printTensorOutput(outputFeature0);
 
-            float num = 0;
-            int numerator =0;
-            int finalNum =0;
-            for(float i: outputFeature0.getFloatArray())
-            {
+            //DEBUG
+            //System.out.println(Environment.getExternalStorageDirectory().toString());
 
-                System.out.println(numerator + " - " + i);
-
-
-                if(i>num){
-                    num = i;
-                    finalNum = numerator;
-                }
-                numerator++;
-            }
-
-            System.out.println(finalNum + " - " + num);
-            System.out.println(Environment.getExternalStorageDirectory().toString());
-
-            // Releases model resources if no longer used.
             model.close();
 
         } catch (IOException e) {
@@ -255,44 +160,23 @@ public class DrawArea extends View
         }
     }
 
-    public void validateModel(){
+    private void printTensorOutput(TensorBuffer tensorBuffer){
 
-        File model = new File("/home/michal/AndroidStudioProjects/Appfabet/app/src/main/ml");
-        interpreter = new Interpreter(model);
+        float num = 0;
+        int numerator =0;
+        int finalNum =0;
+        for(float i: tensorBuffer.getFloatArray())
+        {
+            System.out.println(numerator + " - " + i);
 
-        Bitmap bitmap = this.getBitmapFromView();
-
-        Bitmap scaledBitmap = getResizedBitmap(bitmap, 32, 32);
-
-        ByteBuffer byteBuffer = ByteBuffer.allocate(1*32*32*1*4);
-        byteBuffer.rewind();
-
-        if (scaledBitmap != null) {
-            System.out.println("copying to buffer");
-            scaledBitmap.copyPixelsToBuffer(byteBuffer);
+            if(i>num){
+                num = i;
+                finalNum = numerator;
+            }
+            numerator++;
         }
 
-        TensorBuffer outputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 32, 32, 4}, DataType.FLOAT32);
-
-        try {
-            interpreter.run(byteBuffer, outputFeature0);
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private Bitmap scaleDown(Bitmap realImage, float maxImageSize,
-                                   boolean filter) {
-        float ratio = Math.min(
-                (float) maxImageSize / realImage.getWidth(),
-                (float) maxImageSize / realImage.getHeight());
-        int width = Math.round((float) ratio * realImage.getWidth());
-        int height = Math.round((float) ratio * realImage.getHeight());
-
-        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
-                height, filter);
-        return newBitmap;
+        System.out.println(finalNum + " - " + num);
     }
 
     private Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
@@ -312,6 +196,7 @@ public class DrawArea extends View
         return resizedBitmap;
     }
 
+    //unused
     private Bitmap toGrayscale(Bitmap bmpOriginal)
     {
         int width, height;
@@ -329,48 +214,7 @@ public class DrawArea extends View
         return bmpGrayscale;
     }
 
-    private ByteBuffer convertBitmapToByteBuffer(Bitmap bitmap) {
-        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * 1 * 32 * 32 * 1);
-        byteBuffer.order(ByteOrder.nativeOrder());
-        int[] intValues = new int[32 * 32];
-        bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
-        int pixel = 0;
-        for (int i = 0; i < 32; ++i) {
-            for (int j = 0; j < 32; ++j) {
-                final int val = intValues[pixel++];
-                byteBuffer.putFloat((((val >> 16) & 0xFF)-128)/128f);
-                byteBuffer.putFloat((((val >> 8) & 0xFF)-128)/128f);
-                byteBuffer.putFloat((((val) & 0xFF)-128)/128f);
-            }
-        }
-        return byteBuffer;
-    }
-
-
-    private void convertBitmapToByteBufferYep(Bitmap bitmap, ByteBuffer imgData) {
-        if (imgData == null) {
-            return;
-        }
-        imgData.rewind();
-
-        int[] intValues = new int[32 * 32];
-        bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-
-        // Convert the image to floating point.
-        int pixel = 0;
-
-        for (int i = 0; i < 32; ++i) {
-            for (int j = 0; j < 32; ++j) {
-                final int val = intValues[pixel++];
-
-                imgData.putFloat(((val>> 16) & 0xFF) / 255.f);
-                imgData.putFloat(((val>> 8) & 0xFF) / 255.f);
-                imgData.putFloat((val & 0xFF) / 255.f);
-            }
-        }
-    }
-
+    //DEBUG FUN
     private void exportBitmapToAppFiles(Bitmap bitmap)
     {
         try {
@@ -379,6 +223,24 @@ public class DrawArea extends View
             fileOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void printByteBufferAs2DArray(ByteBuffer byteBuffer){
+
+        int k=0;
+        float toPrint;
+        byteBuffer.rewind();
+
+        for(int i=0; i< 28; i++)
+        {
+            for(int j=0; j<28; j++){
+
+                toPrint = byteBuffer.getFloat();
+                System.out.print(toPrint + " ");
+                k++;
+            }
+            System.out.println();
         }
     }
 

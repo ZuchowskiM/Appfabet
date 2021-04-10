@@ -16,6 +16,7 @@ import android.view.View;
 
 
 import com.appfabet.ml.EmnistModel1;
+import com.appfabet.ml.ModelPL;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
@@ -33,6 +34,7 @@ public class DrawArea extends View
     private Paint drawPaint;
     private Path path = new Path();
     private boolean isToClear = false;
+    private final int modelSize = 28;
 
     public DrawArea(Context context, AttributeSet attrs)
     {
@@ -102,7 +104,7 @@ public class DrawArea extends View
 
     ///MATI NIE DOTYKAJ DRAW AREA///////
     ///A W XML ZAPYTAC PRZED WPROWADZANIEM ZMIAN DO DRAWING///
-    public void checkModel()
+    public String checkModel()
     {
         try {
             EmnistModel1 model = EmnistModel1.newInstance(this.getContext());
@@ -110,13 +112,13 @@ public class DrawArea extends View
             // Creates inputs for reference.
             Bitmap bitmap = this.getBitmapFromView();
 
-            Bitmap scaledBitmap = getResizedBitmap(bitmap, 28, 28);
+            Bitmap scaledBitmap = getResizedBitmap(bitmap, modelSize, modelSize);
 
             //DEBUG
             //System.out.println(scaledBitmap.getAllocationByteCount());
             //exportBitmapToAppFiles(scaledBitmap);
 
-            ByteBuffer byteBuffer = ByteBuffer.allocate(1*28*28*1*4);
+            ByteBuffer byteBuffer = ByteBuffer.allocate(1*modelSize*modelSize*1*4);
             byteBuffer.rewind();
             byteBuffer.order(ByteOrder.nativeOrder());
 
@@ -127,7 +129,7 @@ public class DrawArea extends View
 
             byteBuffer.rewind();
             byteBuffer.order(ByteOrder.nativeOrder());
-            for (int i=0; i<(28*28*4); i+=4)
+            for (int i=0; i<(modelSize*modelSize*4); i+=4)
             {
                 if(byteBuffer.array()[i+3] != 0)
                 {
@@ -141,26 +143,35 @@ public class DrawArea extends View
             //DEBUG
             //printByteBufferAs2DArray(byteBuffer);
 
-            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 28, 28}, DataType.FLOAT32);
+            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, modelSize, modelSize}, DataType.FLOAT32);
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
             EmnistModel1.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
-            printTensorOutput(outputFeature0);
+            int finalIndex = printTensorOutput(outputFeature0);
 
             //DEBUG
             //System.out.println(Environment.getExternalStorageDirectory().toString());
 
+            OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
+
+            outputInterpreter.createArrayFromJson();
+
+
             model.close();
+
+            return outputInterpreter.getResultFromDictionary(finalIndex);
+
 
         } catch (IOException e) {
             // TODO Handle the exception
+            return "error";
         }
     }
 
-    private void printTensorOutput(TensorBuffer tensorBuffer){
+    private int printTensorOutput(TensorBuffer tensorBuffer){
 
         float num = 0;
         int numerator =0;
@@ -177,6 +188,7 @@ public class DrawArea extends View
         }
 
         System.out.println(finalNum + " - " + num);
+        return finalNum;
     }
 
     private Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
@@ -226,15 +238,17 @@ public class DrawArea extends View
         }
     }
 
+
+    //DEBUG
     private void printByteBufferAs2DArray(ByteBuffer byteBuffer){
 
         int k=0;
         float toPrint;
         byteBuffer.rewind();
 
-        for(int i=0; i< 28; i++)
+        for(int i=0; i< modelSize; i++)
         {
-            for(int j=0; j<28; j++){
+            for(int j=0; j<modelSize; j++){
 
                 toPrint = byteBuffer.getFloat();
                 System.out.print(toPrint + " ");

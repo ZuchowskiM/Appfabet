@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import com.appfabet.Models.DrawArea;
@@ -35,7 +36,10 @@ public class DrawActivity extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawArea.checkModel();
+
+                String result = drawArea.checkModel();
+
+                Toast.makeText(DrawActivity.this, "Recognized character: " + result, Toast.LENGTH_LONG).show();
             }
         });
 

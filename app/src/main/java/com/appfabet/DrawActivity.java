@@ -3,16 +3,19 @@ package com.appfabet;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.appfabet.Models.DrawArea;
 import com.appfabet.Models.Level;
 
-public class DrawActivity extends Activity {
+public class DrawActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,14 +35,26 @@ public class DrawActivity extends Activity {
 
         patternPic.setBackgroundResource(learnType.getResource());
 
+        ScorePopup popup = new ScorePopup();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String result = drawArea.checkModel();
+                Float procentage = drawArea.getProcentage();
+                procentage = procentage * 10;
 
-                Toast.makeText(DrawActivity.this, "Recognized character: " + result, Toast.LENGTH_LONG).show();
+                Bundle args = new Bundle();
+                args.putString("result", result);
+                //args.putString("objective", );
+                args.putFloat("procentage", procentage);
+
+                popup.setArguments(args);
+                popup.show(getSupportFragmentManager(), "Popup");
+
+                //Toast.makeText(DrawActivity.this, "Recognized character: " + result, Toast.LENGTH_LONG).show();
+                Toast.makeText(DrawActivity.this, "Score: " + procentage + "Recognized character: " + result , Toast.LENGTH_LONG).show();
             }
         });
 

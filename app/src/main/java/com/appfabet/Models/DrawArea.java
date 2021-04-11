@@ -35,6 +35,7 @@ public class DrawArea extends View
     private Path path = new Path();
     private boolean isToClear = false;
     private final int modelSize = 28;
+    private float procentage;
 
     public DrawArea(Context context, AttributeSet attrs)
     {
@@ -183,6 +184,7 @@ public class DrawArea extends View
             if(i>num){
                 num = i;
                 finalNum = numerator;
+                procentage = i;
             }
             numerator++;
         }
@@ -259,4 +261,11 @@ public class DrawArea extends View
     }
 
 
+    public float getProcentage() {
+        return procentage;
+    }
+
+    public void setProcentage(float procentage) {
+        this.procentage = procentage;
+    }
 }

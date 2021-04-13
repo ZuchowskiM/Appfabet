@@ -48,7 +48,7 @@ public class DrawActivity extends AppCompatActivity {
                 Bundle args = new Bundle();
                 args.putString("result", result);
                 //args.putString("objective", );
-                args.putFloat("procentage", procentage);
+                args.putFloat("percentage", procentage);
 
                 popup.setArguments(args);
                 popup.show(getSupportFragmentManager(), "Popup");

@@ -1,9 +1,8 @@
 package com.appfabet;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.SoundEffectConstants;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,10 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.appfabet.Models.DrawArea;
 import com.appfabet.Models.Initializer;
 import com.appfabet.Models.Level;
+import com.appfabet.Models.LevelNameToLetterDictionary;
+
+import java.util.Locale;
 
 public class DrawActivity extends AppCompatActivity {
     int position;
     Level level;
+    TextToSpeech textToSpeech;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,13 +46,14 @@ public class DrawActivity extends AppCompatActivity {
         patternPic.setBackgroundResource(level.getResource());
 
         ScorePopup popup = new ScorePopup();
+        System.out.println(level.getName());
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String result = drawArea.checkModel();
-                Float procentage = drawArea.getProcentage();
+                Float procentage = drawArea.getPercentage();
                 procentage = procentage * 10;
 
                 Bundle args = new Bundle();
@@ -70,6 +74,34 @@ public class DrawActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 drawArea.clearArea();
+            }
+        });
+
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status == TextToSpeech.SUCCESS){
+                    int lang = textToSpeech.setLanguage(Locale.US);
+                    
+                    if(lang == TextToSpeech.LANG_MISSING_DATA || lang == TextToSpeech.LANG_NOT_SUPPORTED){
+                        Toast.makeText(DrawActivity.this, "Language not supported", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(DrawActivity.this, "Language supported", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    Toast.makeText(DrawActivity.this, "Speech failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        speaker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String data = LevelNameToLetterDictionary.getLetterFromLevelName(Integer.parseInt(level.getName()));
+
+                textToSpeech.speak(data, TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 

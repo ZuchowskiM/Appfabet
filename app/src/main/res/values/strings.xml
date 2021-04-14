@@ -7,5 +7,7 @@
     <string name="alphabet">Alphabet</string>
     <string name="numbers">Numbers</string>
     <string name="things">Other things</string>
+    <string name="variantsBar">How do you want to learn</string>
+
 
 </resources>

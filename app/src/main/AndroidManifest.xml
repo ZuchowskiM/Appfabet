@@ -4,13 +4,14 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Appfabet"
-        android:largeHeap="true"
-        android:hardwareAccelerated="false">
+        android:theme="@style/Theme.Appfabet">
+        <activity android:name=".LearnVariantsBrowser"></activity>
         <activity android:name=".StartScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,16 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LearnSelector"
-            />
-        <activity
-            android:name=".LevelBrowser"
-            />
-        <activity
-            android:name=".DrawActivity"
-            />
+        <activity android:name=".LearnSelector" />
+        <activity android:name=".LevelBrowser" />
+        <activity android:name=".DrawActivity" />
     </application>
-
 
 </manifest>

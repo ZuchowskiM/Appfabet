@@ -1,5 +1,6 @@
 package com.appfabet;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +22,9 @@ public class ScorePopup extends AppCompatDialogFragment {
     TextView scoreTextView;
     TextView infoTextView;
     TextView Close;
+    boolean btnEnabled;
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,12 +48,18 @@ public class ScorePopup extends AppCompatDialogFragment {
         }
         if (bundle != null) {
            Float score =  bundle.getFloat("procentage");
-           String value = String.valueOf(Math.round(score) + " / " + "10");
+           int scoreInt = Math.round(score);
+           String value = String.valueOf(scoreInt + " / " + "10");
 
-           if(score>7)
+           if(scoreInt>6){
                scoreTextView.setTextColor(Color.GREEN);
-           else
+               btnEnabled=true;
+           }
+           if(scoreInt<7){
                scoreTextView.setTextColor(Color.RED);
+               btnEnabled=false;
+           }
+
 
            scoreTextView.setText(value);
         }
@@ -60,6 +69,18 @@ public class ScorePopup extends AppCompatDialogFragment {
 
         //ponawianie
         retry.setOnClickListener(v -> Objects.requireNonNull(getDialog()).dismiss());
+
+        if(btnEnabled)
+        {
+            accept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        } else {
+
+        }
 
 
         return view;

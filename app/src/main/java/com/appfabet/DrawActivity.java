@@ -13,9 +13,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.appfabet.Models.DrawArea;
+import com.appfabet.Models.Initializer;
 import com.appfabet.Models.Level;
 
 public class DrawActivity extends AppCompatActivity {
+    int position;
+    Level level;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,9 +34,13 @@ public class DrawActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("TYPE");
-        Level learnType = (Level) args.getSerializable("TYPEOBJECT");
+        int learnPosition = args.getInt("learnPosition");
+        int variantPosition = args.getInt("variantPosition");
+        position = args.getInt("levelPosition");
 
-        patternPic.setBackgroundResource(learnType.getResource());
+        level = Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).getLevels().get(position);
+
+        patternPic.setBackgroundResource(level.getResource());
 
         ScorePopup popup = new ScorePopup();
 
@@ -47,8 +54,9 @@ public class DrawActivity extends AppCompatActivity {
 
                 Bundle args = new Bundle();
                 args.putString("result", result);
-                //args.putString("objective", );
+                args.putInt("position", position);
                 args.putFloat("procentage", procentage);
+
 
                 popup.setArguments(args);
                 popup.show(getSupportFragmentManager(), "Popup");

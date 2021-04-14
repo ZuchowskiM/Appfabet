@@ -6,9 +6,8 @@ import java.util.List;
 
 public class LearnType implements Serializable {
     private String name;
-    private List<Level> levels;
+    private ArrayList<LearnVariant> variants;
     private int levelsNumber;
-    private int currentLevel;
     private int logo;
 
     public LearnType(String name, int logo) {
@@ -18,15 +17,16 @@ public class LearnType implements Serializable {
 
     public LearnType() {
         name = "";
-        levels = new ArrayList<>();
+        variants = new ArrayList<>();
     }
 
-    public int getCurrentLevel() {
-        return currentLevel;
+
+    public ArrayList<LearnVariant> getVariants() {
+        return variants;
     }
 
-    public void setCurrentLevel(int currentLevel) {
-        this.currentLevel = currentLevel;
+    public void setVariants(ArrayList<LearnVariant> variants) {
+        this.variants = variants;
     }
 
     public int getLogo() {
@@ -43,14 +43,6 @@ public class LearnType implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Level> getLevels() {
-        return levels;
-    }
-
-    public void setLevels(List<Level> levels) {
-        this.levels = levels;
     }
 
     public int getLevelsNumber() {

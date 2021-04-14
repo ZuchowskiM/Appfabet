@@ -9,20 +9,23 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.appfabet.Models.LearnType;
-import com.appfabet.Models.Level;
+import com.appfabet.Models.LearnVariant;
 import com.appfabet.R;
 
 import java.util.ArrayList;
 
-public class LevelAdapter extends ArrayAdapter {
+public class LearnVariantAdapter extends ArrayAdapter {
+    ArrayList<LearnVariant> learnVariants = new ArrayList<>();
 
-    ArrayList<Level> learnList = new ArrayList<>();
 
-    public LevelAdapter(Context context, int textViewResourceId, ArrayList objects) {
+    public LearnVariantAdapter(Context context, int textViewResourceId, ArrayList objects) {
         super(context, textViewResourceId, objects);
-        learnList = objects;
+        learnVariants = objects;
     }
+
 
     @Override
     public int getCount() {
@@ -46,11 +49,18 @@ public class LevelAdapter extends ArrayAdapter {
 
         View v = convertView;
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        v = inflater.inflate(R.layout.grid_view_level_item, null);
-        //TextView textView = (TextView) v.findViewById(R.id.textView);
+        v = inflater.inflate(R.layout.grid_view_items, null);
+        TextView textView = (TextView) v.findViewById(R.id.textView);
         ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
-       // textView.setText(learnList.get(position).getName());
-        imageView.setImageResource(learnList.get(position).getResource());
+        textView.setText(learnVariants.get(position).getName());
+        imageView.setImageResource(learnVariants.get(position).getLogo());
         return v;
     }
+
+
+
+
+
+
+
 }

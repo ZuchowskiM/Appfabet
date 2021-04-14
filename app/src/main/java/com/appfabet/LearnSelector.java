@@ -46,13 +46,12 @@ public class LearnSelector extends Activity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-                Intent intent = new Intent(LearnSelector.this, LevelBrowser.class);
+                Intent intent = new Intent(LearnSelector.this, LearnVariantsBrowser.class);
                 Bundle args = new Bundle();
-                args.putSerializable("TYPEOBJECT",(Serializable)learnTypesList.get(position));
+                args.putInt("position", position);
                 intent.putExtra("TYPE",args);
                 startActivity(intent);
+
             }
         });
 

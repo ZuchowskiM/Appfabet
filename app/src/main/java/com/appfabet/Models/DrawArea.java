@@ -16,6 +16,7 @@ import android.view.View;
 
 
 import com.appfabet.ml.EmnistModel1;
+import com.appfabet.ml.EmnistPL;
 import com.appfabet.ml.ModelPL;
 
 import org.tensorflow.lite.DataType;
@@ -34,7 +35,7 @@ public class DrawArea extends View
     private Paint drawPaint;
     private Path path = new Path();
     private boolean isToClear = false;
-    private final int modelSize = 28;
+    private final int modelSize = 32;
     private float procentage;
 
     public DrawArea(Context context, AttributeSet attrs)
@@ -108,7 +109,7 @@ public class DrawArea extends View
     public String checkModel()
     {
         try {
-            EmnistModel1 model = EmnistModel1.newInstance(this.getContext());
+            EmnistPL model = EmnistPL.newInstance(this.getContext());
 
             // Creates inputs for reference.
             Bitmap bitmap = this.getBitmapFromView();
@@ -134,21 +135,25 @@ public class DrawArea extends View
             {
                 if(byteBuffer.array()[i+3] != 0)
                 {
-                    byteBuffer.putFloat(255.0f);
+                    //for emnist model 255.0
+                    //for emnistPL 0.0
+                    byteBuffer.putFloat(0.0f);
                 }
                 else {
-                    byteBuffer.putFloat(0.0f);
+                    //for emnist model 0.0
+                    //for emnistPL 1.0
+                    byteBuffer.putFloat(1.0f);
                 }
             }
 
             //DEBUG
-            //printByteBufferAs2DArray(byteBuffer);
+            printByteBufferAs2DArray(byteBuffer);
 
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, modelSize, modelSize}, DataType.FLOAT32);
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            EmnistModel1.Outputs outputs = model.process(inputFeature0);
+            EmnistPL.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             int finalIndex = printTensorOutput(outputFeature0);

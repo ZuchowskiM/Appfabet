@@ -24,7 +24,7 @@ public class OutputInterpreter {
 
     public void createArrayFromJson() throws IOException {
 
-        InputStream jsonFile = context.getResources().openRawResource(R.raw.emnist_pl_dictrionary);
+        InputStream jsonFile = context.getResources().openRawResource(R.raw.emnist_dictionary);
 
 
         JsonReader reader = new JsonReader(new InputStreamReader(jsonFile, StandardCharsets.UTF_8));

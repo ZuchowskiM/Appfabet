@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
+import com.appfabet.ml.EmnistModel1;
 import com.appfabet.ml.EmnistPL;
 
 import org.tensorflow.lite.DataType;
@@ -33,7 +34,7 @@ public class DrawArea extends View
     private Paint drawPaint;
     private Path path = new Path();
     private boolean isToClear = false;
-    private final int modelSize = 32;
+    private final int modelSize = 28;
     private float percentage;
 
 
@@ -109,7 +110,7 @@ public class DrawArea extends View
     public String checkModel()
     {
         try {
-            EmnistPL model = EmnistPL.newInstance(this.getContext());
+            EmnistModel1 model = EmnistModel1.newInstance(this.getContext());
 
             // Creates inputs for reference.
             Bitmap bitmap = this.getBitmapFromView();
@@ -137,12 +138,12 @@ public class DrawArea extends View
                 {
                     //for emnist model 255.0
                     //for emnistPL 0.0
-                    byteBuffer.putFloat(0.0f);
+                    byteBuffer.putFloat(255.0f);
                 }
                 else {
                     //for emnist model 0.0
                     //for emnistPL 1.0
-                    byteBuffer.putFloat(1.0f);
+                    byteBuffer.putFloat(0.0f);
                 }
             }
 
@@ -153,7 +154,7 @@ public class DrawArea extends View
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            EmnistPL.Outputs outputs = model.process(inputFeature0);
+            EmnistModel1.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             int finalIndex = printTensorOutput(outputFeature0);

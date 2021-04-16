@@ -3,6 +3,7 @@ package com.appfabet;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import com.appfabet.Models.DrawArea;
 import com.appfabet.Models.Initializer;
 import com.appfabet.Models.LearnVariant;
 import com.appfabet.Models.Level;
+import com.appfabet.Models.TextToSpeechInterpreter;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -27,7 +29,8 @@ public class DrawActivity extends AppCompatActivity {
     static int variantPosition;
     ArrayList<Level> levels;
     LearnVariant currentLearnVariant;
-     ImageView patternPic;
+    ImageView patternPic;
+    TextToSpeechInterpreter textToSpeechInterpreter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +42,9 @@ public class DrawActivity extends AppCompatActivity {
         Button clearButton = findViewById(R.id.clearButton);
         DrawArea drawArea = findViewById(R.id.drawing);
         patternPic = findViewById(R.id.patternPic);
+
         ImageView speaker = findViewById(R.id.speaker);
+        textToSpeechInterpreter = new TextToSpeechInterpreter(getApplicationContext());
 
         try{
             Intent intent = getIntent();
@@ -56,6 +61,7 @@ public class DrawActivity extends AppCompatActivity {
 
 
         patternPic.setBackgroundResource(levels.get(currentLevelPosition).getResource());
+
 
         ScorePopup popup = new ScorePopup();
 
@@ -87,6 +93,21 @@ public class DrawActivity extends AppCompatActivity {
                 drawArea.clearArea();
             }
         });
+
+        speaker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textToSpeechInterpreter.speak(levels.get(currentLevelPosition).getDescription());
+            }
+        });
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textToSpeechInterpreter.speak(levels.get(currentLevelPosition).getDescription());
+            }
+        }, 1000);
 
     }
 

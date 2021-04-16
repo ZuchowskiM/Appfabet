@@ -15,9 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
-import com.appfabet.ml.EmnistModel1;
 import com.appfabet.ml.EmnistPL;
-import com.appfabet.ml.ModelPL;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
@@ -36,12 +34,14 @@ public class DrawArea extends View
     private Path path = new Path();
     private boolean isToClear = false;
     private final int modelSize = 32;
-    private float procentage;
+    private float percentage;
+
 
     public DrawArea(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         setupPaint();
+
     }
 
     @Override
@@ -189,7 +189,7 @@ public class DrawArea extends View
             if(i>num){
                 num = i;
                 finalNum = numerator;
-                procentage = i;
+                percentage = i;
             }
             numerator++;
         }
@@ -266,11 +266,11 @@ public class DrawArea extends View
     }
 
 
-    public float getProcentage() {
-        return procentage;
+    public float getPercentage() {
+        return percentage;
     }
 
-    public void setProcentage(float procentage) {
-        this.procentage = procentage;
+    public void setPercentage(float percentage) {
+        this.percentage = percentage;
     }
 }

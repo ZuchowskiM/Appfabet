@@ -3,7 +3,11 @@ package com.appfabet;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +20,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.DialogFragment;
 
 import com.appfabet.Models.Initializer;
+import com.appfabet.Models.SoundNotifier;
 
 import java.util.Objects;
 
@@ -32,6 +37,7 @@ public class ScorePopup extends AppCompatDialogFragment {
     int learnPosition;
     String targetValue;
     String charRecon;
+    SoundNotifier soundNotifier;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -45,6 +51,7 @@ public class ScorePopup extends AppCompatDialogFragment {
         scoreImageView = view.findViewById(R.id.score);
         infoTextView = view.findViewById(R.id.infoTextView);
         Close = (TextView) view.findViewById(R.id.close);
+        soundNotifier = new SoundNotifier(getContext());
 
         //odbieranie wartosci przyznanych przez model
         Bundle bundle=getArguments();
@@ -89,6 +96,14 @@ public class ScorePopup extends AppCompatDialogFragment {
                    btnEnabled=true;
                }
 
+               new Handler().postDelayed(new Runnable() {
+                   @Override
+                   public void run() {
+                       soundNotifier.playSuccessNotifier();
+                   }
+               }, 0);
+
+
            } else {
                btnEnabled=false;
                accept.setVisibility(View.GONE);
@@ -96,6 +111,13 @@ public class ScorePopup extends AppCompatDialogFragment {
                String str = "We think it's a " + charRecon + " :(" + '\n' +
                        "Should be  " + targetValue ;
                infoTextView.setText(str);
+
+               new Handler().postDelayed(new Runnable() {
+                   @Override
+                   public void run() {
+                       soundNotifier.playFailNotifier();
+                   }
+               }, 0);
            }
 
         }

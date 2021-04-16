@@ -36,6 +36,8 @@ public class LearnVariantsBrowser extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("TYPE");
         learnPosition = args.getInt("position");
+        
+
 
         //adapter
         LearnVariantAdapter myAdapter=new LearnVariantAdapter(this,R.layout.grid_view_items,learnTypesList.get(learnPosition).getVariants());
@@ -45,7 +47,7 @@ public class LearnVariantsBrowser extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(LearnVariantsBrowser.this, LevelBrowser.class);
+                Intent intent = new Intent(LearnVariantsBrowser.this, DrawActivity.class);
                 Bundle args = new Bundle();
                 args.putInt("learnPosition", learnPosition);
                 args.putInt("variantPosition", position);

@@ -14,11 +14,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.appfabet.Models.DrawArea;
 import com.appfabet.Models.Initializer;
+import com.appfabet.Models.LearnVariant;
 import com.appfabet.Models.Level;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class DrawActivity extends AppCompatActivity {
     int position;
-    Level level;
+    public static int currentLevelPosition;
+    static int learnPosition;
+    static int variantPosition;
+    ArrayList<Level> levels;
+    LearnVariant currentLearnVariant;
+     ImageView patternPic;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,18 +38,24 @@ public class DrawActivity extends AppCompatActivity {
         Button button = findViewById(R.id.button2);
         Button clearButton = findViewById(R.id.clearButton);
         DrawArea drawArea = findViewById(R.id.drawing);
-        ImageView patternPic = findViewById(R.id.patternPic);
+        patternPic = findViewById(R.id.patternPic);
         ImageView speaker = findViewById(R.id.speaker);
 
-        Intent intent = getIntent();
-        Bundle args = intent.getBundleExtra("TYPE");
-        int learnPosition = args.getInt("learnPosition");
-        int variantPosition = args.getInt("variantPosition");
-        position = args.getInt("levelPosition");
+        try{
+            Intent intent = getIntent();
+            Bundle args = intent.getBundleExtra("TYPE");
+            learnPosition = args.getInt("learnPosition");
+            variantPosition = args.getInt("variantPosition");
+            //position = args.getInt("levelPosition");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
-        level = Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).getLevels().get(position);
+        currentLearnVariant = Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition);
+        checkAndSetCurrentMode(currentLearnVariant);
 
-        patternPic.setBackgroundResource(level.getResource());
+
+        patternPic.setBackgroundResource(levels.get(currentLevelPosition).getResource());
 
         ScorePopup popup = new ScorePopup();
 
@@ -54,15 +69,15 @@ public class DrawActivity extends AppCompatActivity {
 
                 Bundle args = new Bundle();
                 args.putString("result", result);
-                args.putInt("position", position);
+                args.putInt("levelPosition", currentLevelPosition);
                 args.putFloat("procentage", procentage);
-
+                args.putInt("learnPosition", learnPosition);
+                args.putInt("variantPosition", variantPosition);
+                args.putString("targetValue", levels.get(currentLevelPosition).getDescription());
 
                 popup.setArguments(args);
                 popup.show(getSupportFragmentManager(), "Popup");
 
-                //Toast.makeText(DrawActivity.this, "Recognized character: " + result, Toast.LENGTH_LONG).show();
-                Toast.makeText(DrawActivity.this, "Score: " + procentage + "Recognized character: " + result , Toast.LENGTH_LONG).show();
             }
         });
 
@@ -75,5 +90,27 @@ public class DrawActivity extends AppCompatActivity {
 
     }
 
+    private void checkAndSetCurrentMode(LearnVariant learnVariant) {
+
+        levels = (ArrayList<Level>) learnVariant.getLevels();
+
+        switch (learnVariant.getLearnMode()){
+            case random:
+                Random r = new Random();
+                int randomVal = r.nextInt(learnVariant.getLevels().size());
+                if(randomVal!=currentLevelPosition)
+                    currentLevelPosition = randomVal;
+                else{
+                    while (randomVal==currentLevelPosition){
+                        currentLevelPosition = r.nextInt(learnVariant.getLevels().size());
+                    }
+                }
+
+                break;
+            case chronological:
+                currentLevelPosition = learnVariant.getCurrentLevel();
+                break;
+        }
+    }
 
 }

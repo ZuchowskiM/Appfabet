@@ -55,22 +55,10 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/nerkoone_regular"
-                    android:gravity="center"
-                    android:text="Your score"
-                    android:textColor="@color/appfabetOrange"
-                    android:textColorLink="@color/appfabetOrange"
-                    android:textSize="28sp" />
-
-                <TextView
+                <ImageView
                     android:id="@+id/score"
                     android:layout_width="match_parent"
-                    android:layout_height="73dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/nerkoone_regular"
                     android:gravity="center"

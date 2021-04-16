@@ -64,7 +64,7 @@ public class DrawActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String result = drawArea.checkModel();
-                Float procentage = drawArea.getProcentage();
+                Float procentage = drawArea.getPercentage();
                 procentage = procentage * 10;
 
                 Bundle args = new Bundle();

@@ -34,17 +34,17 @@ public class Initializer {
 
 
         // Alphabet variants in random mode
-        LearnVariant bigLetters = new LearnVariant("Train big Letters " + '\n' + "Random mode" , R.drawable.alphabet_pic);
+        LearnVariant bigLetters = new LearnVariant("Train big letters " + '\n' + "Random mode" , R.drawable.alphabet_pic);
         bigLetters.setLearnMode(LearnVariant.mode.random);
 
-        LearnVariant smallLetters = new LearnVariant("WORKING! Train small Letters " + '\n' + "Chronological mode", R.drawable.alphabbet_small);
+        LearnVariant smallLetters = new LearnVariant("WORKING! Train small letters " + '\n' + "Chronological mode", R.drawable.alphabbet_small);
         smallLetters.setLearnMode(LearnVariant.mode.chronological);
 
         // Alphabet all letters in chronological mode
-        LearnVariant allLetters = new LearnVariant("Train all Letters " + '\n' + "Chronological mode", R.drawable.big_letters);
+        LearnVariant allLetters = new LearnVariant("Train all letters " + '\n' + "Chronological mode", R.drawable.big_letters);
         allLetters.setLearnMode(LearnVariant.mode.chronological);
 
-        LearnVariant randomLetter = new LearnVariant("WORKING! Train all Letters " + '\n' + "Chronological mode" , R.drawable.alphabet_pic);
+        LearnVariant randomLetter = new LearnVariant("WORKING! Train all letters " + '\n' + "Chronological mode" , R.drawable.alphabet_pic);
         randomLetter.setLearnMode(LearnVariant.mode.random);
 
         learnVariantsAlphabet.add(bigLetters);
@@ -53,10 +53,10 @@ public class Initializer {
         learnVariantsAlphabet.add(randomLetter);
 
         // Numbers Variants
-        LearnVariant simpleNumbers = new LearnVariant("Simple Numbers", R.drawable.numbers_pic);
+        LearnVariant simpleNumbers = new LearnVariant("Train simple numbers " + '\n' + "Chronological mode", R.drawable.numbers_pic);
         simpleNumbers.setLearnMode(LearnVariant.mode.chronological);
 
-        LearnVariant complexNumbers = new LearnVariant("Complex Numbers", R.drawable.numbers_pic);
+        LearnVariant complexNumbers = new LearnVariant("Train complex numbers " + '\n' + "Random mode", R.drawable.numbers_pic);
         complexNumbers.setLearnMode(LearnVariant.mode.random);
 
         learnVariantsNumbers.add(simpleNumbers);

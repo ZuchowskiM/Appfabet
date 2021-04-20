@@ -101,7 +101,7 @@ public class ScorePopup extends AppCompatDialogFragment {
                    public void run() {
                        soundNotifier.playSuccessNotifier();
                    }
-               }, 0);
+               }, 500);
 
 
            } else {
@@ -117,7 +117,7 @@ public class ScorePopup extends AppCompatDialogFragment {
                    public void run() {
                        soundNotifier.playFailNotifier();
                    }
-               }, 0);
+               }, 500);
            }
 
         }

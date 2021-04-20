@@ -94,14 +94,26 @@ public class DrawActivity extends AppCompatActivity {
             }
         });
 
+        Handler handler = new Handler();
+
+
+
         speaker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                textToSpeechInterpreter.speak(levels.get(currentLevelPosition).getDescription());
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        textToSpeechInterpreter.speak(levels.get(currentLevelPosition).getDescription());
+                    }
+                }, 500);
+
+
             }
         });
 
-        Handler handler = new Handler();
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

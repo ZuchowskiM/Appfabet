@@ -9,8 +9,8 @@
 
     <com.appfabet.Models.DrawArea
         android:id="@+id/drawing"
-        android:layout_width="345dp"
-        android:layout_height="400dp"
+        android:layout_width="340dp"
+        android:layout_height="438dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -19,18 +19,18 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/grid_item_border"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/patternPic"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintTop_toBottomOf="@+id/patternPic" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="125dp"
         android:layout_height="75dp"
         android:layout_marginStart="50dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/rounded_things"
         android:fontFamily="@font/nerkoone_regular"
         android:text="Submit"
@@ -40,14 +40,14 @@
         android:textColorLink="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drawing" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/clearButton"
         android:layout_width="125dp"
         android:layout_height="75dp"
         android:layout_marginEnd="50dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/rounded_things"
         android:fontFamily="@font/nerkoone_regular"
         android:text="Clear"
@@ -57,28 +57,30 @@
         android:textColorLink="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drawing" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageView
+    <TextView
         android:id="@+id/patternPic"
-        android:layout_width="154dp"
+        android:layout_width="0dp"
         android:layout_height="153dp"
         android:layout_marginTop="28dp"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/elementarz"
+        android:gravity="center|center_vertical"
+        android:text="T"
+        android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/speaker"
         android:layout_width="102dp"
         android:layout_height="87dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="32dp"
         android:src="@drawable/speaker"
         app:layout_constraintBottom_toTopOf="@+id/drawing"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
-        app:layout_constraintStart_toEndOf="@+id/patternPic" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

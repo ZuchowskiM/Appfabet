@@ -14,8 +14,9 @@ public class Initializer {
     ArrayList<LearnVariant> learnVariantsAlphabet = new ArrayList<>();
     ArrayList<LearnVariant> learnVariantsNumbers = new ArrayList<>();
     ArrayList<Level> levelsAlphabetBigLetters = new ArrayList<>();
+    ArrayList<Level> levelsAlphabetSmallLetters = new ArrayList<>();
     ArrayList<Level> levelsAlphabetAllLetters = new ArrayList<>();
-    ArrayList<Level> levelsAlphabetRandomLetters = new ArrayList<>();
+    ArrayList<Level> levelsAlphabetAllChronologicalLetters = new ArrayList<>();
     ArrayList<Level> levelsNumbersSimple = new ArrayList<>();
     ArrayList<Level> levelsThings = new ArrayList<>();
 
@@ -34,23 +35,23 @@ public class Initializer {
 
 
         // Alphabet variants in random mode
-        LearnVariant bigLetters = new LearnVariant("Train big letters " + '\n' + "Random mode" , R.drawable.alphabet_pic);
+        LearnVariant bigLetters = new LearnVariant("Train BIG letters " + '\n' + "Random mode" , R.drawable.big_letters);
         bigLetters.setLearnMode(LearnVariant.mode.random);
 
-        LearnVariant smallLetters = new LearnVariant("WORKING! Train small letters " + '\n' + "Chronological mode", R.drawable.alphabbet_small);
-        smallLetters.setLearnMode(LearnVariant.mode.chronological);
+        LearnVariant smallLetters = new LearnVariant("Train small letters " + '\n' + "Random mode", R.drawable.alphabbet_small);
+        smallLetters.setLearnMode(LearnVariant.mode.random);
 
         // Alphabet all letters in chronological mode
-        LearnVariant allLetters = new LearnVariant("Train all letters " + '\n' + "Chronological mode", R.drawable.big_letters);
-        allLetters.setLearnMode(LearnVariant.mode.chronological);
+        LearnVariant allLetters = new LearnVariant("Train All letters " + '\n' + "Random mode", R.drawable.alphabbet_all_letters);
+        allLetters.setLearnMode(LearnVariant.mode.random);
 
-        LearnVariant randomLetter = new LearnVariant("WORKING! Train all letters " + '\n' + "Chronological mode" , R.drawable.alphabet_pic);
-        randomLetter.setLearnMode(LearnVariant.mode.random);
+        LearnVariant allChronological = new LearnVariant("All letters" , R.drawable.alphabet_pic);
+        allChronological.setLearnMode(LearnVariant.mode.all);
 
-        learnVariantsAlphabet.add(bigLetters);
-        learnVariantsAlphabet.add(allLetters);
-        learnVariantsAlphabet.add(smallLetters);
-        learnVariantsAlphabet.add(randomLetter);
+        learnVariantsAlphabet.add(bigLetters); // 0
+        learnVariantsAlphabet.add(allLetters); // 1
+        learnVariantsAlphabet.add(smallLetters); // 2
+        learnVariantsAlphabet.add(allChronological); // 3
 
         // Numbers Variants
         LearnVariant simpleNumbers = new LearnVariant("Train simple numbers " + '\n' + "Chronological mode", R.drawable.numbers_pic);
@@ -64,15 +65,14 @@ public class Initializer {
 
         learnTypesList.get(0).setVariants(learnVariantsAlphabet); // alphabet
         learnTypesList.get(1).setVariants(learnVariantsNumbers); // numbers
-        //learnTypesList.get(2).setLevels(levelsThings); // other things
+
 
         // big characters init
         char character = 'A';
 
-        for(int i=1; i<9; i++){
-            int resId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
+        for(int i=1; i<27; i++){
             int resPicId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),String.valueOf(character), 1, false, resId, resPicId);
+            Level level = new Level(String.valueOf(i),String.valueOf(character), 1, false, resPicId);
             character = (char) (character+1);
             levelsAlphabetBigLetters.add(level);
         }
@@ -80,10 +80,9 @@ public class Initializer {
         learnTypesList.get(0).getVariants().get(0).setLevels(levelsAlphabetBigLetters);
 
         // numbers init
-        for(int i=1; i<9; i++){
-            int resId = context.getResources().getIdentifier("p"+i,"drawable",activity.getPackageName());
+        for(int i=1; i<10; i++){
             int resPicId = context.getResources().getIdentifier("p"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),String.valueOf(i), 1, false, resId, resPicId);
+            Level level = new Level(String.valueOf(i),String.valueOf(i), 1, false, resPicId);
             levelsNumbersSimple.add(level);
         }
 
@@ -94,19 +93,48 @@ public class Initializer {
 
         // all characters init
         char character1 = 'A';
-
-
-        for(int i=1; i<9; i++){
-            int resId = context.getResources().getIdentifier("p"+i,"drawable",activity.getPackageName());
+        for(int i=1; i<27; i++){
             int resPicId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),String.valueOf(character1), 1, false, resId, resPicId);
+            Level level = new Level(String.valueOf(i),String.valueOf(character1), 1, false, resPicId);
             character1 = (char) (character1+1);
             levelsAlphabetAllLetters.add(level);
         }
 
+
+
+        // small chars init
+        char character2 = 'a';
+        for(int i=1; i<27; i++){
+            int resPicId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
+            Level level = new Level(String.valueOf(i),String.valueOf(character2), 1, false, resPicId);
+            character2 = (char) (character2+1);
+            levelsAlphabetSmallLetters.add(level);
+            levelsAlphabetAllLetters.add(level);
+        }
+
         learnTypesList.get(0).getVariants().get(1).setLevels(levelsAlphabetAllLetters);
+        learnTypesList.get(0).getVariants().get(2).setLevels(levelsAlphabetSmallLetters);
 
 
+
+
+        // all chrono chars init
+        char character3 = 'A';
+        char character4 = 'a';
+        for(int i=1; i<27; i++){
+            //adding big first
+            int resPicId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
+            Level level = new Level(String.valueOf(i),String.valueOf(character3), 1, false, resPicId);
+            character3 = (char) (character3+1);
+            levelsAlphabetAllChronologicalLetters.add(level);
+
+            int resPicId1 = context.getResources().getIdentifier("m"+i,"drawable",activity.getPackageName());
+            //adding small second
+            Level level1 = new Level(String.valueOf(i),String.valueOf(character4), 1, false, resPicId1);
+            character4 = (char) (character4+1);
+            levelsAlphabetAllChronologicalLetters.add(level1);
+        }
+        learnTypesList.get(0).getVariants().get(3).setLevels(levelsAlphabetAllChronologicalLetters);
 
         return learnTypesList;
     }

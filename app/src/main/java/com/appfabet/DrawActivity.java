@@ -8,6 +8,7 @@ import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.appfabet.Models.DrawArea;
 import com.appfabet.Models.Initializer;
 import com.appfabet.Models.LearnVariant;
 import com.appfabet.Models.Level;
+import com.appfabet.Models.RandomColorGenerator;
 import com.appfabet.Models.TextToSpeechInterpreter;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class DrawActivity extends AppCompatActivity {
     static int variantPosition;
     ArrayList<Level> levels;
     LearnVariant currentLearnVariant;
-    ImageView patternPic;
+    TextView patternElement;
     TextToSpeechInterpreter textToSpeechInterpreter;
 
     @Override
@@ -41,7 +43,7 @@ public class DrawActivity extends AppCompatActivity {
         Button button = findViewById(R.id.button2);
         Button clearButton = findViewById(R.id.clearButton);
         DrawArea drawArea = findViewById(R.id.drawing);
-        patternPic = findViewById(R.id.patternPic);
+        patternElement = findViewById(R.id.patternPic);
 
         ImageView speaker = findViewById(R.id.speaker);
         textToSpeechInterpreter = new TextToSpeechInterpreter(getApplicationContext());
@@ -49,9 +51,17 @@ public class DrawActivity extends AppCompatActivity {
         try{
             Intent intent = getIntent();
             Bundle args = intent.getBundleExtra("TYPE");
+            position = args.getInt("levelPosition");
+        }catch (Exception e) {
+
+        }
+
+        try{
+            Intent intent = getIntent();
+            Bundle args = intent.getBundleExtra("TYPE");
             learnPosition = args.getInt("learnPosition");
             variantPosition = args.getInt("variantPosition");
-            //position = args.getInt("levelPosition");
+
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -60,9 +70,9 @@ public class DrawActivity extends AppCompatActivity {
         checkAndSetCurrentMode(currentLearnVariant);
 
 
-        patternPic.setBackgroundResource(levels.get(currentLevelPosition).getResource());
-
-
+        patternElement.setText(levels.get(currentLevelPosition).getDescription());
+        RandomColorGenerator randomColorGenerator = new RandomColorGenerator();
+        patternElement.setTextColor(randomColorGenerator.getColor());
         ScorePopup popup = new ScorePopup();
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +153,8 @@ public class DrawActivity extends AppCompatActivity {
             case chronological:
                 currentLevelPosition = learnVariant.getCurrentLevel();
                 break;
+            case all:
+                currentLevelPosition = position;
         }
     }
 

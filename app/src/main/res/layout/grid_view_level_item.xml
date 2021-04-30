@@ -17,7 +17,7 @@
         android:layout_marginRight="10dp"
         android:background="@drawable/grid_item_border"
         android:padding="5dp"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_launcher_background" />
 
     <TextView

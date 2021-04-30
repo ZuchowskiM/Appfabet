@@ -47,12 +47,23 @@ public class LearnVariantsBrowser extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(LearnVariantsBrowser.this, DrawActivity.class);
-                Bundle args = new Bundle();
-                args.putInt("learnPosition", learnPosition);
-                args.putInt("variantPosition", position);
-                intent.putExtra("TYPE",args);
-                startActivity(intent);
+                if(learnTypesList.get(learnPosition).getVariants().get(position).getName().equals("All letters")){
+                    Intent intent = new Intent(LearnVariantsBrowser.this, LevelBrowser.class);
+                    Bundle args = new Bundle();
+                    args.putInt("learnPosition", learnPosition);
+                    args.putInt("variantPosition", position);
+                    intent.putExtra("TYPE",args);
+                    startActivity(intent);
+                } else{
+
+                    Intent intent = new Intent(LearnVariantsBrowser.this, DrawActivity.class);
+                    Bundle args = new Bundle();
+                    args.putInt("learnPosition", learnPosition);
+                    args.putInt("variantPosition", position);
+                    intent.putExtra("TYPE",args);
+                    startActivity(intent);
+
+                }
 
             }
         });

@@ -6,7 +6,7 @@ public class LearnVariant {
     private String name;
     private List<Level> levels;
     private int logo;
-    public enum mode {random, chronological}
+    public enum mode {random, chronological, all}
     private mode learnMode;
     private int currentLevel;
 

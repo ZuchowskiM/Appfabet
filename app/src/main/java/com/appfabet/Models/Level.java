@@ -9,15 +9,13 @@ public class Level implements Serializable {
     private int level;
     private boolean completed;
     private int rating;
-    private int logo;
     private int resource;
 
-    public Level(String name, String description, int level, boolean completed, int logo,int resource) {
+    public Level(String name, String description, int level, boolean completed,int resource) {
         this.name = name;
         this.description = description;
         this.level = level;
         this.completed = completed;
-        this.logo = logo;
         this.resource = resource;
     }
 
@@ -32,14 +30,6 @@ public class Level implements Serializable {
 
     public void setResource(int resource) {
         this.resource = resource;
-    }
-
-    public int getLogo() {
-        return logo;
-    }
-
-    public void setLogo(int logo) {
-        this.logo = logo;
     }
 
     public boolean isCompleted() {

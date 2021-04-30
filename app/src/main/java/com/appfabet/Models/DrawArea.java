@@ -99,7 +99,9 @@ public class DrawArea extends View
     }
 
     public Bitmap getBitmapFromView() {
+        System.out.println("width" +  this.getLayoutParams().width + "height" + this.getLayoutParams().height);
         Bitmap b = Bitmap.createBitmap( this.getLayoutParams().width, this.getLayoutParams().height, Bitmap.Config.ARGB_8888);
+
         Canvas c = new Canvas(b);
         this.layout(this.getLeft(), this.getTop(), this.getRight(), this.getBottom());
         this.draw(c);

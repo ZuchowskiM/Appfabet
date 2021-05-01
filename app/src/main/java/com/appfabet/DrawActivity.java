@@ -69,6 +69,9 @@ public class DrawActivity extends AppCompatActivity {
         currentLearnVariant = Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition);
         checkAndSetCurrentMode(currentLearnVariant);
 
+        drawArea.setLearnTypePos(learnPosition);
+        drawArea.setLearnVariant(variantPosition);
+
 
         patternElement.setText(levels.get(currentLevelPosition).getDescription());
         RandomColorGenerator randomColorGenerator = new RandomColorGenerator();

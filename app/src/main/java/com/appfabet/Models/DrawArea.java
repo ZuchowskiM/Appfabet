@@ -16,9 +16,14 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
+import androidx.annotation.NonNull;
+
+import com.appfabet.ml.ConvEmnistEnBig;
+import com.appfabet.ml.ConvEmnistEnSmall;
 import com.appfabet.ml.ConvMnist;
 import com.appfabet.ml.EmnistModel1;
 import com.appfabet.ml.EmnistPL;
+import com.appfabet.ml.Model;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
@@ -38,6 +43,8 @@ public class DrawArea extends View
     private boolean isToClear = false;
     private final int modelSize = 28;
     private float percentage;
+    private int learnVariantPos;
+    private int learnTypePos;
 
 
     public DrawArea(Context context, AttributeSet attrs)
@@ -45,6 +52,18 @@ public class DrawArea extends View
         super(context, attrs);
         setupPaint();
 
+    }
+
+    public void setLearnTypePos(int learnTypePos) {
+        this.learnTypePos = learnTypePos;
+
+        System.out.println(learnTypePos);
+    }
+
+    public void setLearnVariant(int learnVariantPos) {
+        this.learnVariantPos = learnVariantPos;
+
+        System.out.println(learnVariantPos);
     }
 
     @Override
@@ -116,72 +135,128 @@ public class DrawArea extends View
     public String checkModel()
     {
         try {
-            ConvMnist model = ConvMnist.newInstance(this.getContext());
 
-            // Creates inputs for reference.
-            Bitmap bitmap = this.getBitmapFromView();
+            if(learnTypePos == 0){
 
-            Bitmap scaledBitmap = getResizedBitmap(bitmap, modelSize, modelSize);
+                if(learnVariantPos == 0){
+                    ConvEmnistEnBig model = ConvEmnistEnBig.newInstance(this.getContext());
+                    TensorBuffer inputFeature0 = makeNumberModelCalculations();
 
-            //DEBUG
-            //System.out.println(scaledBitmap.getAllocationByteCount());
-            //exportBitmapToAppFiles(scaledBitmap);
+                    // Runs model inference and gets result.
+                    ConvEmnistEnBig.Outputs outputs = model.process(inputFeature0);
+                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
-            ByteBuffer byteBuffer = ByteBuffer.allocate(1*modelSize*modelSize*1*4);
-            byteBuffer.rewind();
-            byteBuffer.order(ByteOrder.nativeOrder());
+                    int finalIndex = printTensorOutput(outputFeature0);
 
-            if (scaledBitmap != null) {
-                System.out.println("copying to buffer");
-                scaledBitmap.copyPixelsToBuffer(byteBuffer);
-            }
+                    //DEBUG
+                    //System.out.println(Environment.getExternalStorageDirectory().toString());
 
-            byteBuffer.rewind();
-            byteBuffer.order(ByteOrder.nativeOrder());
-            for (int i=0; i<(modelSize*modelSize*4); i+=4)
-            {
-                if(byteBuffer.array()[i+3] != 0)
-                {
-                    //for emnist model 255.0
-                    //for emnistPL 0.0
-                    byteBuffer.putFloat(1.0f);
+                    OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
+
+                    //outputInterpreter.createArrayFromJson();
+
+
+                    model.close();
+
+                    return outputInterpreter.getResultFromBigDictionary(finalIndex);
                 }
-                else {
-                    //for emnist model 0.0
-                    //for emnistPL 1.0
-                    byteBuffer.putFloat(0.0f);
+                else{
+                    ConvEmnistEnSmall model = ConvEmnistEnSmall.newInstance(this.getContext());
+                    TensorBuffer inputFeature0 = makeNumberModelCalculations();
+
+                    // Runs model inference and gets result.
+                    ConvEmnistEnSmall.Outputs outputs = model.process(inputFeature0);
+                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+
+                    int finalIndex = printTensorOutput(outputFeature0);
+
+                    //DEBUG
+                    //System.out.println(Environment.getExternalStorageDirectory().toString());
+
+                    OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
+
+                    //outputInterpreter.createArrayFromJson();
+
+
+                    model.close();
+
+                    return outputInterpreter.getResultFromSmallDictionary(finalIndex);
                 }
+
             }
+            else {
+                ConvMnist model = ConvMnist.newInstance(this.getContext());
+                TensorBuffer inputFeature0 = makeNumberModelCalculations();
 
-            //DEBUG
-            printByteBufferAs2DArray(byteBuffer);
+                // Runs model inference and gets result.
+                ConvMnist.Outputs outputs = model.process(inputFeature0);
+                TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
-            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, modelSize, modelSize}, DataType.FLOAT32);
-            inputFeature0.loadBuffer(byteBuffer);
+                int finalIndex = printTensorOutput(outputFeature0);
 
-            // Runs model inference and gets result.
-            ConvMnist.Outputs outputs = model.process(inputFeature0);
-            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+                //DEBUG
+                //System.out.println(Environment.getExternalStorageDirectory().toString());
 
-            int finalIndex = printTensorOutput(outputFeature0);
+                OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
 
-            //DEBUG
-            //System.out.println(Environment.getExternalStorageDirectory().toString());
-
-            OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
-
-            outputInterpreter.createArrayFromJson();
+                //outputInterpreter.createArrayFromJson();
 
 
-            model.close();
+                model.close();
 
-            return outputInterpreter.getResultFromDictionary(finalIndex);
+                return outputInterpreter.getResultFromNumberDictionary(finalIndex);
+            }
 
 
         } catch (IOException e) {
             // TODO Handle the exception
             return "error";
         }
+    }
+
+    private TensorBuffer makeNumberModelCalculations(){
+        // Creates inputs for reference.
+        Bitmap bitmap = this.getBitmapFromView();
+
+        Bitmap scaledBitmap = getResizedBitmap(bitmap, modelSize, modelSize);
+
+        //DEBUG
+        //System.out.println(scaledBitmap.getAllocationByteCount());
+        //exportBitmapToAppFiles(scaledBitmap);
+
+        ByteBuffer byteBuffer = ByteBuffer.allocate(1*modelSize*modelSize*1*4);
+        byteBuffer.rewind();
+        byteBuffer.order(ByteOrder.nativeOrder());
+
+        if (scaledBitmap != null) {
+            System.out.println("copying to buffer");
+            scaledBitmap.copyPixelsToBuffer(byteBuffer);
+        }
+
+        byteBuffer.rewind();
+        byteBuffer.order(ByteOrder.nativeOrder());
+        for (int i=0; i<(modelSize*modelSize*4); i+=4)
+        {
+            if(byteBuffer.array()[i+3] != 0)
+            {
+                //for emnist model 255.0
+                //for emnistPL 0.0
+                byteBuffer.putFloat(1.0f);
+            }
+            else {
+                //for emnist model 0.0
+                //for emnistPL 1.0
+                byteBuffer.putFloat(0.0f);
+            }
+        }
+
+        //DEBUG
+        //printByteBufferAs2DArray(byteBuffer);
+
+        TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, modelSize, modelSize}, DataType.FLOAT32);
+        inputFeature0.loadBuffer(byteBuffer);
+
+        return inputFeature0;
     }
 
     private int printTensorOutput(TensorBuffer tensorBuffer){

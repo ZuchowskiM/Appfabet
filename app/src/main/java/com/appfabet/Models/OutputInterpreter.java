@@ -17,17 +17,18 @@ public class OutputInterpreter {
 
     private Context context;
     private  Map<String, Object> son;
+    private InputStream currentDictionary;
 
     public OutputInterpreter(Context context) {
         this.context = context;
     }
 
-    public void createArrayFromJson() throws IOException {
+    private void createArrayFromJson() throws IOException {
 
-        InputStream jsonFile = context.getResources().openRawResource(R.raw.emnist_dictionary);
+        //InputStream jsonFile = context.getResources().openRawResource(R.raw.emnist_dictionary);
 
 
-        JsonReader reader = new JsonReader(new InputStreamReader(jsonFile, StandardCharsets.UTF_8));
+        JsonReader reader = new JsonReader(new InputStreamReader(currentDictionary, StandardCharsets.UTF_8));
         Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
         son = new Gson().fromJson(reader, mapType);
 
@@ -38,7 +39,30 @@ public class OutputInterpreter {
 
     }
 
-    public String getResultFromDictionary(int dictionaryIndex){
+    public String getResultFromBigDictionary(int dictionaryIndex) throws IOException {
+
+        currentDictionary = context.getResources().openRawResource(R.raw.emnist_big_en);
+
+        createArrayFromJson();
+
+        return son.get(String.valueOf(dictionaryIndex)).toString();
+    }
+
+    public String getResultFromSmallDictionary(int dictionaryIndex) throws IOException {
+        currentDictionary = context.getResources().openRawResource(R.raw.emnist_small_en);
+
+        createArrayFromJson();
+
+
+        return son.get(String.valueOf(dictionaryIndex)).toString();
+    }
+
+    public String getResultFromNumberDictionary(int dictionaryIndex) throws IOException {
+
+        currentDictionary = context.getResources().openRawResource(R.raw.emnist_dictionary);
+
+        createArrayFromJson();
+
 
         return son.get(String.valueOf(dictionaryIndex)).toString();
     }

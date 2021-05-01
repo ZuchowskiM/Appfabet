@@ -9,8 +9,8 @@
 
     <com.appfabet.Models.DrawArea
         android:id="@+id/drawing"
-        android:layout_width="340dp"
-        android:layout_height="438dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -18,8 +18,9 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="30dp"
+        android:layout_marginBottom="120dp"
         android:background="@drawable/grid_item_border"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +41,8 @@
         android:textColorLink="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drawing" />
 
     <Button
         android:id="@+id/clearButton"
@@ -57,7 +59,8 @@
         android:textColorLink="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drawing" />
 
     <TextView
         android:id="@+id/patternPic"

@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -99,8 +100,10 @@ public class DrawArea extends View
     }
 
     public Bitmap getBitmapFromView() {
-        System.out.println("width" +  this.getLayoutParams().width + "height" + this.getLayoutParams().height);
-        Bitmap b = Bitmap.createBitmap( this.getLayoutParams().width, this.getLayoutParams().height, Bitmap.Config.ARGB_8888);
+
+        System.out.println(this.getMeasuredWidth() + " " + this.getMeasuredHeight());
+        //Bitmap b = Bitmap.createBitmap( this.getLayoutParams().width, this.getLayoutParams().height, Bitmap.Config.ARGB_8888);
+        Bitmap b = Bitmap.createBitmap( this.getMeasuredWidth(), this.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
 
         Canvas c = new Canvas(b);
         this.layout(this.getLeft(), this.getTop(), this.getRight(), this.getBottom());

@@ -43,9 +43,7 @@ public class DrawArea extends View
     private boolean isToClear = false;
     private final int modelSize = 28;
     private float percentage;
-    private int learnVariantPos;
-    private int learnTypePos;
-    private int currentLevelType;
+    private LevelType currentLevelType;
 
 
     public DrawArea(Context context, AttributeSet attrs)
@@ -55,22 +53,10 @@ public class DrawArea extends View
 
     }
 
-    public void setCurrentLevelType(int currentLevelType) {
+    public void setCurrentLevelType(LevelType currentLevelType) {
         this.currentLevelType = currentLevelType;
 
         System.out.println(currentLevelType);
-    }
-
-    public void setLearnTypePos(int learnTypePos) {
-        this.learnTypePos = learnTypePos;
-
-        System.out.println(learnTypePos);
-    }
-
-    public void setLearnVariant(int learnVariantPos) {
-        this.learnVariantPos = learnVariantPos;
-
-        System.out.println(learnVariantPos);
     }
 
     @Override
@@ -143,7 +129,7 @@ public class DrawArea extends View
     {
         try {
 
-            if(currentLevelType == 1) {
+            if(currentLevelType == LevelType.BIG_LETTERS) {
                 ConvEmnistEnBig model = ConvEmnistEnBig.newInstance(this.getContext());
                 TensorBuffer inputFeature0 = makeNumberModelCalculations();
 
@@ -165,7 +151,7 @@ public class DrawArea extends View
 
                 return outputInterpreter.getResultFromBigDictionary(finalIndex);
             }
-            else if(currentLevelType == 2){
+            else if(currentLevelType == LevelType.SMALL_LETTERS){
                 ConvEmnistEnSmall model = ConvEmnistEnSmall.newInstance(this.getContext());
                 TensorBuffer inputFeature0 = makeNumberModelCalculations();
 
@@ -214,7 +200,7 @@ public class DrawArea extends View
 
         } catch (IOException e) {
             // TODO Handle the exception
-            return "error";
+            return "error in checkModel()";
         }
     }
 

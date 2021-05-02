@@ -72,7 +72,7 @@ public class Initializer {
 
         for(int i=1; i<27; i++){
             int resPicId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),String.valueOf(character), 1, false, resPicId, 1);
+            Level level = new Level(String.valueOf(i),String.valueOf(character), 1, false, resPicId, LevelType.BIG_LETTERS);
             character = (char) (character+1);
             levelsAlphabetBigLetters.add(level);
         }
@@ -82,7 +82,7 @@ public class Initializer {
         // numbers init
         for(int i=1; i<10; i++){
             int resPicId = context.getResources().getIdentifier("p"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),String.valueOf(i), 1, false, resPicId, 3);
+            Level level = new Level(String.valueOf(i),String.valueOf(i), 1, false, resPicId, LevelType.NUMBERS);
             levelsNumbersSimple.add(level);
         }
 
@@ -95,7 +95,7 @@ public class Initializer {
         char character1 = 'A';
         for(int i=1; i<27; i++){
             int resPicId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),String.valueOf(character1), 1, false, resPicId, 1);
+            Level level = new Level(String.valueOf(i),String.valueOf(character1), 1, false, resPicId, LevelType.BIG_LETTERS);
             character1 = (char) (character1+1);
             levelsAlphabetAllLetters.add(level);
         }
@@ -106,7 +106,7 @@ public class Initializer {
         char character2 = 'a';
         for(int i=1; i<27; i++){
             int resPicId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),String.valueOf(character2), 1, false, resPicId, 2);
+            Level level = new Level(String.valueOf(i),String.valueOf(character2), 1, false, resPicId, LevelType.SMALL_LETTERS);
             character2 = (char) (character2+1);
             levelsAlphabetSmallLetters.add(level);
             levelsAlphabetAllLetters.add(level);
@@ -124,13 +124,13 @@ public class Initializer {
         for(int i=1; i<27; i++){
             //adding big first
             int resPicId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),String.valueOf(character3), 1, false, resPicId, 1);
+            Level level = new Level(String.valueOf(i),String.valueOf(character3), 1, false, resPicId, LevelType.BIG_LETTERS);
             character3 = (char) (character3+1);
             levelsAlphabetAllChronologicalLetters.add(level);
 
             int resPicId1 = context.getResources().getIdentifier("m"+i,"drawable",activity.getPackageName());
             //adding small second
-            Level level1 = new Level(String.valueOf(i),String.valueOf(character4), 1, false, resPicId1, 2);
+            Level level1 = new Level(String.valueOf(i),String.valueOf(character4), 1, false, resPicId1, LevelType.SMALL_LETTERS);
             character4 = (char) (character4+1);
             levelsAlphabetAllChronologicalLetters.add(level1);
         }

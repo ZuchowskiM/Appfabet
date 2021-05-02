@@ -10,5 +10,7 @@
     <color name="appfabetOragngeDark">#572400</color>
     <color name="appfabetOrangeLightDark">#683E27</color>
     <color name="appfabetDark">#2E2D2A</color>
+    <color name="appfabetPink">#cc0066</color>
+    <color name="appfabetGreen">#1AFF00</color>
 
 </resources>

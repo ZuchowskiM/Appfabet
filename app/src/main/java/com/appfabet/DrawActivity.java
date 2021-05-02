@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,8 +41,8 @@ public class DrawActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button button = findViewById(R.id.button2);
-        Button clearButton = findViewById(R.id.clearButton);
+        ImageButton button = findViewById(R.id.button2);
+        ImageButton clearButton = findViewById(R.id.clearButton);
         DrawArea drawArea = findViewById(R.id.drawing);
         patternElement = findViewById(R.id.patternPic);
 

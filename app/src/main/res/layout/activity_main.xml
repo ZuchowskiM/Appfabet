@@ -26,41 +26,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/patternPic" />
 
-    <Button
+    <ImageButton
         android:id="@+id/button2"
-        android:layout_width="125dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/rounded_things"
-        android:fontFamily="@font/nerkoone_regular"
-        android:text="Submit"
-        android:textColor="#FFFFFF"
-        android:textColorHighlight="#FFFFFF"
-        android:textColorHint="#FFFFFF"
-        android:textColorLink="#FFFFFF"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drawing" />
-
-    <Button
-        android:id="@+id/clearButton"
-        android:layout_width="125dp"
-        android:layout_height="75dp"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="88dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/rounded_things"
+        android:src="@drawable/ic_baseline_done_outline_24"
+        android:background="@drawable/button_shadow_green"
+        android:focusable="false"
+        android:clickable="false"
+        android:scaleType="fitCenter"
         android:fontFamily="@font/nerkoone_regular"
-        android:text="Clear"
         android:textColor="#FFFFFF"
         android:textColorHighlight="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textColorLink="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/clearButton"
+        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drawing"
+        app:layout_constraintVertical_bias="0.454" />
+
+    <ImageButton
+        android:id="@+id/clearButton"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/ico_ereaser"
+        android:fontFamily="@font/nerkoone_regular"
+        android:background="@drawable/button_shadow_pink"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:focusable="false"
+        android:clickable="false"
+        android:scaleType="fitCenter"
+        android:foregroundGravity="center"
+        android:textColorLink="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drawing" />
+        app:layout_constraintTop_toBottomOf="@+id/drawing"
+        app:layout_constraintVertical_bias="0.428" />
 
     <TextView
         android:id="@+id/patternPic"

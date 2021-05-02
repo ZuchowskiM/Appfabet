@@ -69,8 +69,9 @@ public class DrawActivity extends AppCompatActivity {
         currentLearnVariant = Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition);
         checkAndSetCurrentMode(currentLearnVariant);
 
-        drawArea.setLearnTypePos(learnPosition);
-        drawArea.setLearnVariant(variantPosition);
+        //drawArea.setLearnTypePos(learnPosition);
+        //drawArea.setLearnVariant(variantPosition);
+        drawArea.setCurrentLevelType(levels.get(currentLevelPosition).getType());
 
 
         patternElement.setText(levels.get(currentLevelPosition).getDescription());
@@ -89,7 +90,7 @@ public class DrawActivity extends AppCompatActivity {
                 Bundle args = new Bundle();
                 args.putString("result", result);
                 args.putInt("levelPosition", currentLevelPosition);
-                args.putFloat("procentage", procentage);
+                args.putFloat("percentage", procentage);
                 args.putInt("learnPosition", learnPosition);
                 args.putInt("variantPosition", variantPosition);
                 args.putString("targetValue", levels.get(currentLevelPosition).getDescription());

@@ -67,7 +67,7 @@ public class ScorePopup extends AppCompatDialogFragment {
 
         }
         if (bundle != null) {
-           Float score =  bundle.getFloat("procentage");
+           Float score =  bundle.getFloat("percentage");
            int scoreInt = Math.round(score);
            String value = String.valueOf(scoreInt + " / " + "10");
 

@@ -45,6 +45,7 @@ public class DrawArea extends View
     private float percentage;
     private int learnVariantPos;
     private int learnTypePos;
+    private int currentLevelType;
 
 
     public DrawArea(Context context, AttributeSet attrs)
@@ -52,6 +53,12 @@ public class DrawArea extends View
         super(context, attrs);
         setupPaint();
 
+    }
+
+    public void setCurrentLevelType(int currentLevelType) {
+        this.currentLevelType = currentLevelType;
+
+        System.out.println(currentLevelType);
     }
 
     public void setLearnTypePos(int learnTypePos) {
@@ -136,52 +143,49 @@ public class DrawArea extends View
     {
         try {
 
-            if(learnTypePos == 0){
+            if(currentLevelType == 1) {
+                ConvEmnistEnBig model = ConvEmnistEnBig.newInstance(this.getContext());
+                TensorBuffer inputFeature0 = makeNumberModelCalculations();
 
-                if(learnVariantPos == 0){
-                    ConvEmnistEnBig model = ConvEmnistEnBig.newInstance(this.getContext());
-                    TensorBuffer inputFeature0 = makeNumberModelCalculations();
+                // Runs model inference and gets result.
+                ConvEmnistEnBig.Outputs outputs = model.process(inputFeature0);
+                TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
-                    // Runs model inference and gets result.
-                    ConvEmnistEnBig.Outputs outputs = model.process(inputFeature0);
-                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+                int finalIndex = printTensorOutput(outputFeature0);
 
-                    int finalIndex = printTensorOutput(outputFeature0);
+                //DEBUG
+                //System.out.println(Environment.getExternalStorageDirectory().toString());
 
-                    //DEBUG
-                    //System.out.println(Environment.getExternalStorageDirectory().toString());
+                OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
 
-                    OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
-
-                    //outputInterpreter.createArrayFromJson();
+                //outputInterpreter.createArrayFromJson();
 
 
-                    model.close();
+                model.close();
 
-                    return outputInterpreter.getResultFromBigDictionary(finalIndex);
-                }
-                else{
-                    ConvEmnistEnSmall model = ConvEmnistEnSmall.newInstance(this.getContext());
-                    TensorBuffer inputFeature0 = makeNumberModelCalculations();
+                return outputInterpreter.getResultFromBigDictionary(finalIndex);
+            }
+            else if(currentLevelType == 2){
+                ConvEmnistEnSmall model = ConvEmnistEnSmall.newInstance(this.getContext());
+                TensorBuffer inputFeature0 = makeNumberModelCalculations();
 
-                    // Runs model inference and gets result.
-                    ConvEmnistEnSmall.Outputs outputs = model.process(inputFeature0);
-                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+                // Runs model inference and gets result.
+                ConvEmnistEnSmall.Outputs outputs = model.process(inputFeature0);
+                TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
-                    int finalIndex = printTensorOutput(outputFeature0);
+                int finalIndex = printTensorOutput(outputFeature0);
 
-                    //DEBUG
-                    //System.out.println(Environment.getExternalStorageDirectory().toString());
+                //DEBUG
+                //System.out.println(Environment.getExternalStorageDirectory().toString());
 
-                    OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
+                OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
 
-                    //outputInterpreter.createArrayFromJson();
+                //outputInterpreter.createArrayFromJson();
 
 
-                    model.close();
+                model.close();
 
-                    return outputInterpreter.getResultFromSmallDictionary(finalIndex);
-                }
+                return outputInterpreter.getResultFromSmallDictionary(finalIndex);
 
             }
             else {

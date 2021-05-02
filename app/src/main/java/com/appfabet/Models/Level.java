@@ -10,19 +10,29 @@ public class Level implements Serializable {
     private boolean completed;
     private int rating;
     private int resource;
+    private int type;
+    // 1-big letters 2 - small 3 - numbers
 
-    public Level(String name, String description, int level, boolean completed,int resource) {
+    public Level(String name, String description, int level, boolean completed,int resource, int type) {
         this.name = name;
         this.description = description;
         this.level = level;
         this.completed = completed;
         this.resource = resource;
+        this.type = type;
     }
 
     public Level() {
 
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public int getResource() {
         return resource;

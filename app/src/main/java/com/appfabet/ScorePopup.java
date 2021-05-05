@@ -133,11 +133,13 @@ public class ScorePopup extends AppCompatDialogFragment {
             accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getDialog().dismiss();
+                    Objects.requireNonNull(getDialog()).dismiss();
+                    Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).getLevels().get(levelPosition).setCompleted(true);
                     Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).setCurrentLevel(++levelPosition);
                     Intent intent = new Intent(getActivity(), DrawActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    LevelBrowser.gridView.invalidateViews();
                     startActivity(intent);
                 }
             });

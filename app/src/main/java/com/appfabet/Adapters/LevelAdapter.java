@@ -49,8 +49,14 @@ public class LevelAdapter extends ArrayAdapter {
         v = inflater.inflate(R.layout.grid_view_level_item, null);
         //TextView textView = (TextView) v.findViewById(R.id.textView);
         ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
+        ImageView completedImage = (ImageView) v.findViewById(R.id.completedMark);
        // textView.setText(learnList.get(position).getName());
         imageView.setImageResource(learnList.get(position).getResource());
+
+        if(learnList.get(position).isCompleted()) {
+            completedImage.setImageResource(R.drawable.accept);
+            completedImage.setVisibility(View.VISIBLE);
+        }
         return v;
     }
 }

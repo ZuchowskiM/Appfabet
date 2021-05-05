@@ -33,6 +33,7 @@ public class DrawActivity extends AppCompatActivity {
     ArrayList<Level> levels;
     LearnVariant currentLearnVariant;
     TextView patternElement;
+    boolean fromMenu = false;
     TextToSpeechInterpreter textToSpeechInterpreter;
 
     @Override
@@ -53,6 +54,7 @@ public class DrawActivity extends AppCompatActivity {
             Intent intent = getIntent();
             Bundle args = intent.getBundleExtra("TYPE");
             position = args.getInt("levelPosition");
+            fromMenu = true;
         }catch (Exception e) {
 
         }
@@ -159,7 +161,10 @@ public class DrawActivity extends AppCompatActivity {
                 currentLevelPosition = learnVariant.getCurrentLevel();
                 break;
             case all:
-                currentLevelPosition = position;
+                if(fromMenu)
+                    currentLevelPosition = position;
+                else
+                    currentLevelPosition = learnVariant.getCurrentLevel();
         }
     }
 

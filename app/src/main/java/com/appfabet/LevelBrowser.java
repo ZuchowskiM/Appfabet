@@ -34,7 +34,7 @@ public class LevelBrowser extends Activity {
     static int learnPosition;
     static int variantPosition;
 
-    GridView gridView;
+    static GridView gridView;
     ArrayList<Level> levels = new ArrayList<>();
 
     @SuppressLint("ResourceAsColor")

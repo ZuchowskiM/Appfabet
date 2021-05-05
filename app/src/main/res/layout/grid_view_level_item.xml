@@ -27,6 +27,21 @@
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="13dp"
-        android:textColor="#000" />
+        android:textColor="#000"
+        android:scaleType="fitXY"/>
+
+    <ImageView
+        android:id="@+id/completedMark"
+        android:layout_width="53dp"
+        android:layout_height="59dp"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_marginStart="94dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="142dp"
+        app:srcCompat="@drawable/accept" />
 
 </RelativeLayout>

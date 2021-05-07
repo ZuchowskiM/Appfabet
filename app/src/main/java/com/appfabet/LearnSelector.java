@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -16,17 +17,18 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 
 import com.appfabet.Adapters.LearnAdapter;
+import com.appfabet.Models.CurrentState;
 import com.appfabet.Models.Initializer;
 import com.appfabet.Models.LearnType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class LearnSelector extends Activity {
+public class LearnSelector extends AppCompatActivity {
 
     GridView gridView;
-    ArrayList<LearnType> learnTypesList = new ArrayList<>();
     Initializer initializer = new Initializer();
+    CurrentState currentState = new CurrentState();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,11 +37,29 @@ public class LearnSelector extends Activity {
         setContentView(R.layout.fragment_learn_selector);
         gridView = (GridView) findViewById(R.id.gridView);
 
-        //inicjalizacja listy nauczania
-       learnTypesList = (ArrayList<LearnType>) initializer.initLearnTypesAndLevels(getApplicationContext(), this);
+
+        try{
+            Initializer.learnTypesList = currentState.getCurrentState(this);
+            System.out.println("lista " + Initializer.learnTypesList);
+
+            if(Initializer.learnTypesList.equals(null)){
+                Initializer initializer = new Initializer();
+                Initializer.learnTypesList = initializer.initLearnTypesAndLevels(getApplicationContext(), this);
+                currentState.setCurrentState(Initializer.learnTypesList,this);
+            }
+
+        } catch (NullPointerException e){
+            System.out.println("Null ptr");
+            //init learn list if there was not previous state
+            Initializer initializer = new Initializer();
+            Initializer.learnTypesList = initializer.initLearnTypesAndLevels(getApplicationContext(), this);
+            currentState.setCurrentState(Initializer.learnTypesList,this);
+        } catch (Exception e1){
+            System.out.println(e1.getMessage());
+        }
 
         //adapter
-        LearnAdapter myAdapter=new LearnAdapter(this,R.layout.grid_view_items,learnTypesList);
+        LearnAdapter myAdapter=new LearnAdapter(this,R.layout.grid_view_items,Initializer.learnTypesList);
         gridView.setAdapter(myAdapter);
 
 

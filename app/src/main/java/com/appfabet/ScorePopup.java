@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.DialogFragment;
 
+import com.appfabet.Models.CurrentState;
 import com.appfabet.Models.Initializer;
 import com.appfabet.Models.SoundNotifier;
 
@@ -38,6 +39,7 @@ public class ScorePopup extends AppCompatDialogFragment {
     String targetValue;
     String charRecon;
     SoundNotifier soundNotifier;
+    CurrentState currentState = new CurrentState();
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -136,10 +138,14 @@ public class ScorePopup extends AppCompatDialogFragment {
                     Objects.requireNonNull(getDialog()).dismiss();
                     Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).getLevels().get(levelPosition).setCompleted(true);
                     Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).setCurrentLevel(++levelPosition);
+                    currentState.setCurrentState(Initializer.learnTypesList,getActivity());
                     Intent intent = new Intent(getActivity(), DrawActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    LevelBrowser.gridView.invalidateViews();
+                    try{
+                        if(LevelBrowser.gridView!=null)
+                            LevelBrowser.gridView.invalidateViews();
+                    } catch (Exception e) { System.out.println(e.getMessage()); }
                     startActivity(intent);
                 }
             });

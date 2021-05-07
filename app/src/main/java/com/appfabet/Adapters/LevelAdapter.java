@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.appfabet.DrawActivity;
 import com.appfabet.Models.LearnType;
 import com.appfabet.Models.Level;
 import com.appfabet.R;
@@ -56,7 +57,10 @@ public class LevelAdapter extends ArrayAdapter {
         if(learnList.get(position).isCompleted()) {
             completedImage.setImageResource(R.drawable.accept);
             completedImage.setVisibility(View.VISIBLE);
+        } else if(!learnList.get(position).isCompleted()){
+            completedImage.setVisibility(View.INVISIBLE);
         }
+
         return v;
     }
 }

@@ -22,9 +22,12 @@ public class Initializer {
 
 
     public Initializer() {
+
     }
 
-    public List<LearnType> initLearnTypesAndLevels(Context context, Activity activity){
+    public ArrayList<LearnType> initLearnTypesAndLevels(Context context, Activity activity){
+
+        learnTypesList = new ArrayList<>();
         LearnType alphabet = new LearnType("Alphabet", R.drawable.alphabet_pic);
         LearnType numbers = new LearnType("Numbers",R.drawable.numbers_pic);
         //LearnType things = new LearnType("Other things",R.drawable.numbers_pic);

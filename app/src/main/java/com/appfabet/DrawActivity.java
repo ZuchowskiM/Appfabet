@@ -1,9 +1,15 @@
 package com.appfabet;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.transition.Explode;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.view.Gravity;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.Button;
@@ -14,18 +20,23 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.appfabet.Listeners.OnSwipeTouchListener;
 import com.appfabet.Models.DrawArea;
 import com.appfabet.Models.Initializer;
 import com.appfabet.Models.LearnVariant;
 import com.appfabet.Models.Level;
 import com.appfabet.Models.RandomColorGenerator;
 import com.appfabet.Models.TextToSpeechInterpreter;
+import com.r0adkll.slidr.Slidr;
+import com.r0adkll.slidr.model.SlidrInterface;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class DrawActivity extends AppCompatActivity {
+    //SlidrInterface slird;
     int position;
     public static int currentLevelPosition;
     static int learnPosition;
@@ -33,39 +44,48 @@ public class DrawActivity extends AppCompatActivity {
     ArrayList<Level> levels;
     LearnVariant currentLearnVariant;
     TextView patternElement;
+    ConstraintLayout layout;
     boolean fromMenu = false;
+    static ImageView completedImageView;
     TextToSpeechInterpreter textToSpeechInterpreter;
+    View view;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        view = findViewById(android.R.id.content).getRootView();
 
         ImageButton button = findViewById(R.id.button2);
         ImageButton clearButton = findViewById(R.id.clearButton);
         DrawArea drawArea = findViewById(R.id.drawing);
         patternElement = findViewById(R.id.patternPic);
-
+        layout = findViewById(R.id.backgroundLayout);
+        completedImageView = findViewById(R.id.completedImageView);
         ImageView speaker = findViewById(R.id.speaker);
         textToSpeechInterpreter = new TextToSpeechInterpreter(getApplicationContext());
 
-        try{
+        //swipe
+        //slird = Slidr.attach(this);
+
+
+        try {
             Intent intent = getIntent();
             Bundle args = intent.getBundleExtra("TYPE");
             position = args.getInt("levelPosition");
             fromMenu = true;
-        }catch (Exception e) {
+        } catch (Exception e) {
 
         }
 
-        try{
+        try {
             Intent intent = getIntent();
             Bundle args = intent.getBundleExtra("TYPE");
             learnPosition = args.getInt("learnPosition");
             variantPosition = args.getInt("variantPosition");
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -82,6 +102,59 @@ public class DrawActivity extends AppCompatActivity {
         patternElement.setTextColor(randomColorGenerator.getColor());
         ScorePopup popup = new ScorePopup();
 
+
+        if (levels.get(currentLevelPosition).isCompleted()) {
+            System.out.println("Literka " + levels.get(currentLevelPosition).getDescription() + " " + levels.get(currentLevelPosition).isCompleted());
+            completedImageView.setImageResource(R.drawable.accept);
+            completedImageView.setVisibility(View.VISIBLE);
+        } else if(!levels.get(currentLevelPosition).isCompleted()){
+            System.out.println("Literka " + levels.get(currentLevelPosition).getDescription() + " " + levels.get(currentLevelPosition).isCompleted());
+            completedImageView.setVisibility(View.INVISIBLE);
+            completedImageView.invalidate();
+        }
+
+
+        view.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
+            @Override
+            public void onSwipeLeft() {
+
+                Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).setCurrentLevel(++currentLevelPosition);
+                Intent intent = new Intent(DrawActivity.this, DrawActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                try {
+                    if (LevelBrowser.gridView != null)
+                        LevelBrowser.gridView.invalidateViews();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                startActivity(intent);
+
+
+            }
+
+            @Override
+            public void onSwipeRight() {
+
+                Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).setCurrentLevel(--currentLevelPosition);
+                Intent intent = new Intent(DrawActivity.this, DrawActivity.class);
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                try {
+                    if (LevelBrowser.gridView != null)
+                        LevelBrowser.gridView.invalidateViews();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                startActivity(intent);
+
+            }
+        });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +170,7 @@ public class DrawActivity extends AppCompatActivity {
                 args.putInt("learnPosition", learnPosition);
                 args.putInt("variantPosition", variantPosition);
                 args.putString("targetValue", levels.get(currentLevelPosition).getDescription());
-
+                //args.putSerializable("activity");
                 popup.setArguments(args);
                 popup.show(getSupportFragmentManager(), "Popup");
 
@@ -112,7 +185,6 @@ public class DrawActivity extends AppCompatActivity {
         });
 
         Handler handler = new Handler();
-
 
 
         speaker.setOnClickListener(new View.OnClickListener() {

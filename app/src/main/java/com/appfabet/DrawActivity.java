@@ -29,8 +29,6 @@ import com.appfabet.Models.LearnVariant;
 import com.appfabet.Models.Level;
 import com.appfabet.Models.RandomColorGenerator;
 import com.appfabet.Models.TextToSpeechInterpreter;
-import com.r0adkll.slidr.Slidr;
-import com.r0adkll.slidr.model.SlidrInterface;
 
 import java.util.ArrayList;
 import java.util.Random;

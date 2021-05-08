@@ -11,19 +11,15 @@ import android.graphics.Paint;
 import android.graphics.Path;
 
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
 
-import androidx.annotation.NonNull;
-
 import com.appfabet.ml.ConvEmnistEnBig;
 import com.appfabet.ml.ConvEmnistEnSmall;
 import com.appfabet.ml.ConvMnist;
-import com.appfabet.ml.EmnistModel1;
-import com.appfabet.ml.EmnistPL;
-import com.appfabet.ml.Model;
+import com.appfabet.ml.ConvPolcharsSmall;
+
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
@@ -41,7 +37,7 @@ public class DrawArea extends View
     private Paint drawPaint;
     private Path path = new Path();
     private boolean isToClear = false;
-    private final int modelSize = 28;
+    private int modelSize = 28;
     private float percentage;
     private LevelType currentLevelType;
 
@@ -130,6 +126,9 @@ public class DrawArea extends View
         try {
 
             if(currentLevelType == LevelType.BIG_LETTERS) {
+
+                modelSize = 28;
+
                 ConvEmnistEnBig model = ConvEmnistEnBig.newInstance(this.getContext());
                 TensorBuffer inputFeature0 = makeNumberModelCalculations();
 
@@ -152,11 +151,14 @@ public class DrawArea extends View
                 return outputInterpreter.getResultFromBigDictionary(finalIndex);
             }
             else if(currentLevelType == LevelType.SMALL_LETTERS){
-                ConvEmnistEnSmall model = ConvEmnistEnSmall.newInstance(this.getContext());
+
+                modelSize = 32;
+
+                ConvPolcharsSmall model = ConvPolcharsSmall.newInstance(this.getContext());
                 TensorBuffer inputFeature0 = makeNumberModelCalculations();
 
                 // Runs model inference and gets result.
-                ConvEmnistEnSmall.Outputs outputs = model.process(inputFeature0);
+                ConvPolcharsSmall.Outputs outputs = model.process(inputFeature0);
                 TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
                 int finalIndex = printTensorOutput(outputFeature0);
@@ -175,6 +177,9 @@ public class DrawArea extends View
 
             }
             else {
+
+                modelSize = 28;
+
                 ConvMnist model = ConvMnist.newInstance(this.getContext());
                 TensorBuffer inputFeature0 = makeNumberModelCalculations();
 
@@ -231,12 +236,12 @@ public class DrawArea extends View
             {
                 //for emnist model 255.0
                 //for emnistPL 0.0
-                byteBuffer.putFloat(1.0f);
+                byteBuffer.putFloat(0.0f);
             }
             else {
                 //for emnist model 0.0
                 //for emnistPL 1.0
-                byteBuffer.putFloat(0.0f);
+                byteBuffer.putFloat(1.0f);
             }
         }
 

@@ -25,9 +25,6 @@ public class OutputInterpreter {
 
     private void createArrayFromJson() throws IOException {
 
-        //InputStream jsonFile = context.getResources().openRawResource(R.raw.emnist_dictionary);
-
-
         JsonReader reader = new JsonReader(new InputStreamReader(currentDictionary, StandardCharsets.UTF_8));
         Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
         son = new Gson().fromJson(reader, mapType);
@@ -49,7 +46,7 @@ public class OutputInterpreter {
     }
 
     public String getResultFromSmallDictionary(int dictionaryIndex) throws IOException {
-        currentDictionary = context.getResources().openRawResource(R.raw.emnist_small_en);
+        currentDictionary = context.getResources().openRawResource(R.raw.emnist_pl_small);
 
         createArrayFromJson();
 

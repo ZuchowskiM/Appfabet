@@ -80,8 +80,12 @@ public class DrawActivity extends AppCompatActivity {
         try {
             Intent intent = getIntent();
             Bundle args = intent.getBundleExtra("TYPE");
-            learnPosition = args.getInt("learnPosition");
-            variantPosition = args.getInt("variantPosition");
+
+            if(args != null){
+                learnPosition = args.getInt("learnPosition");
+                variantPosition = args.getInt("variantPosition");
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();

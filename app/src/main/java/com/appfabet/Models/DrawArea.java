@@ -152,13 +152,13 @@ public class DrawArea extends View
             }
             else if(currentLevelType == LevelType.SMALL_LETTERS){
 
-                modelSize = 32;
+                modelSize = 28;
 
-                ConvPolcharsSmall model = ConvPolcharsSmall.newInstance(this.getContext());
+                ConvEmnistEnSmall model = ConvEmnistEnSmall.newInstance(this.getContext());
                 TensorBuffer inputFeature0 = makeNumberModelCalculations();
 
                 // Runs model inference and gets result.
-                ConvPolcharsSmall.Outputs outputs = model.process(inputFeature0);
+                ConvEmnistEnSmall.Outputs outputs = model.process(inputFeature0);
                 TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
                 int finalIndex = printTensorOutput(outputFeature0);
@@ -236,12 +236,12 @@ public class DrawArea extends View
             {
                 //for emnist model 255.0
                 //for emnistPL 0.0
-                byteBuffer.putFloat(0.0f);
+                byteBuffer.putFloat(255.0f);
             }
             else {
                 //for emnist model 0.0
                 //for emnistPL 1.0
-                byteBuffer.putFloat(1.0f);
+                byteBuffer.putFloat(0.0f);
             }
         }
 

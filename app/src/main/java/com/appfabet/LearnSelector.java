@@ -39,6 +39,9 @@ public class LearnSelector extends AppCompatActivity {
 
 
         try{
+            //DELETE STATES
+            //currentState.deleteCurrentState(this);
+
             Initializer.learnTypesList = currentState.getCurrentState(this);
             System.out.println("lista " + Initializer.learnTypesList);
 

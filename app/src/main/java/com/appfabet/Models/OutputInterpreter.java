@@ -46,7 +46,7 @@ public class OutputInterpreter {
     }
 
     public String getResultFromSmallDictionary(int dictionaryIndex) throws IOException {
-        currentDictionary = context.getResources().openRawResource(R.raw.emnist_pl_small);
+        currentDictionary = context.getResources().openRawResource(R.raw.emnist_small_en);
 
         createArrayFromJson();
 

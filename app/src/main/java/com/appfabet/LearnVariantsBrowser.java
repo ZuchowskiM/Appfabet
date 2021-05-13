@@ -47,6 +47,7 @@ public class LearnVariantsBrowser extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 if(learnTypesList.get(learnPosition).getVariants().get(position).getName().equals("All letters")){
                     Intent intent = new Intent(LearnVariantsBrowser.this, LevelBrowser.class);
                     Bundle args = new Bundle();

@@ -47,6 +47,7 @@ public class DrawActivity extends AppCompatActivity {
     static ImageView completedImageView;
     TextToSpeechInterpreter textToSpeechInterpreter;
     View view;
+    int streakCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,6 +85,7 @@ public class DrawActivity extends AppCompatActivity {
             if(args != null){
                 learnPosition = args.getInt("learnPosition");
                 variantPosition = args.getInt("variantPosition");
+                streakCount = args.getInt("streakCount");
             }
 
 
@@ -172,6 +174,7 @@ public class DrawActivity extends AppCompatActivity {
                 args.putInt("learnPosition", learnPosition);
                 args.putInt("variantPosition", variantPosition);
                 args.putString("targetValue", levels.get(currentLevelPosition).getDescription());
+                args.putInt("streakCount", streakCount);
                 //args.putSerializable("activity");
                 popup.setArguments(args);
                 popup.show(getSupportFragmentManager(), "Popup");

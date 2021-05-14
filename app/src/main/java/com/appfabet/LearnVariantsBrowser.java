@@ -61,6 +61,7 @@ public class LearnVariantsBrowser extends AppCompatActivity {
                     Bundle args = new Bundle();
                     args.putInt("learnPosition", learnPosition);
                     args.putInt("variantPosition", position);
+                    args.putInt("streakCount", 0);
                     intent.putExtra("TYPE",args);
                     startActivity(intent);
 

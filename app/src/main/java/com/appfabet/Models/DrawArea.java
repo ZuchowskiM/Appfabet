@@ -234,9 +234,9 @@ public class DrawArea extends View
         {
             if(byteBuffer.array()[i+3] != 0)
             {
-                //for emnist model 255.0
+                //for emnist model 1.0
                 //for emnistPL 0.0
-                byteBuffer.putFloat(255.0f);
+                byteBuffer.putFloat(1.0f);
             }
             else {
                 //for emnist model 0.0

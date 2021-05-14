@@ -2,10 +2,6 @@ package com.appfabet;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -13,16 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.fragment.app.DialogFragment;
 
 import com.appfabet.Models.CurrentState;
 import com.appfabet.Models.Initializer;
 import com.appfabet.Models.SoundNotifier;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ScorePopup extends AppCompatDialogFragment {
@@ -40,6 +37,11 @@ public class ScorePopup extends AppCompatDialogFragment {
     String charRecon;
     SoundNotifier soundNotifier;
     CurrentState currentState = new CurrentState();
+    int streakCount;
+    LinearLayout linearLayoutStreakCount;
+    List<ImageView> streakFieldsImageView = new ArrayList<>();
+    List<Integer> streakFieldsID = new ArrayList<Integer>();
+
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -54,6 +56,20 @@ public class ScorePopup extends AppCompatDialogFragment {
         infoTextView = view.findViewById(R.id.infoTextView);
         Close = (TextView) view.findViewById(R.id.close);
         soundNotifier = new SoundNotifier(getContext());
+        linearLayoutStreakCount = view.findViewById(R.id.LinearLayoutStreakCount);
+
+        streakFieldsID.add(R.id.streakField1);
+        streakFieldsID.add(R.id.streakField2);
+        streakFieldsID.add(R.id.streakField3);
+
+        streakFieldsImageView.add(view.findViewById(streakFieldsID.get(0)));
+        streakFieldsImageView.add(view.findViewById(streakFieldsID.get(1)));
+        streakFieldsImageView.add(view.findViewById(streakFieldsID.get(2)));
+
+        for (ImageView i:
+             streakFieldsImageView) {
+            i.setVisibility(View.GONE);
+        }
 
         //odbieranie wartosci przyznanych przez model
         Bundle bundle=getArguments();
@@ -63,6 +79,7 @@ public class ScorePopup extends AppCompatDialogFragment {
             variantPosition = bundle.getInt("variantPosition");
             levelPosition = bundle.getInt("levelPosition");
             targetValue = bundle.getString("targetValue");
+            streakCount = bundle.getInt("streakCount");
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("Recognized character: ").append(charRecon);
@@ -97,6 +114,21 @@ public class ScorePopup extends AppCompatDialogFragment {
                    infoTextView.setText(message);
                    btnEnabled=true;
                }
+
+               streakCount++;
+               System.out.println(streakCount);
+
+
+               for (int i=0; i<streakCount; i++){
+
+                   if(i<streakFieldsImageView.size()){
+                       streakFieldsImageView.get(i).setImageResource(R.drawable.m1);
+                       streakFieldsImageView.get(i).setVisibility(View.VISIBLE);
+                   }
+
+               }
+
+
 
                new Handler().postDelayed(new Runnable() {
                    @Override
@@ -138,10 +170,15 @@ public class ScorePopup extends AppCompatDialogFragment {
                     Objects.requireNonNull(getDialog()).dismiss();
                     Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).getLevels().get(levelPosition).setCompleted(true);
                     Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).setCurrentLevel(++levelPosition);
-                    currentState.setCurrentState(Initializer.learnTypesList,getActivity());
+                    currentState.setCurrentState(Initializer.learnTypesList, getActivity());
                     Intent intent = new Intent(getActivity(), DrawActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    Bundle args = new Bundle();
+                    args.putInt("streakCount", streakCount);
+                    intent.putExtra("TYPE", args);
+
                     try{
                         if(LevelBrowser.gridView!=null)
                             LevelBrowser.gridView.invalidateViews();

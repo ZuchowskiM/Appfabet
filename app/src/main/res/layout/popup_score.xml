@@ -99,24 +99,27 @@
 
             <ImageView
                 android:id="@+id/streakField1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/fail" />
+                android:visibility="invisible"
+                app:srcCompat="@drawable/ic_cake" />
 
             <ImageView
                 android:id="@+id/streakField2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/fail" />
+                android:visibility="invisible"
+                app:srcCompat="@drawable/ic_cake" />
 
             <ImageView
                 android:id="@+id/streakField3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/fail" />
+                android:visibility="invisible"
+                app:srcCompat="@drawable/ic_cake" />
         </LinearLayout>
 
         <TextView

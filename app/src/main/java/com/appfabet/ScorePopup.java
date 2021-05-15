@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
@@ -40,7 +41,6 @@ public class ScorePopup extends AppCompatDialogFragment {
     int streakCount;
     LinearLayout linearLayoutStreakCount;
     List<ImageView> streakFieldsImageView = new ArrayList<>();
-    List<Integer> streakFieldsID = new ArrayList<Integer>();
 
 
     @SuppressLint("ResourceAsColor")
@@ -58,18 +58,16 @@ public class ScorePopup extends AppCompatDialogFragment {
         soundNotifier = new SoundNotifier(getContext());
         linearLayoutStreakCount = view.findViewById(R.id.LinearLayoutStreakCount);
 
-        streakFieldsID.add(R.id.streakField1);
-        streakFieldsID.add(R.id.streakField2);
-        streakFieldsID.add(R.id.streakField3);
+        streakFieldsImageView.clear();
+        streakFieldsImageView.add(view.findViewById(R.id.streakField1));
+        streakFieldsImageView.add(view.findViewById(R.id.streakField2));
+        streakFieldsImageView.add(view.findViewById(R.id.streakField3));
 
-        streakFieldsImageView.add(view.findViewById(streakFieldsID.get(0)));
-        streakFieldsImageView.add(view.findViewById(streakFieldsID.get(1)));
-        streakFieldsImageView.add(view.findViewById(streakFieldsID.get(2)));
-
-        for (ImageView i:
-             streakFieldsImageView) {
+        for (ImageView i :
+                streakFieldsImageView) {
             i.setVisibility(View.GONE);
         }
+
 
         //odbieranie wartosci przyznanych przez model
         Bundle bundle=getArguments();
@@ -85,6 +83,9 @@ public class ScorePopup extends AppCompatDialogFragment {
             stringBuilder.append("Recognized character: ").append(charRecon);
 
         }
+
+
+
         if (bundle != null) {
            Float score =  bundle.getFloat("percentage");
            int scoreInt = Math.round(score);
@@ -116,19 +117,6 @@ public class ScorePopup extends AppCompatDialogFragment {
                }
 
                streakCount++;
-               System.out.println(streakCount);
-
-
-               for (int i=0; i<streakCount; i++){
-
-                   if(i<streakFieldsImageView.size()){
-                       streakFieldsImageView.get(i).setImageResource(R.drawable.m1);
-                       streakFieldsImageView.get(i).setVisibility(View.VISIBLE);
-                   }
-
-               }
-
-
 
                new Handler().postDelayed(new Runnable() {
                    @Override
@@ -155,6 +143,9 @@ public class ScorePopup extends AppCompatDialogFragment {
            }
 
         }
+
+        setStreakCountImages(streakCount);
+
 
         //zamykanie okna
         Close.setOnClickListener(v -> Objects.requireNonNull(getDialog()).dismiss());
@@ -192,5 +183,28 @@ public class ScorePopup extends AppCompatDialogFragment {
 
 
         return view;
+    }
+
+    private void setStreakCountImages(int streakCount){
+
+        boolean superPrize= false;
+
+        if(streakCount>3){
+            streakCount = streakCount -3;
+            superPrize= true;
+        }
+
+        for (int i = 0; i < streakCount && i < 3; i++) {
+
+            if(superPrize){
+                streakFieldsImageView.get(i).setImageResource(R.drawable.smile);
+            }
+            else{
+                streakFieldsImageView.get(i).setImageResource(R.drawable.ic_cake);
+            }
+
+            streakFieldsImageView.get(i).setVisibility(View.VISIBLE);
+
+        }
     }
 }

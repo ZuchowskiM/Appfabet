@@ -88,6 +88,12 @@ public class DrawActivity extends AppCompatActivity {
                 streakCount = args.getInt("streakCount");
             }
 
+            Bundle args1 = intent.getBundleExtra("STREAK");
+
+            if(args1 != null){
+                streakCount = args.getInt("streakCount");
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();

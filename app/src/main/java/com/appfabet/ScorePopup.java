@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toolbar;
-
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.appfabet.Models.CurrentState;
@@ -168,7 +166,7 @@ public class ScorePopup extends AppCompatDialogFragment {
 
                     Bundle args = new Bundle();
                     args.putInt("streakCount", streakCount);
-                    intent.putExtra("TYPE", args);
+                    intent.putExtra("STREAK", args);
 
                     try{
                         if(LevelBrowser.gridView!=null)

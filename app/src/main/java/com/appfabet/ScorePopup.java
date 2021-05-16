@@ -168,6 +168,7 @@ public class ScorePopup extends AppCompatDialogFragment {
                     args.putInt("streakCount", streakCount);
                     intent.putExtra("STREAK", args);
 
+
                     try{
                         if(LevelBrowser.gridView!=null)
                             LevelBrowser.gridView.invalidateViews();
@@ -185,20 +186,30 @@ public class ScorePopup extends AppCompatDialogFragment {
 
     private void setStreakCountImages(int streakCount){
 
-        boolean superPrize= false;
+        System.out.println(streakCount);
 
-        if(streakCount>3){
+        boolean secondLevelPrize = false;
+        boolean thirdLevelPrize = false;
+
+        if(streakCount > 6){
+            streakCount = streakCount - 6;
+            thirdLevelPrize= true;
+
+        } else if(streakCount>3){
             streakCount = streakCount -3;
-            superPrize= true;
+            secondLevelPrize= true;
         }
 
         for (int i = 0; i < streakCount && i < 3; i++) {
 
-            if(superPrize){
-                streakFieldsImageView.get(i).setImageResource(R.drawable.smile);
+            if(thirdLevelPrize){
+                streakFieldsImageView.get(i).setImageResource(R.drawable.crown);
+            }
+            else if(secondLevelPrize){
+                streakFieldsImageView.get(i).setImageResource(R.drawable.apple);
             }
             else{
-                streakFieldsImageView.get(i).setImageResource(R.drawable.ic_cake);
+                streakFieldsImageView.get(i).setImageResource(R.drawable.pear);
             }
 
             streakFieldsImageView.get(i).setVisibility(View.VISIBLE);

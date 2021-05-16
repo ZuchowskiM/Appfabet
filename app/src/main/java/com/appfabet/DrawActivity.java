@@ -85,13 +85,12 @@ public class DrawActivity extends AppCompatActivity {
             if(args != null){
                 learnPosition = args.getInt("learnPosition");
                 variantPosition = args.getInt("variantPosition");
-                streakCount = args.getInt("streakCount");
             }
 
-            Bundle args1 = intent.getBundleExtra("STREAK");
+            Bundle streakArgs = intent.getBundleExtra("STREAK");
 
-            if(args1 != null){
-                streakCount = args.getInt("streakCount");
+            if(streakArgs != null){
+                streakCount = streakArgs.getInt("streakCount");
             }
 
 

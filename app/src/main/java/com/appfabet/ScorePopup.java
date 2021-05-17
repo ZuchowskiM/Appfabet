@@ -39,6 +39,7 @@ public class ScorePopup extends AppCompatDialogFragment {
     int streakCount;
     LinearLayout linearLayoutStreakCount;
     List<ImageView> streakFieldsImageView = new ArrayList<>();
+    int longAnimationDuration;
 
 
     @SuppressLint("ResourceAsColor")
@@ -65,6 +66,8 @@ public class ScorePopup extends AppCompatDialogFragment {
                 streakFieldsImageView) {
             i.setVisibility(View.GONE);
         }
+
+        longAnimationDuration = getResources().getInteger(android.R.integer.config_longAnimTime);
 
 
         //odbieranie wartosci przyznanych przez model
@@ -212,7 +215,14 @@ public class ScorePopup extends AppCompatDialogFragment {
                 streakFieldsImageView.get(i).setImageResource(R.drawable.pear);
             }
 
+            streakFieldsImageView.get(i).setAlpha(0f);
             streakFieldsImageView.get(i).setVisibility(View.VISIBLE);
+
+            streakFieldsImageView.get(i).animate()
+                    .alpha(1f)
+                    .setStartDelay(100 + i*400)
+                    .setDuration(longAnimationDuration)
+                    .setListener(null);
 
         }
     }

@@ -49,7 +49,7 @@ public class ArticlesFinder {
                 val = "Should be an ";
                 break;
             default:
-                val = "Should be an ";
+                val = "Should be a ";
                 break;
         }
         return val;

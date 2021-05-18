@@ -144,7 +144,7 @@ public class ScorePopup extends AppCompatDialogFragment {
                accept.setVisibility(View.GONE);
                scoreImageView.setImageResource(R.drawable.fail);
                String str = articlesFinder.getArticle(charRecon.charAt(0)) + charRecon + " :(" + '\n' +
-                       articlesFinder.getArticle2(charRecon.charAt(0)) + targetValue ;
+                       articlesFinder.getArticle2(targetValue.charAt(0)) + targetValue ;
                infoTextView.setText(str);
                infoTextView.setTextColor(randomColorGenerator.getColor());
 

@@ -10,6 +10,7 @@ public class Level implements Serializable {
     private boolean completed;
     private int rating;
     private int resource;
+    private int patternPic;
     private LevelType type;
 
     public Level(String name, String description, int level, boolean completed,int resource, LevelType type) {
@@ -79,5 +80,13 @@ public class Level implements Serializable {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public int getPatternPic() {
+        return patternPic;
+    }
+
+    public void setPatternPic(int patternPic) {
+        this.patternPic = patternPic;
     }
 }

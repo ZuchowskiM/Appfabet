@@ -8,6 +8,18 @@
     android:background="@color/background_material_light"
     tools:context=".DrawActivity">
 
+    <ImageView
+        android:id="@+id/trainingImage"
+        android:layout_width="280dp"
+        android:layout_height="382dp"
+        android:background="#27FFFFFF"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/drawing"
+        app:layout_constraintEnd_toEndOf="@+id/drawing"
+        app:layout_constraintStart_toStartOf="@+id/drawing"
+        app:layout_constraintTop_toTopOf="@+id/drawing"
+        tools:srcCompat="@tools:sample/avatars" />
+
     <com.appfabet.Models.DrawArea
         android:id="@+id/drawing"
         android:layout_width="0dp"

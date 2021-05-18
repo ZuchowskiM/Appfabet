@@ -7,22 +7,23 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="277dp"
-        android:layout_height="137dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:padding="5dp"
-        android:scaleType="fitXY"
         android:background="@drawable/grid_item_border"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_launcher_background" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="341dp"
-        android:layout_height="61dp"
-        android:layout_below="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="13dp"
+        android:layout_marginBottom="4dp"
+        android:autoSizeTextType="uniform"
         android:fontFamily="@font/nerkoone_regular"
         android:gravity="center"
         android:text="Demo"

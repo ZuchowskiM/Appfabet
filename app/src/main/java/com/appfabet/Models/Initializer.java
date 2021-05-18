@@ -13,12 +13,13 @@ public class Initializer {
     public static ArrayList<LearnType> learnTypesList = new ArrayList<>();
     ArrayList<LearnVariant> learnVariantsAlphabet = new ArrayList<>();
     ArrayList<LearnVariant> learnVariantsNumbers = new ArrayList<>();
+    ArrayList<LearnVariant> learnVariantsDrawing = new ArrayList<>();
     ArrayList<Level> levelsAlphabetBigLetters = new ArrayList<>();
     ArrayList<Level> levelsAlphabetSmallLetters = new ArrayList<>();
     ArrayList<Level> levelsAlphabetAllLetters = new ArrayList<>();
     ArrayList<Level> levelsAlphabetAllChronologicalLetters = new ArrayList<>();
     ArrayList<Level> levelsNumbersSimple = new ArrayList<>();
-    ArrayList<Level> levelsThings = new ArrayList<>();
+    ArrayList<Level> levelsTraning = new ArrayList<>();
 
 
     public Initializer() {
@@ -30,11 +31,11 @@ public class Initializer {
         learnTypesList = new ArrayList<>();
         LearnType alphabet = new LearnType("Alphabet", R.drawable.alphabet_pic);
         LearnType numbers = new LearnType("Numbers",R.drawable.numbers_pic);
-        //LearnType things = new LearnType("Other things",R.drawable.numbers_pic);
+        LearnType training = new LearnType("Drawing",R.drawable.trainingkids);
 
         learnTypesList.add(alphabet);
         learnTypesList.add(numbers);
-        //learnTypesList.add(things);
+        learnTypesList.add(training);
 
 
         // Alphabet variants in random mode
@@ -48,13 +49,21 @@ public class Initializer {
         LearnVariant allLetters = new LearnVariant("Train All letters " + '\n' + "Random mode", R.drawable.alphabbet_all_letters);
         allLetters.setLearnMode(LearnVariant.mode.random);
 
-        LearnVariant allChronological = new LearnVariant("All letters" , R.drawable.alphabet_pic);
+        // List of all levels
+        LearnVariant allChronological = new LearnVariant("All letters" , R.drawable.all_letters_variant_pic);
         allChronological.setLearnMode(LearnVariant.mode.all);
 
         learnVariantsAlphabet.add(bigLetters); // 0
         learnVariantsAlphabet.add(allLetters); // 1
         learnVariantsAlphabet.add(smallLetters); // 2
         learnVariantsAlphabet.add(allChronological); // 3
+
+
+        // List of things to train
+        LearnVariant trainingThings = new LearnVariant("Training", R.drawable.things_pic);
+        trainingThings.setLearnMode(LearnVariant.mode.all);
+        learnVariantsDrawing.add(trainingThings);
+
 
         // Numbers Variants
         LearnVariant simpleNumbers = new LearnVariant("Train simple numbers " + '\n' + "Chronological mode", R.drawable.numbers_pic);
@@ -66,8 +75,13 @@ public class Initializer {
         learnVariantsNumbers.add(simpleNumbers);
         learnVariantsNumbers.add(complexNumbers);
 
+
+        //-----------------Adding Variants to list --------------------------
         learnTypesList.get(0).setVariants(learnVariantsAlphabet); // alphabet
         learnTypesList.get(1).setVariants(learnVariantsNumbers); // numbers
+        learnTypesList.get(2).setVariants(learnVariantsDrawing); //drawings
+        //--------------------------------------------------------------------
+
 
 
         // big characters init
@@ -139,8 +153,24 @@ public class Initializer {
         }
         learnTypesList.get(0).getVariants().get(3).setLevels(levelsAlphabetAllChronologicalLetters);
 
+        // add levels for things
+        for(int i=1;i<2;i++){
+            int resPicId = context.getResources().getIdentifier("t"+i,"drawable",activity.getPackageName());
+            int resPicId1 = context.getResources().getIdentifier("pattern"+i,"drawable",activity.getPackageName());
+            Level level = new Level(String.valueOf(i),"Flower",1,false,resPicId,LevelType.THINGS);
+            level.setPatternPic(resPicId1);
+            levelsTraning.add(level);
+            System.out.println("Level");
+        }
+
+        System.out.println("Rozmiar" + levelsTraning.size());
+        System.out.println("Rozmiar" + learnTypesList.size());
+
+        learnTypesList.get(2).getVariants().get(0).setLevels(levelsTraning);
+
         return learnTypesList;
     }
+
 
 
 

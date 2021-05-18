@@ -3,6 +3,7 @@ package com.appfabet;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +14,7 @@ import com.appfabet.Adapters.LearnVariantAdapter;
 import com.appfabet.Models.Initializer;
 import com.appfabet.Models.LearnType;
 import com.appfabet.Models.LearnVariant;
+import com.appfabet.Models.ScreenOptions;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ public class LearnVariantsBrowser extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learn_variants_browser);
+
+        ScreenOptions screenOptions = new ScreenOptions();
 
         gridView = (GridView) findViewById(R.id.gridViewVariants);
 
@@ -43,6 +47,21 @@ public class LearnVariantsBrowser extends AppCompatActivity {
         LearnVariantAdapter myAdapter=new LearnVariantAdapter(this,R.layout.grid_view_items,learnTypesList.get(learnPosition).getVariants());
         gridView.setAdapter(myAdapter);
 
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            gridView.setNumColumns(1);
+        } else {
+
+            int colums = screenOptions.measureCellWidth(this)-1;
+
+            if(colums>myAdapter.getCount()){
+                colums = myAdapter.getCount();
+            }
+            gridView.setNumColumns(colums);
+        }
+
+
+
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -55,7 +74,17 @@ public class LearnVariantsBrowser extends AppCompatActivity {
                     args.putInt("variantPosition", position);
                     intent.putExtra("TYPE",args);
                     startActivity(intent);
-                } else{
+                } else if(learnTypesList.get(learnPosition).getVariants().get(position).getName().equals("Training")){
+                    Intent intent = new Intent(LearnVariantsBrowser.this, LevelBrowser.class);
+                    Bundle args = new Bundle();
+                    args.putInt("learnPosition", learnPosition);
+                    args.putInt("variantPosition", position);
+                    args.putString("LearnType","training");
+                    intent.putExtra("TYPE",args);
+                    startActivity(intent);
+                }
+
+                else{
 
                     Intent intent = new Intent(LearnVariantsBrowser.this, DrawActivity.class);
                     Bundle args = new Bundle();

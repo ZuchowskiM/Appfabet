@@ -1,7 +1,9 @@
 package com.appfabet;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -13,13 +15,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 
 import com.appfabet.Adapters.LearnAdapter;
 import com.appfabet.Models.CurrentState;
 import com.appfabet.Models.Initializer;
 import com.appfabet.Models.LearnType;
+import com.appfabet.Models.ScreenOptions;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,12 +40,15 @@ public class LearnSelector extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.fragment_learn_selector);
-        gridView = (GridView) findViewById(R.id.gridView);
 
+
+        ScreenOptions screenOptions = new ScreenOptions();
+
+        gridView = (GridView) findViewById(R.id.gridView);
 
         try{
             //DELETE STATES
-            //currentState.deleteCurrentState(this);
+            currentState.deleteCurrentState(this);
 
             Initializer.learnTypesList = currentState.getCurrentState(this);
             System.out.println("lista " + Initializer.learnTypesList);
@@ -63,8 +71,21 @@ public class LearnSelector extends AppCompatActivity {
 
         //adapter
         LearnAdapter myAdapter=new LearnAdapter(this,R.layout.grid_view_items,Initializer.learnTypesList);
-        gridView.setAdapter(myAdapter);
 
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            gridView.setNumColumns(1);
+        } else {
+
+            int colums = screenOptions.measureCellWidth(this)-1;
+
+            if(colums>myAdapter.getCount()){
+                colums = myAdapter.getCount();
+            }
+            gridView.setNumColumns(colums);
+        }
+
+        gridView.setAdapter(myAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -79,5 +100,6 @@ public class LearnSelector extends AppCompatActivity {
         });
 
     }
+
 
 }

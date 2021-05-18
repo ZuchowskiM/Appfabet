@@ -3,6 +3,7 @@ package com.appfabet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -23,6 +24,7 @@ import com.appfabet.Models.DrawArea;
 import com.appfabet.Models.Initializer;
 import com.appfabet.Models.LearnType;
 import com.appfabet.Models.Level;
+import com.appfabet.Models.ScreenOptions;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,9 +35,11 @@ public class LevelBrowser extends Activity {
     static int position;
     static int learnPosition;
     static int variantPosition;
-
+    String learnType = null;
     static GridView gridView;
     ArrayList<Level> levels = new ArrayList<>();
+
+
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -47,10 +51,21 @@ public class LevelBrowser extends Activity {
        gridView = findViewById(R.id.gridView);
 
 
+        ScreenOptions screenOptions = new ScreenOptions();
+
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("TYPE");
-        learnPosition = args.getInt("learnPosition");
-        variantPosition = args.getInt("variantPosition");
+        if(args!=null)
+        {
+            learnPosition = args.getInt("learnPosition");
+            variantPosition = args.getInt("variantPosition");
+            try{
+                learnType=args.getString("LearnType");
+            } catch (Exception e){
+
+            }
+
+        }
 
         //curr level
         levels = (ArrayList<Level>) Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).getLevels();
@@ -59,10 +74,21 @@ public class LevelBrowser extends Activity {
         System.out.println("rozmiar" + levels.size());
 
 
-            //adapter
-            LevelAdapter myAdapter=new LevelAdapter(this,R.layout.grid_view_level_item,levels);
-            gridView.setAdapter(myAdapter);
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //adapter
+        LevelAdapter myAdapter=new LevelAdapter(this,R.layout.grid_view_level_item,levels);
+        gridView.setAdapter(myAdapter);
+
+
+        int colums = screenOptions.measureCellWidth(this);
+
+        if(colums>myAdapter.getCount()){
+            colums = myAdapter.getCount();
+        }
+        gridView.setNumColumns(colums+1);
+
+
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(LevelBrowser.this, DrawActivity.class);
@@ -71,6 +97,11 @@ public class LevelBrowser extends Activity {
                     args.putInt("learnPosition", learnPosition);
                     args.putInt("variantPosition", variantPosition);
                     args.putInt("levelPosition", position);
+                    if(learnType!=null){
+                        if(learnType.equals("training")){
+                            args.putString("learnType", "training");
+                        }
+                    }
                     intent.putExtra("TYPE",args);
                     startActivity(intent);
                 }

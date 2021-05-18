@@ -43,10 +43,12 @@ public class DrawActivity extends AppCompatActivity {
     LearnVariant currentLearnVariant;
     TextView patternElement;
     ConstraintLayout layout;
+    ImageView trainingImage;
     boolean fromMenu = false;
     static ImageView completedImageView;
     TextToSpeechInterpreter textToSpeechInterpreter;
     View view;
+    String learnType = null;
     int streakCount;
 
     @Override
@@ -61,6 +63,7 @@ public class DrawActivity extends AppCompatActivity {
         DrawArea drawArea = findViewById(R.id.drawing);
         patternElement = findViewById(R.id.patternPic);
         layout = findViewById(R.id.backgroundLayout);
+        trainingImage = findViewById(R.id.trainingImage);
         completedImageView = findViewById(R.id.completedImageView);
         ImageView speaker = findViewById(R.id.speaker);
         textToSpeechInterpreter = new TextToSpeechInterpreter(getApplicationContext());
@@ -73,6 +76,7 @@ public class DrawActivity extends AppCompatActivity {
             Intent intent = getIntent();
             Bundle args = intent.getBundleExtra("TYPE");
             position = args.getInt("levelPosition");
+            learnType = args.getString("learnType");
             fromMenu = true;
         } catch (Exception e) {
 
@@ -101,15 +105,24 @@ public class DrawActivity extends AppCompatActivity {
         currentLearnVariant = Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition);
         checkAndSetCurrentMode(currentLearnVariant);
 
-        //drawArea.setLearnTypePos(learnPosition);
-        //drawArea.setLearnVariant(variantPosition);
         drawArea.setCurrentLevelType(levels.get(currentLevelPosition).getType());
+        ScorePopup popup = new ScorePopup();
 
+        if(learnType!=null) {
+            if(learnType.equals("training")){
+                trainingImage.setImageResource(levels.get(currentLevelPosition).getResource());
+                trainingImage.setVisibility(View.VISIBLE);
+            }
+        }
 
         patternElement.setText(levels.get(currentLevelPosition).getDescription());
         RandomColorGenerator randomColorGenerator = new RandomColorGenerator();
         patternElement.setTextColor(randomColorGenerator.getColor());
-        ScorePopup popup = new ScorePopup();
+
+        // DLA FILIPA
+        // levels.get(currentLevelPosition) <- wszystko co potrzebujesz na temat obecnego levelu
+        // levels.get(currentLevelPosition).getResource() <- to jest obrazek który wyswietla sie uzytkownikowi w drawArea
+        // levels.get(currentLevelPosition).getPatternPic() <- to jest obrazek pattern ktory potrzebujesz do porownywania
 
 
         if (levels.get(currentLevelPosition).isCompleted()) {

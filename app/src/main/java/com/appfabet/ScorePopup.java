@@ -7,15 +7,20 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.appfabet.Models.ArticlesFinder;
 import com.appfabet.Models.CurrentState;
 import com.appfabet.Models.Initializer;
+import com.appfabet.Models.RandomColorGenerator;
 import com.appfabet.Models.SoundNotifier;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,34 +91,41 @@ public class ScorePopup extends AppCompatDialogFragment {
         }
 
 
+        ArticlesFinder articlesFinder = new ArticlesFinder();
+
 
         if (bundle != null) {
            Float score =  bundle.getFloat("percentage");
            int scoreInt = Math.round(score);
            String value = String.valueOf(scoreInt + " / " + "10");
 
+            RandomColorGenerator randomColorGenerator = new RandomColorGenerator();
+
            if(targetValue.equals(charRecon))
            {
                if(scoreInt>=1 && scoreInt<4){
-                   String message = "We think it's a " + charRecon + '\n' +
+                   String message = articlesFinder.getArticle(charRecon.charAt(0)) + charRecon + '\n' +
                            "Good job :D";
                    scoreImageView.setImageResource(R.drawable.smile);
                    infoTextView.setText(message);
+                   infoTextView.setTextColor(randomColorGenerator.getColor());
                    btnEnabled=true;
                }
                if(scoreInt>=4 && scoreInt<8)
                {
-                   String message = "We think it's a " + charRecon + '\n' +
+                   String message = articlesFinder.getArticle(charRecon.charAt(0)) + charRecon + '\n' +
                            "Great job :D";
                    scoreImageView.setImageResource(R.drawable.smile_ok1);
                    infoTextView.setText(message);
+                   infoTextView.setTextColor(randomColorGenerator.getColor());
                    btnEnabled=true;
                }
                if(scoreInt>=8){
-                   String message = "We think it's a " + charRecon + '\n' +
+                   String message = articlesFinder.getArticle(charRecon.charAt(0)) + charRecon + '\n' +
                            "Excellent job :D";
                    scoreImageView.setImageResource(R.drawable.smile_ok);
                    infoTextView.setText(message);
+                   infoTextView.setTextColor(randomColorGenerator.getColor());
                    btnEnabled=true;
                }
 
@@ -131,9 +143,10 @@ public class ScorePopup extends AppCompatDialogFragment {
                btnEnabled=false;
                accept.setVisibility(View.GONE);
                scoreImageView.setImageResource(R.drawable.fail);
-               String str = "We think it's a " + charRecon + " :(" + '\n' +
-                       "Should be  " + targetValue ;
+               String str = articlesFinder.getArticle(charRecon.charAt(0)) + charRecon + " :(" + '\n' +
+                       articlesFinder.getArticle2(charRecon.charAt(0)) + targetValue ;
                infoTextView.setText(str);
+               infoTextView.setTextColor(randomColorGenerator.getColor());
 
                new Handler().postDelayed(new Runnable() {
                    @Override
@@ -161,7 +174,11 @@ public class ScorePopup extends AppCompatDialogFragment {
                 public void onClick(View v) {
                     Objects.requireNonNull(getDialog()).dismiss();
                     Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).getLevels().get(levelPosition).setCompleted(true);
-                    Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).setCurrentLevel(++levelPosition);
+                    if(levelPosition==Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).getLevels().size()-1){
+                        Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).setCurrentLevel(0);
+                    } else{
+                        Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).setCurrentLevel(++levelPosition);
+                    }
                     currentState.setCurrentState(Initializer.learnTypesList, getActivity());
                     Intent intent = new Intent(getActivity(), DrawActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

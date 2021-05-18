@@ -19,6 +19,7 @@ public class LearnAdapter extends ArrayAdapter {
 
     ArrayList<LearnType> learnList = new ArrayList<>();
 
+
     public LearnAdapter(Context context, int textViewResourceId, ArrayList objects) {
         super(context, textViewResourceId, objects);
         learnList = objects;
@@ -49,6 +50,8 @@ public class LearnAdapter extends ArrayAdapter {
         v = inflater.inflate(R.layout.grid_view_items, null);
         TextView textView = (TextView) v.findViewById(R.id.textView);
         ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
+        imageView.getWidth();
+
         textView.setText(learnList.get(position).getName());
         imageView.setImageResource(learnList.get(position).getLogo());
         return v;

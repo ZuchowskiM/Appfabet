@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import com.appfabet.Models.RandomColorGenerator;
 import com.appfabet.Models.TextToSpeechInterpreter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class DrawActivity extends AppCompatActivity {
@@ -232,6 +234,50 @@ public class DrawActivity extends AppCompatActivity {
                 textToSpeechInterpreter.speak(levels.get(currentLevelPosition).getDescription());
             }
         }, 1000);
+
+        setupStreakView(streakCount);
+
+    }
+
+    private void setupStreakView(int streakCount){
+
+        boolean secondLevelPrize = false;
+        boolean thirdLevelPrize = false;
+
+        ImageView streak1 = findViewById(R.id.streak1);
+        ImageView streak2 = findViewById(R.id.streak2);
+        ImageView streak3 = findViewById(R.id.streak3);
+
+        List<ImageView> streakFieldsImageView = new ArrayList<>();
+
+        streakFieldsImageView.add(streak1);
+        streakFieldsImageView.add(streak2);
+        streakFieldsImageView.add(streak3);
+
+        if(streakCount > 6){
+            streakCount = streakCount - 6;
+            thirdLevelPrize= true;
+
+        } else if(streakCount>3){
+            streakCount = streakCount -3;
+            secondLevelPrize= true;
+        }
+
+        for (int i = 0; i < streakCount && i < 3; i++) {
+
+            if(thirdLevelPrize){
+                streakFieldsImageView.get(i).setImageResource(R.drawable.crown);
+            }
+            else if(secondLevelPrize){
+                streakFieldsImageView.get(i).setImageResource(R.drawable.apple);
+            }
+            else{
+                streakFieldsImageView.get(i).setImageResource(R.drawable.pear);
+            }
+
+            streakFieldsImageView.get(i).setVisibility(View.VISIBLE);
+
+        }
 
     }
 

@@ -31,6 +31,7 @@ import com.appfabet.Models.Level;
 import com.appfabet.Models.RandomColorGenerator;
 import com.appfabet.Models.TextToSpeechInterpreter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -183,7 +184,14 @@ public class DrawActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String result = drawArea.checkModel();
+                String result = null;
+
+                try {
+                    result = drawArea.checkModel();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 Float procentage = drawArea.getPercentage();
                 procentage = procentage * 10;
 

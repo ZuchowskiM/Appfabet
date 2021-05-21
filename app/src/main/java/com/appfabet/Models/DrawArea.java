@@ -121,98 +121,78 @@ public class DrawArea extends View
 
     ///MATI NIE DOTYKAJ DRAW AREA///////
     ///A W XML ZAPYTAC PRZED WPROWADZANIEM ZMIAN DO DRAWING///
-    public String checkModel()
-    {
-        try {
+    public String checkModel() throws IOException {
 
-            if(currentLevelType == LevelType.BIG_LETTERS) {
+        int finalIndex;
 
-                modelSize = 28;
+        if(currentLevelType == LevelType.BIG_LETTERS) {
 
-                ConvEmnistEnBig model = ConvEmnistEnBig.newInstance(this.getContext());
-                TensorBuffer inputFeature0 = makeNumberModelCalculations();
+            modelSize = 28;
 
-                // Runs model inference and gets result.
-                ConvEmnistEnBig.Outputs outputs = model.process(inputFeature0);
-                TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+            ConvEmnistEnBig model = ConvEmnistEnBig.newInstance(this.getContext());
+            TensorBuffer inputFeature0 = makeNumberModelCalculations();
 
-                int finalIndex = printTensorOutput(outputFeature0);
+            ConvEmnistEnBig.Outputs outputs = model.process(inputFeature0);
+            model.close();
+            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
-                //DEBUG
-                //System.out.println(Environment.getExternalStorageDirectory().toString());
+            finalIndex = printTensorOutput(outputFeature0);
 
-                OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
+            //DEBUG
+            //System.out.println(Environment.getExternalStorageDirectory().toString());
 
-                //outputInterpreter.createArrayFromJson();
+            OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
 
-
-                model.close();
-
-                return outputInterpreter.getResultFromBigDictionary(finalIndex);
-            }
-            else if(currentLevelType == LevelType.SMALL_LETTERS){
-
-                modelSize = 28;
-
-                ConvEmnistEnSmall model = ConvEmnistEnSmall.newInstance(this.getContext());
-                TensorBuffer inputFeature0 = makeNumberModelCalculations();
-
-                // Runs model inference and gets result.
-                ConvEmnistEnSmall.Outputs outputs = model.process(inputFeature0);
-                TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-
-                int finalIndex = printTensorOutput(outputFeature0);
-
-                //DEBUG
-                //System.out.println(Environment.getExternalStorageDirectory().toString());
-
-                OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
-
-                //outputInterpreter.createArrayFromJson();
-
-
-                model.close();
-
-                return outputInterpreter.getResultFromSmallDictionary(finalIndex);
-
-            }
-            else {
-
-                modelSize = 28;
-
-                ConvMnist model = ConvMnist.newInstance(this.getContext());
-                TensorBuffer inputFeature0 = makeNumberModelCalculations();
-
-                // Runs model inference and gets result.
-                ConvMnist.Outputs outputs = model.process(inputFeature0);
-                TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-
-                int finalIndex = printTensorOutput(outputFeature0);
-
-                //DEBUG
-                //System.out.println(Environment.getExternalStorageDirectory().toString());
-
-                OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
-
-                //outputInterpreter.createArrayFromJson();
-
-
-                model.close();
-
-                return outputInterpreter.getResultFromNumberDictionary(finalIndex);
-            }
-
-
-        } catch (IOException e) {
-            // TODO Handle the exception
-            return "error in checkModel()";
+            return outputInterpreter.getResultFromBigDictionary(finalIndex);
         }
+        else if(currentLevelType == LevelType.SMALL_LETTERS){
+
+            modelSize = 28;
+
+            ConvEmnistEnSmall model = ConvEmnistEnSmall.newInstance(this.getContext());
+            TensorBuffer inputFeature0 = makeNumberModelCalculations();
+
+            ConvEmnistEnSmall.Outputs outputs = model.process(inputFeature0);
+            model.close();
+            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+
+            finalIndex = printTensorOutput(outputFeature0);
+
+            //DEBUG
+            //System.out.println(Environment.getExternalStorageDirectory().toString());
+
+            OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
+
+            return outputInterpreter.getResultFromSmallDictionary(finalIndex);
+        }
+        else {
+
+            modelSize = 28;
+
+            ConvMnist model = ConvMnist.newInstance(this.getContext());
+            TensorBuffer inputFeature0 = makeNumberModelCalculations();
+
+            ConvMnist.Outputs outputs = model.process(inputFeature0);
+            model.close();
+            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+
+            finalIndex = printTensorOutput(outputFeature0);
+
+            //DEBUG
+            //System.out.println(Environment.getExternalStorageDirectory().toString());
+
+            OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
+
+            return outputInterpreter.getResultFromNumberDictionary(finalIndex);
+        }
+
+
     }
 
-    private TensorBuffer makeNumberModelCalculations(){
-        // Creates inputs for reference.
-        Bitmap bitmap = this.getBitmapFromView();
 
+    private TensorBuffer makeNumberModelCalculations(){
+
+        Bitmap bitmap = this.getBitmapFromView();
         Bitmap scaledBitmap = getResizedBitmap(bitmap, modelSize, modelSize);
 
         //DEBUG

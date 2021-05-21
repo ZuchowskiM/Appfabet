@@ -232,15 +232,20 @@ public class ScorePopup extends AppCompatDialogFragment {
                 streakFieldsImageView.get(i).setImageResource(R.drawable.pear);
             }
 
-            streakFieldsImageView.get(i).setAlpha(0f);
-            streakFieldsImageView.get(i).setVisibility(View.VISIBLE);
-
-            streakFieldsImageView.get(i).animate()
-                    .alpha(1f)
-                    .setStartDelay(100 + i*400)
-                    .setDuration(longAnimationDuration)
-                    .setListener(null);
+            animateImageViewToVisible(streakFieldsImageView.get(i), i);
 
         }
+    }
+
+    private void animateImageViewToVisible(ImageView imageView, int delayDurationMultiplier){
+
+        imageView.setAlpha(0f);
+        imageView.setVisibility(View.VISIBLE);
+
+        imageView.animate()
+                .alpha(1f)
+                .setStartDelay(100 + delayDurationMultiplier*400)
+                .setDuration(longAnimationDuration)
+                .setListener(null);
     }
 }

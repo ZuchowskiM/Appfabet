@@ -38,7 +38,7 @@ public class ScorePopup extends AppCompatDialogFragment {
     int variantPosition;
     int learnPosition;
     String targetValue;
-    String charRecon;
+    ArrayList<String> charRecon;
     SoundNotifier soundNotifier;
     CurrentState currentState = new CurrentState();
     int streakCount;
@@ -78,7 +78,7 @@ public class ScorePopup extends AppCompatDialogFragment {
         //odbieranie wartosci przyznanych przez model
         Bundle bundle=getArguments();
         if (bundle != null) {
-            charRecon = bundle.getString("result");
+            charRecon = bundle.getStringArrayList("result");
             learnPosition = bundle.getInt("learnPosition");
             variantPosition = bundle.getInt("variantPosition");
             levelPosition = bundle.getInt("levelPosition");
@@ -101,10 +101,10 @@ public class ScorePopup extends AppCompatDialogFragment {
 
             RandomColorGenerator randomColorGenerator = new RandomColorGenerator();
 
-           if(targetValue.equals(charRecon))
+           if(charRecon.contains(targetValue))
            {
                if(scoreInt>=1 && scoreInt<4){
-                   String message = articlesFinder.getArticle(charRecon.charAt(0)) + charRecon + '\n' +
+                   String message = articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon + '\n' +
                            "Good job :D";
                    scoreImageView.setImageResource(R.drawable.smile);
                    infoTextView.setText(message);
@@ -113,7 +113,7 @@ public class ScorePopup extends AppCompatDialogFragment {
                }
                if(scoreInt>=4 && scoreInt<8)
                {
-                   String message = articlesFinder.getArticle(charRecon.charAt(0)) + charRecon + '\n' +
+                   String message = articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon + '\n' +
                            "Great job :D";
                    scoreImageView.setImageResource(R.drawable.smile_ok1);
                    infoTextView.setText(message);
@@ -121,7 +121,7 @@ public class ScorePopup extends AppCompatDialogFragment {
                    btnEnabled=true;
                }
                if(scoreInt>=8){
-                   String message = articlesFinder.getArticle(charRecon.charAt(0)) + charRecon + '\n' +
+                   String message = articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon + '\n' +
                            "Excellent job :D";
                    scoreImageView.setImageResource(R.drawable.smile_ok);
                    infoTextView.setText(message);
@@ -143,7 +143,7 @@ public class ScorePopup extends AppCompatDialogFragment {
                btnEnabled=false;
                accept.setVisibility(View.GONE);
                scoreImageView.setImageResource(R.drawable.fail);
-               String str = articlesFinder.getArticle(charRecon.charAt(0)) + charRecon + " :(" + '\n' +
+               String str = articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon + " :(" + '\n' +
                        articlesFinder.getArticle2(targetValue.charAt(0)) + targetValue ;
                infoTextView.setText(str);
                infoTextView.setTextColor(randomColorGenerator.getColor());

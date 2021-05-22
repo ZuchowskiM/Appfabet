@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -18,7 +19,6 @@ import android.view.View;
 import com.appfabet.ml.ConvEmnistEnBig;
 import com.appfabet.ml.ConvEmnistEnSmall;
 import com.appfabet.ml.ConvMnist;
-import com.appfabet.ml.ConvPolcharsSmall;
 
 
 import org.tensorflow.lite.DataType;
@@ -28,6 +28,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 ///MATI NIE DOTYKAJ DRAW AREA///////
 ///A W XML ZAPYTAC PRZED WPROWADZANIEM ZMIAN DO DRAWING///
@@ -121,9 +124,10 @@ public class DrawArea extends View
 
     ///MATI NIE DOTYKAJ DRAW AREA///////
     ///A W XML ZAPYTAC PRZED WPROWADZANIEM ZMIAN DO DRAWING///
-    public String checkModel() throws IOException {
+    public List<String> checkModel() throws IOException {
 
-        int finalIndex;
+        List<Integer> finalIndex;
+        List<String> results = new ArrayList<>();
 
         if(currentLevelType == LevelType.BIG_LETTERS) {
 
@@ -143,7 +147,11 @@ public class DrawArea extends View
 
             OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
 
-            return outputInterpreter.getResultFromBigDictionary(finalIndex);
+            for (int i: finalIndex) {
+                results.add(outputInterpreter.getResultFromBigDictionary(i));
+            }
+
+            return results;
         }
         else if(currentLevelType == LevelType.SMALL_LETTERS){
 
@@ -163,7 +171,11 @@ public class DrawArea extends View
 
             OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
 
-            return outputInterpreter.getResultFromSmallDictionary(finalIndex);
+            for (int i: finalIndex) {
+                results.add(outputInterpreter.getResultFromSmallDictionary(i));
+            }
+
+            return results;
         }
         else {
 
@@ -183,7 +195,11 @@ public class DrawArea extends View
 
             OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
 
-            return outputInterpreter.getResultFromNumberDictionary(finalIndex);
+            for (int i: finalIndex) {
+                results.add(outputInterpreter.getResultFromNumberDictionary(i));
+            }
+
+            return results;
         }
 
 
@@ -234,25 +250,55 @@ public class DrawArea extends View
         return inputFeature0;
     }
 
-    private int printTensorOutput(TensorBuffer tensorBuffer){
+    private List<Integer> printTensorOutput(TensorBuffer tensorBuffer){
 
-        float num = 0;
         int numerator =0;
-        int finalNum =0;
+
+        List<Pair<Float, Integer>> pairList = new ArrayList<>();
+
+        pairList.add(Pair.create(0f,0));
+        pairList.add(Pair.create(0f,0));
+        pairList.add(Pair.create(0f,0));
+
         for(float i: tensorBuffer.getFloatArray())
         {
             System.out.println(numerator + " - " + i);
 
-            if(i>num){
-                num = i;
-                finalNum = numerator;
-                percentage = i;
+            if(i>pairList.get(2).first){
+
+                pairList.set(2, Pair.create(i, numerator));
+
+                Collections.sort(pairList, (o1, o2) -> {
+                    if(o1.first < o2.first){
+                        return 1;
+                    }
+                    else if(o1.first > o2.first){
+                        return -1;
+                    }
+                    else{
+                        return 0;
+                    }
+                });
+
+
             }
             numerator++;
         }
 
-        System.out.println(finalNum + " - " + num);
-        return finalNum;
+        percentage = pairList.get(0).first;
+
+        //System.out.println(finalNum + " - " + num);
+        return pullInFirstFromList(pairList);
+    }
+
+    List<Integer> pullInFirstFromList(List<Pair<Float, Integer>> list){
+
+        List<Integer> newList = new ArrayList<>();
+        for (Pair<Float, Integer> i: list){
+            newList.add(i.second);
+        }
+
+        return newList;
     }
 
     private Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {

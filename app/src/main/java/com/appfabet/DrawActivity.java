@@ -184,7 +184,8 @@ public class DrawActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String result = null;
+                List<String> result = null;
+
 
                 try {
                     result = drawArea.checkModel();
@@ -196,7 +197,7 @@ public class DrawActivity extends AppCompatActivity {
                 procentage = procentage * 10;
 
                 Bundle args = new Bundle();
-                args.putString("result", result);
+                args.putStringArrayList("result", (ArrayList<String>) result);
                 args.putInt("levelPosition", currentLevelPosition);
                 args.putFloat("percentage", procentage);
                 args.putInt("learnPosition", learnPosition);

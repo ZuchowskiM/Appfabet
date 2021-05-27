@@ -8,18 +8,6 @@
     android:background="@color/background_material_light"
     tools:context=".DrawActivity">
 
-    <ImageView
-        android:id="@+id/trainingImage"
-        android:layout_width="280dp"
-        android:layout_height="382dp"
-        android:background="#27FFFFFF"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/drawing"
-        app:layout_constraintEnd_toEndOf="@+id/drawing"
-        app:layout_constraintStart_toStartOf="@+id/drawing"
-        app:layout_constraintTop_toTopOf="@+id/drawing"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <LinearLayout
         android:id="@+id/linearStreakLay"
         android:layout_width="128dp"
@@ -58,32 +46,45 @@
             app:srcCompat="@drawable/fail" />
     </LinearLayout>
 
-    <com.appfabet.Models.DrawArea
-        android:id="@+id/drawing"
+    <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="160dp"
-        android:background="@drawable/grid_item_border"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/patternPic" />
+        app:layout_constraintTop_toBottomOf="@+id/linearStreakLay">
+
+        <ImageView
+            android:id="@+id/trainingImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#27FFFFFF"
+            android:visibility="invisible"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <com.appfabet.Models.DrawArea
+            android:id="@+id/drawing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentBottom="false"
+            android:background="@drawable/grid_item_border" />
+
+    </FrameLayout>
 
     <ImageButton
         android:id="@+id/button2"
         android:layout_width="88dp"
         android:layout_height="88dp"
-        android:layout_marginStart="88dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="48dp"
         android:background="@drawable/button_shadow_green"
         android:clickable="false"
         android:focusable="false"
@@ -96,18 +97,14 @@
         android:textColorLink="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/clearButton"
-        app:layout_constraintHorizontal_bias="0.087"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drawing"
-        app:layout_constraintVertical_bias="0.454" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/clearButton"
         android:layout_width="88dp"
         android:layout_height="88dp"
-        android:layout_marginEnd="88dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="48dp"
         android:background="@drawable/button_shadow_pink"
         android:clickable="false"
         android:focusable="false"
@@ -120,9 +117,7 @@
         android:textColorHint="#FFFFFF"
         android:textColorLink="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drawing"
-        app:layout_constraintVertical_bias="0.428" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/patternPic"
@@ -142,11 +137,11 @@
         android:id="@+id/speaker"
         android:layout_width="102dp"
         android:layout_height="87dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="92dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="32dp"
         android:src="@drawable/speaker"
-        app:layout_constraintBottom_toTopOf="@+id/drawing"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/completedImageView"

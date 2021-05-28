@@ -73,9 +73,9 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:background="@color/appfabetOrange"
-                android:text="Accept"
-                android:textSize="14sp" />
+                android:backgroundTint="@color/appfabetGreen"
+                android:text="Go next!"
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/retryBtn"
@@ -84,9 +84,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:background="@color/appfabetOrange"
                 android:text="Try again"
-                android:textSize="13sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout

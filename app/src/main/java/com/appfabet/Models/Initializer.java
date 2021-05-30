@@ -20,6 +20,7 @@ public class Initializer {
     ArrayList<Level> levelsAlphabetAllChronologicalLetters = new ArrayList<>();
     ArrayList<Level> levelsNumbersSimple = new ArrayList<>();
     ArrayList<Level> levelsTraning = new ArrayList<>();
+    public static boolean firstTime = false;
 
 
     public Initializer() {

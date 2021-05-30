@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class DrawActivity extends AppCompatActivity {
     //SlidrInterface slird;
     int position;
@@ -47,12 +49,15 @@ public class DrawActivity extends AppCompatActivity {
     TextView patternElement;
     ConstraintLayout layout;
     ImageView trainingImage;
+    ImageButton closeButton;
+    ImageView pencilImage;
     boolean fromMenu = false;
     static ImageView completedImageView;
     TextToSpeechInterpreter textToSpeechInterpreter;
     View view;
     String learnType = null;
     int streakCount;
+    GifImageView gifImageView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +66,9 @@ public class DrawActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         view = findViewById(android.R.id.content).getRootView();
 
+        gifImageView = findViewById(R.id.gifImage);
+        closeButton = findViewById(R.id.buttonHide);
+        pencilImage = findViewById(R.id.pencilImage);
         ImageButton button = findViewById(R.id.button2);
         ImageButton clearButton = findViewById(R.id.clearButton);
         DrawArea drawArea = findViewById(R.id.drawing);
@@ -74,6 +82,37 @@ public class DrawActivity extends AppCompatActivity {
         //swipe
         //slird = Slidr.attach(this);
 
+    if(Initializer.firstTime){
+        pencilImage.setVisibility(View.VISIBLE);
+        closeButton.setVisibility(View.VISIBLE);
+        gifImageView.setVisibility(View.VISIBLE);
+        drawArea.setVisibility(View.INVISIBLE);
+        patternElement.setVisibility(View.INVISIBLE);
+        trainingImage.setVisibility(View.INVISIBLE);
+        speaker.setVisibility(View.INVISIBLE);
+        completedImageView.setVisibility(View.INVISIBLE);
+        button.setVisibility(View.INVISIBLE);
+        clearButton.setVisibility(View.INVISIBLE);
+
+    }
+
+    if(closeButton.getVisibility()==View.VISIBLE) {
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pencilImage.setVisibility(View.INVISIBLE);
+                closeButton.setVisibility(View.INVISIBLE);
+                gifImageView.setVisibility(View.INVISIBLE);
+                drawArea.setVisibility(View.VISIBLE);
+                patternElement.setVisibility(View.VISIBLE);
+                trainingImage.setVisibility(View.VISIBLE);
+                speaker.setVisibility(View.VISIBLE);
+                button.setVisibility(View.VISIBLE);
+                clearButton.setVisibility(View.VISIBLE);
+                Initializer.firstTime=false;
+            }
+        });
+    }
 
         try {
             Intent intent = getIntent();

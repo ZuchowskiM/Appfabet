@@ -18,6 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.appfabet.Adapters.LearnAdapter;
@@ -29,11 +31,16 @@ import com.appfabet.Models.ScreenOptions;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class LearnSelector extends AppCompatActivity {
 
     GridView gridView;
     Initializer initializer = new Initializer();
     CurrentState currentState = new CurrentState();
+    GifImageView gifImageView;
+    ImageButton closeButton;
+    ImageView pencilImage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,21 +52,30 @@ public class LearnSelector extends AppCompatActivity {
         ScreenOptions screenOptions = new ScreenOptions();
 
         gridView = (GridView) findViewById(R.id.gridView);
+        gifImageView = findViewById(R.id.gifImage);
+        closeButton = findViewById(R.id.buttonHide);
+        pencilImage = findViewById(R.id.pencilImage);
 
         try{
             //DELETE STATES
-            //currentState.deleteCurrentState(this);
+            currentState.deleteCurrentState(this);
 
             Initializer.learnTypesList = currentState.getCurrentState(this);
             System.out.println("lista " + Initializer.learnTypesList);
 
             if(Initializer.learnTypesList.equals(null)){
+
                 Initializer initializer = new Initializer();
                 Initializer.learnTypesList = initializer.initLearnTypesAndLevels(getApplicationContext(), this);
                 currentState.setCurrentState(Initializer.learnTypesList,this);
             }
 
         } catch (NullPointerException e){
+            gridView.setVisibility(View.INVISIBLE);
+            gifImageView.setVisibility(View.VISIBLE);
+            closeButton.setVisibility(View.VISIBLE);
+            pencilImage.setVisibility(View.VISIBLE);
+            Initializer.firstTime=true;
             System.out.println("Null ptr");
             //init learn list if there was not previous state
             Initializer initializer = new Initializer();
@@ -98,6 +114,19 @@ public class LearnSelector extends AppCompatActivity {
 
             }
         });
+
+        if(closeButton.getVisibility()==View.VISIBLE){
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    closeButton.setVisibility(View.INVISIBLE);
+                    gifImageView.setVisibility(View.INVISIBLE);
+                    pencilImage.setVisibility(View.INVISIBLE);
+                    gridView.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+
 
     }
 

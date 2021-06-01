@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".LearnVariantsBrowser">
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
-        android:layout_height="66dp"
+        android:layout_height="80dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:background="@color/appfabetOrange"
-        android:fontFamily="@font/nerkoone_regular"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/kgbrokenvesselssketch"
         android:gravity="center"
         android:text="@string/variantsBar"
         android:textColor="@color/white"
@@ -25,16 +25,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView3"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:fastScrollEnabled="true"
-        android:scrollbarThumbVertical="@android:color/transparent"
         android:fadeScrollbars="false"
+        android:fastScrollEnabled="true"
         android:gravity="center"
         android:horizontalSpacing="15dp"
-        android:listSelector="#28DE401E"
+        android:listSelector="#2A3C7000"
         android:numColumns="1"
-        android:verticalSpacing="15dp" >
+        android:scrollbarThumbVertical="@android:color/transparent"
+        android:verticalSpacing="15dp">
 
     </GridView>
 

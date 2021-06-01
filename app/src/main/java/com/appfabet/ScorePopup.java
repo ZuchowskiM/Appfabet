@@ -104,7 +104,7 @@ public class ScorePopup extends AppCompatDialogFragment {
            if(charRecon.contains(targetValue))
            {
                if(scoreInt>=1 && scoreInt<4){
-                   String message = articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
+                   String message = //articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
                            "Good job :D";
                    scoreImageView.setImageResource(R.drawable.smile);
                    infoTextView.setText(message);
@@ -113,7 +113,7 @@ public class ScorePopup extends AppCompatDialogFragment {
                }
                if(scoreInt>=4 && scoreInt<8)
                {
-                   String message = articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
+                   String message = //articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
                            "Great job :D";
                    scoreImageView.setImageResource(R.drawable.smile_ok1);
                    infoTextView.setText(message);
@@ -121,7 +121,7 @@ public class ScorePopup extends AppCompatDialogFragment {
                    btnEnabled=true;
                }
                if(scoreInt>=8){
-                   String message = articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
+                   String message = //articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
                            "Excellent job :D";
                    scoreImageView.setImageResource(R.drawable.smile_ok);
                    infoTextView.setText(message);

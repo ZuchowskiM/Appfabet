@@ -1,35 +1,20 @@
 package com.appfabet;
 
-import android.app.Activity;
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
+import android.widget.AdapterView;;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-
 import com.appfabet.Adapters.LearnAdapter;
 import com.appfabet.Models.CurrentState;
 import com.appfabet.Models.Initializer;
-import com.appfabet.Models.LearnType;
 import com.appfabet.Models.ScreenOptions;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 
 import pl.droidsonroids.gif.GifImageView;
 

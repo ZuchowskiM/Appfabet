@@ -26,12 +26,15 @@ public class TextToSpeechInterpreter {
 //                    else {
 //                        Toast.makeText(context, "Language supported", Toast.LENGTH_SHORT).show();
 //                    }
+                    textToSpeech.setLanguage(Locale.ENGLISH);
                 }
                 else {
                     //Toast.makeText(context, "Speech failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+
 
     }
 

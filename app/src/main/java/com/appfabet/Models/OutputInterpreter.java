@@ -38,7 +38,7 @@ public class OutputInterpreter {
 
     public String getResultFromBigDictionary(int dictionaryIndex) throws IOException {
 
-        currentDictionary = context.getResources().openRawResource(R.raw.emnist_big_en);
+        currentDictionary = context.getResources().openRawResource(R.raw.emnist_pl_dictrionary);
 
         createArrayFromJson();
 
@@ -46,7 +46,7 @@ public class OutputInterpreter {
     }
 
     public String getResultFromSmallDictionary(int dictionaryIndex) throws IOException {
-        currentDictionary = context.getResources().openRawResource(R.raw.emnist_small_en);
+        currentDictionary = context.getResources().openRawResource(R.raw.emnist_pl_small);
 
         createArrayFromJson();
 

@@ -105,7 +105,7 @@ public class ScorePopup extends AppCompatDialogFragment {
            {
                if(scoreInt>=1 && scoreInt<4){
                    String message = //articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
-                           "Good job :D";
+                           "Dobra robota :D";
                    scoreImageView.setImageResource(R.drawable.smile);
                    infoTextView.setText(message);
                    infoTextView.setTextColor(randomColorGenerator.getColor());
@@ -114,7 +114,7 @@ public class ScorePopup extends AppCompatDialogFragment {
                if(scoreInt>=4 && scoreInt<8)
                {
                    String message = //articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
-                           "Great job :D";
+                           "Świetnie :D";
                    scoreImageView.setImageResource(R.drawable.smile_ok1);
                    infoTextView.setText(message);
                    infoTextView.setTextColor(randomColorGenerator.getColor());
@@ -122,7 +122,7 @@ public class ScorePopup extends AppCompatDialogFragment {
                }
                if(scoreInt>=8){
                    String message = //articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
-                           "Excellent job :D";
+                           "Wybitnie! :D";
                    scoreImageView.setImageResource(R.drawable.smile_ok);
                    infoTextView.setText(message);
                    infoTextView.setTextColor(randomColorGenerator.getColor());

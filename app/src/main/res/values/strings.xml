@@ -2,12 +2,12 @@
     <string name="app_name">Appfabet</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="learnBar">What are we learning today?</string>
-    <string name="levelBar">Select level</string>
-    <string name="alphabet">Alphabet</string>
-    <string name="numbers">Numbers</string>
-    <string name="things">Other things</string>
-    <string name="variantsBar">How do you want to learn</string>
+    <string name="learnBar">Czego dziś się uczymy?</string>
+    <string name="levelBar">Wybierz poziom</string>
+    <string name="alphabet">Literki</string>
+    <string name="numbers">Cyferki</string>
+    <string name="things">Inne</string>
+    <string name="variantsBar">Wybierz tryb</string>
 
 
 </resources>

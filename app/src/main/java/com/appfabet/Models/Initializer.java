@@ -30,9 +30,9 @@ public class Initializer {
     public ArrayList<LearnType> initLearnTypesAndLevels(Context context, Activity activity){
 
         learnTypesList = new ArrayList<>();
-        LearnType alphabet = new LearnType("Alphabet", R.drawable.alphabet_pic);
-        LearnType numbers = new LearnType("Numbers",R.drawable.numbers_pic);
-        LearnType training = new LearnType("Drawing",R.drawable.trainingkids);
+        LearnType alphabet = new LearnType("Literki", R.drawable.alphabet_pic);
+        LearnType numbers = new LearnType("Cyferki",R.drawable.numbers_pic);
+        LearnType training = new LearnType("Rysowanie",R.drawable.trainingkids);
 
         learnTypesList.add(alphabet);
         learnTypesList.add(numbers);
@@ -40,18 +40,18 @@ public class Initializer {
 
 
         // Alphabet variants in random mode
-        LearnVariant bigLetters = new LearnVariant("Train BIG letters " + '\n' + "Random mode" , R.drawable.big_letters);
+        LearnVariant bigLetters = new LearnVariant("Duże literki " + '\n' + "Tryb losowy" , R.drawable.big_letters);
         bigLetters.setLearnMode(LearnVariant.mode.random);
 
-        LearnVariant smallLetters = new LearnVariant("Train small letters " + '\n' + "Random mode", R.drawable.alphabbet_small);
+        LearnVariant smallLetters = new LearnVariant("Małe literki " + '\n' + "Tryb losowy", R.drawable.alphabbet_small);
         smallLetters.setLearnMode(LearnVariant.mode.random);
 
         // Alphabet all letters in chronological mode
-        LearnVariant allLetters = new LearnVariant("Train All letters " + '\n' + "Random mode", R.drawable.alphabbet_all_letters);
+        LearnVariant allLetters = new LearnVariant("Wszystkie literki " + '\n' + "Tryb losowy", R.drawable.alphabbet_all_letters);
         allLetters.setLearnMode(LearnVariant.mode.random);
 
         // List of all levels
-        LearnVariant allChronological = new LearnVariant("All letters" , R.drawable.all_letters_variant_pic);
+        LearnVariant allChronological = new LearnVariant("Tryb dowolny" , R.drawable.all_letters_variant_pic);
         allChronological.setLearnMode(LearnVariant.mode.all);
 
         learnVariantsAlphabet.add(bigLetters); // 0
@@ -61,16 +61,16 @@ public class Initializer {
 
 
         // List of things to train
-        LearnVariant trainingThings = new LearnVariant("Training", R.drawable.things_pic);
+        LearnVariant trainingThings = new LearnVariant("Trening", R.drawable.things_pic);
         trainingThings.setLearnMode(LearnVariant.mode.all);
         learnVariantsDrawing.add(trainingThings);
 
 
         // Numbers Variants
-        LearnVariant simpleNumbers = new LearnVariant("Train simple numbers " + '\n' + "Chronological mode", R.drawable.numbers_pic);
+        LearnVariant simpleNumbers = new LearnVariant("Cyferki " + '\n' + "Po kolei", R.drawable.numbers_pic);
         simpleNumbers.setLearnMode(LearnVariant.mode.chronological);
 
-        LearnVariant complexNumbers = new LearnVariant("Train complex numbers " + '\n' + "Random mode", R.drawable.numbers_pic);
+        LearnVariant complexNumbers = new LearnVariant("Cyferki " + '\n' + "Losowo", R.drawable.numbers_pic);
         complexNumbers.setLearnMode(LearnVariant.mode.random);
 
         learnVariantsNumbers.add(simpleNumbers);
@@ -158,7 +158,7 @@ public class Initializer {
         for(int i=1;i<2;i++){
             int resPicId = context.getResources().getIdentifier("t"+i,"drawable",activity.getPackageName());
             int resPicId1 = context.getResources().getIdentifier("pattern"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),"Flower",1,false,resPicId,LevelType.THINGS);
+            Level level = new Level(String.valueOf(i),"Kwiatek",1,false,resPicId,LevelType.THINGS);
             level.setPatternPic(resPicId1);
             levelsTraning.add(level);
             System.out.println("Level");

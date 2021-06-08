@@ -10,7 +10,7 @@ public class ImageComparatorBMP {
     private final double whitesA;
     private final double whitesB;
     private final double blacksRatio;
-    private final double allPixels;
+    private final int allPixels;
     private final boolean coverage_error;
     private double blacks_ratio_minimum;
 

@@ -12,6 +12,7 @@ import android.graphics.Path;
 
 import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
@@ -108,7 +109,7 @@ public class DrawArea extends View
         drawPaint = new Paint();
         drawPaint.setColor(paintColor);
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(20);
+        drawPaint.setStrokeWidth(40);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
         drawPaint.setStyle(Paint.Style.STROKE);
@@ -161,6 +162,7 @@ public class DrawArea extends View
 
             OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
 
+            Log.d("finalIndex", finalIndex.toString());
             for (int i: finalIndex) {
                 results.add(outputInterpreter.getResultFromBigDictionary(i));
             }
@@ -273,6 +275,7 @@ public class DrawArea extends View
         pairList.add(Pair.create(0f,0));
         pairList.add(Pair.create(0f,0));
         pairList.add(Pair.create(0f,0));
+        Log.d("floatArray", String.valueOf(tensorBuffer.getFloatArray().length));
 
         for(float i: tensorBuffer.getFloatArray())
         {

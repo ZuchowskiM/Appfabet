@@ -40,7 +40,6 @@ public class LevelBrowser extends Activity {
     ArrayList<Level> levels = new ArrayList<>();
 
 
-
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,11 +60,17 @@ public class LevelBrowser extends Activity {
             variantPosition = args.getInt("variantPosition");
             try{
                 learnType=args.getString("LearnType");
+                if(learnType.equals("Trening")){
+
+                }
+
             } catch (Exception e){
 
             }
 
         }
+
+
 
         //curr level
         levels = (ArrayList<Level>) Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).getLevels();
@@ -86,6 +91,19 @@ public class LevelBrowser extends Activity {
         }
         gridView.setNumColumns(colums+1);
 
+        if(args!=null) {
+            try{
+                if(learnType.equals("Trening")){
+                    if(colums>myAdapter.getCount()){
+                        colums = myAdapter.getCount();
+                    }
+                    gridView.setNumColumns(colums);
+                }
+            } catch (Exception e){}
+        }
+
+
+
 
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -98,8 +116,8 @@ public class LevelBrowser extends Activity {
                     args.putInt("variantPosition", variantPosition);
                     args.putInt("levelPosition", position);
                     if(learnType!=null){
-                        if(learnType.equals("training")){
-                            args.putString("learnType", "training");
+                        if(learnType.equals("Trening")){
+                            args.putString("learnType", "Trening");
                         }
                     }
                     intent.putExtra("TYPE",args);

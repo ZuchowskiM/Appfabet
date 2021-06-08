@@ -13,12 +13,11 @@ public class Level implements Serializable {
     private int patternPic;
     private LevelType type;
 
-    public Level(String name, String description, int level, boolean completed,int resource, LevelType type) {
+    public Level(String name, String description, int level, boolean completed, LevelType type) {
         this.name = name;
         this.description = description;
         this.level = level;
         this.completed = completed;
-        this.resource = resource;
         this.type = type;
     }
 

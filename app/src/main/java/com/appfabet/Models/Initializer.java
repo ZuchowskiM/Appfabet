@@ -84,14 +84,13 @@ public class Initializer {
         //--------------------------------------------------------------------
 
 
+        PolishLetters polishLetters = new PolishLetters();
 
         // big characters init
-        char character = 'A';
 
-        for(int i=1; i<27; i++){
-            int resPicId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),String.valueOf(character), 1, false, resPicId, LevelType.BIG_LETTERS);
-            character = (char) (character+1);
+        for(int i=1; i<polishLetters.getSize(); i++){
+            //int resPicId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
+            Level level = new Level(String.valueOf(i),polishLetters.bigLetters[i-1], 1, false,  LevelType.BIG_LETTERS);
             levelsAlphabetBigLetters.add(level);
         }
 
@@ -100,7 +99,7 @@ public class Initializer {
         // numbers init
         for(int i=1; i<10; i++){
             int resPicId = context.getResources().getIdentifier("p"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),String.valueOf(i), 1, false, resPicId, LevelType.NUMBERS);
+            Level level = new Level(String.valueOf(i),String.valueOf(i), 1, false, LevelType.NUMBERS);
             levelsNumbersSimple.add(level);
         }
 
@@ -109,23 +108,22 @@ public class Initializer {
         learnTypesList.get(1).getVariants().get(1).setLevels(levelsNumbersSimple);
 
 
+
+
         // all characters init
-        char character1 = 'A';
-        for(int i=1; i<27; i++){
+
+        for(int i=1; i < polishLetters.getSize(); i++){
             int resPicId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),String.valueOf(character1), 1, false, resPicId, LevelType.BIG_LETTERS);
-            character1 = (char) (character1+1);
+            Level level = new Level(String.valueOf(i),polishLetters.bigLetters[i-1], 1, false,  LevelType.BIG_LETTERS);
             levelsAlphabetAllLetters.add(level);
         }
 
 
-
         // small chars init
-        char character2 = 'a';
-        for(int i=1; i<27; i++){
+
+        for(int i=1; i<polishLetters.getSize(); i++){
             int resPicId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),String.valueOf(character2), 1, false, resPicId, LevelType.SMALL_LETTERS);
-            character2 = (char) (character2+1);
+            Level level = new Level(String.valueOf(i),polishLetters.smallLetters[i-1], 1, false,  LevelType.SMALL_LETTERS);
             levelsAlphabetSmallLetters.add(level);
             levelsAlphabetAllLetters.add(level);
         }
@@ -137,32 +135,46 @@ public class Initializer {
 
 
         // all chrono chars init
-        char character3 = 'A';
-        char character4 = 'a';
-        for(int i=1; i<27; i++){
+
+        for(int i=1; i<polishLetters.getSize(); i++){
             //adding big first
             int resPicId = context.getResources().getIdentifier("l"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),String.valueOf(character3), 1, false, resPicId, LevelType.BIG_LETTERS);
-            character3 = (char) (character3+1);
+            Level level = new Level(String.valueOf(i),polishLetters.bigLetters[i-1], 1, false,  LevelType.BIG_LETTERS);
             levelsAlphabetAllChronologicalLetters.add(level);
 
             int resPicId1 = context.getResources().getIdentifier("m"+i,"drawable",activity.getPackageName());
             //adding small second
-            Level level1 = new Level(String.valueOf(i),String.valueOf(character4), 1, false, resPicId1, LevelType.SMALL_LETTERS);
-            character4 = (char) (character4+1);
+            Level level1 = new Level(String.valueOf(i),polishLetters.smallLetters[i-1], 1, false,  LevelType.SMALL_LETTERS);
             levelsAlphabetAllChronologicalLetters.add(level1);
         }
         learnTypesList.get(0).getVariants().get(3).setLevels(levelsAlphabetAllChronologicalLetters);
 
-        // add levels for things
-        for(int i=1;i<2;i++){
-            int resPicId = context.getResources().getIdentifier("t"+i,"drawable",activity.getPackageName());
-            int resPicId1 = context.getResources().getIdentifier("pattern"+i,"drawable",activity.getPackageName());
-            Level level = new Level(String.valueOf(i),"Kwiatek",1,false,resPicId,LevelType.THINGS);
-            level.setPatternPic(resPicId1);
-            levelsTraning.add(level);
-            System.out.println("Level");
-        }
+
+        Level level1 = new Level("Things","Kwiatek",1,false,LevelType.THINGS);
+        level1.setResource(context.getResources().getIdentifier("t1","drawable",activity.getPackageName()));
+        level1.setPatternPic(context.getResources().getIdentifier("pattern1","drawable",activity.getPackageName()));
+
+        Level level2 = new Level("Things","Jabłko",1,false,LevelType.THINGS);
+        level2.setResource(context.getResources().getIdentifier("t2","drawable",activity.getPackageName()));
+        level2.setPatternPic(context.getResources().getIdentifier("pattern2","drawable",activity.getPackageName()));
+
+        Level level3 = new Level("Things","Pies",1,false,LevelType.THINGS);
+        level3.setResource(context.getResources().getIdentifier("t3","drawable",activity.getPackageName()));
+        level3.setPatternPic(context.getResources().getIdentifier("pattern3","drawable",activity.getPackageName()));
+
+        Level level4 = new Level("Things","Świnka",1,false,LevelType.THINGS);
+        level4.setResource(context.getResources().getIdentifier("t4","drawable",activity.getPackageName()));
+        level4.setPatternPic(context.getResources().getIdentifier("pattern4","drawable",activity.getPackageName()));
+
+        Level level5 = new Level("Things","Ptaszek",1,false,LevelType.THINGS);
+        level5.setResource(context.getResources().getIdentifier("t5","drawable",activity.getPackageName()));
+        level5.setPatternPic(context.getResources().getIdentifier("pattern5","drawable",activity.getPackageName()));
+
+        levelsTraning.add(level1);
+        levelsTraning.add(level2);
+        levelsTraning.add(level3);
+        levelsTraning.add(level4);
+        levelsTraning.add(level5);
 
         System.out.println("Rozmiar" + levelsTraning.size());
         System.out.println("Rozmiar" + learnTypesList.size());

@@ -151,7 +151,7 @@ public class DrawActivity extends AppCompatActivity {
         ScorePopup popup = new ScorePopup();
 
         if(learnType!=null) {
-            if(learnType.equals("training")){
+            if(learnType.equals("Trening")){
                 trainingImage.setImageResource(levels.get(currentLevelPosition).getResource());
                 trainingImage.setVisibility(View.VISIBLE);
             }
@@ -160,11 +160,6 @@ public class DrawActivity extends AppCompatActivity {
         patternElement.setText(levels.get(currentLevelPosition).getDescription());
         RandomColorGenerator randomColorGenerator = new RandomColorGenerator();
         patternElement.setTextColor(randomColorGenerator.getColor());
-
-        // DLA FILIPA
-        // levels.get(currentLevelPosition) <- wszystko co potrzebujesz na temat obecnego levelu
-        // levels.get(currentLevelPosition).getResource() <- to jest obrazek który wyswietla sie uzytkownikowi w drawArea
-        // levels.get(currentLevelPosition).getPatternPic() <- to jest obrazek pattern ktory potrzebujesz do porownywania
 
 
         if (levels.get(currentLevelPosition).isCompleted()) {

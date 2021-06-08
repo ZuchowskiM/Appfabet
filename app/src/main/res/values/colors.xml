@@ -12,5 +12,8 @@
     <color name="appfabetDark">#2E2D2A</color>
     <color name="appfabetPink">#cc0066</color>
     <color name="appfabetGreen">#1AFF00</color>
+    <color name="appfabetBackground">#E4E9EF</color>
+    <color name="appfabetGreenBackboard">#82A795</color>
+    <color name="appfabetGreenBackboardDark">#446254</color>
 
 </resources>

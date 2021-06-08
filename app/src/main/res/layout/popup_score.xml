@@ -10,7 +10,7 @@
         android:layout_width="350dp"
         android:layout_height="541dp"
         android:layout_gravity="center"
-        android:background="@drawable/grid_item_border"
+        android:background="@drawable/rounded_background"
         android:orientation="vertical"
 
         android:padding="5dp">
@@ -84,6 +84,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/appfabetOrangestrong"
                 android:text="Jeszcze raz"
                 android:textSize="18sp" />
         </LinearLayout>

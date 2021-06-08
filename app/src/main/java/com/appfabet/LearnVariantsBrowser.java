@@ -67,19 +67,19 @@ public class LearnVariantsBrowser extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                if(learnTypesList.get(learnPosition).getVariants().get(position).getName().equals("All letters")){
+                if(learnTypesList.get(learnPosition).getVariants().get(position).getName().equals("Tryb dowolny")){
                     Intent intent = new Intent(LearnVariantsBrowser.this, LevelBrowser.class);
                     Bundle args = new Bundle();
                     args.putInt("learnPosition", learnPosition);
                     args.putInt("variantPosition", position);
                     intent.putExtra("TYPE",args);
                     startActivity(intent);
-                } else if(learnTypesList.get(learnPosition).getVariants().get(position).getName().equals("Training")){
+                } else if(learnTypesList.get(learnPosition).getVariants().get(position).getName().equals("Trening")){
                     Intent intent = new Intent(LearnVariantsBrowser.this, LevelBrowser.class);
                     Bundle args = new Bundle();
                     args.putInt("learnPosition", learnPosition);
                     args.putInt("variantPosition", position);
-                    args.putString("LearnType","training");
+                    args.putString("LearnType","Trening");
                     intent.putExtra("TYPE",args);
                     startActivity(intent);
                 }

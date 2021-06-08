@@ -3,19 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/appfabetBackground"
     tools:context=".LevelBrowser">
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="66dp"
-        android:layout_marginTop="20dp"
+        android:background="@drawable/schoolboard"
         android:fontFamily="@font/kgbrokenvesselssketch"
         android:gravity="center"
         android:text="@string/levelBar"
         android:textColor="@color/white"
-        android:textSize="36sp" />
+        android:textSize="27sp" />
 
     <GridView
         android:id="@+id/gridView"

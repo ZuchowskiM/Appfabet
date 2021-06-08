@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.MotionEvent;
@@ -19,6 +20,7 @@ import android.view.View;
 import com.appfabet.ml.ConvEmnistEnBig;
 import com.appfabet.ml.ConvEmnistEnSmall;
 import com.appfabet.ml.ConvMnist;
+import com.appfabet.ml.ConvPolcharsB95V2;
 import com.appfabet.ml.ConvPolcharsBigV2;
 import com.appfabet.ml.ConvPolcharsSmallV2;
 
@@ -106,7 +108,7 @@ public class DrawArea extends View
         drawPaint = new Paint();
         drawPaint.setColor(paintColor);
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(50);
+        drawPaint.setStrokeWidth(20);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
         drawPaint.setStyle(Paint.Style.STROKE);
@@ -117,6 +119,16 @@ public class DrawArea extends View
         System.out.println(this.getMeasuredWidth() + " " + this.getMeasuredHeight());
         //Bitmap b = Bitmap.createBitmap( this.getLayoutParams().width, this.getLayoutParams().height, Bitmap.Config.ARGB_8888);
         Bitmap b = Bitmap.createBitmap( this.getMeasuredWidth(), this.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+
+        //Moje testy plz no delete
+
+//        System.out.println(b.getByteCount());
+//        ByteBuffer bb = ByteBuffer.allocate(b.getByteCount());
+//        b.copyPixelsToBuffer(bb);
+//
+//        System.out.println(bb.capacity());
+
+
 
         Canvas c = new Canvas(b);
         this.layout(this.getLeft(), this.getTop(), this.getRight(), this.getBottom());
@@ -135,10 +147,10 @@ public class DrawArea extends View
 
             modelSize = 32;
 
-            ConvPolcharsBigV2 model = ConvPolcharsBigV2.newInstance(this.getContext());
+            ConvPolcharsB95V2 model = ConvPolcharsB95V2.newInstance(this.getContext());
             TensorBuffer inputFeature0 = makeNumberModelCalculations(0.0f,1.0f);
 
-            ConvPolcharsBigV2.Outputs outputs = model.process(inputFeature0);
+            ConvPolcharsB95V2.Outputs outputs = model.process(inputFeature0);
             model.close();
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
@@ -244,7 +256,7 @@ public class DrawArea extends View
         }
 
         //DEBUG
-        //printByteBufferAs2DArray(byteBuffer);
+        printByteBufferAs2DArray(byteBuffer);
 
         TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, modelSize, modelSize}, DataType.FLOAT32);
         inputFeature0.loadBuffer(byteBuffer);

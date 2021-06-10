@@ -2,6 +2,7 @@ package com.appfabet.Models;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
@@ -18,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
+import com.appfabet.R;
 import com.appfabet.ml.ConvEmnistEnBig;
 import com.appfabet.ml.ConvEmnistEnSmall;
 import com.appfabet.ml.ConvMnist;
@@ -29,6 +31,7 @@ import com.appfabet.ml.ConvPolcharsSmallV2;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -123,12 +126,23 @@ public class DrawArea extends View
 
         //Moje testy plz no delete
 
-//        System.out.println(b.getByteCount());
-//        ByteBuffer bb = ByteBuffer.allocate(b.getByteCount());
-//        b.copyPixelsToBuffer(bb);
-//
-//        System.out.println(bb.capacity());
+        Bitmap b_ = getResizedBitmap(b, 600, 300);
 
+        ByteBuffer bb = ByteBuffer.allocate(b_.getByteCount());
+        b_.copyPixelsToBuffer(bb);
+        System.out.println("bb: " + bb.capacity());
+
+        Bitmap bmp = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.pattern4);
+        Bitmap bmp_ = getResizedBitmap(bmp, 600, 300);
+        ByteBuffer bb2 = ByteBuffer.allocate(bmp_.getByteCount());
+        bmp_.copyPixelsToBuffer(bb2);
+        System.out.println("bb2: " + bb2.capacity());
+
+
+        ImageComparatorBMP comparator = new ImageComparatorBMP(bb, bb2, 70);
+        comparator.setBlacks_ratio_minimum(70);
+        System.out.println("\n\nGOOD? " + comparator.isGood());
+        Log.d("GOOD", String.valueOf(comparator.isGood()));
 
 
         Canvas c = new Canvas(b);

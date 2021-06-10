@@ -42,7 +42,7 @@ public class ImageComparatorBMP {
     private double calc_whiteA(){
         double whites = 0;
         for (int y = 0; y < bbA.capacity(); ++y)
-            if (bbA.get(y) == 0.0)
+            if (bbA.get(y) == -1)
                 whites++;
         return whites;
     }
@@ -50,7 +50,7 @@ public class ImageComparatorBMP {
     private double calc_whiteB(){
         double whites = 0;
         for (int y = 0; y < bbB.capacity(); ++y)
-            if (bbB.get(y) == 0.0)
+            if (bbB.get(y) == -1)
                 whites++;
         return whites;
     }
@@ -61,10 +61,10 @@ public class ImageComparatorBMP {
         double blacksBoth = 0;
         for (int y = 0; y < bbA.capacity(); ++y) {
 
-            if(bbA.get(y) != 0.0)
+            if(bbA.get(y) != -1)
                 blacksA++;
 
-            if(bbA.get(y) != 0.0 && bbB.get(y) != 0.0)
+            if(bbA.get(y) != -1 && bbB.get(y) != -1)
                 blacksBoth++;
         }
         System.out.println("blacksA: " + blacksA + "  blacksBoth: " + blacksBoth);

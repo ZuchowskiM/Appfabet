@@ -118,11 +118,7 @@ public class DrawArea extends View
         drawPaint.setStyle(Paint.Style.STROKE);
     }
 
-    public Bitmap getBitmapFromView() {
-
-        System.out.println(this.getMeasuredWidth() + " " + this.getMeasuredHeight());
-        //Bitmap b = Bitmap.createBitmap( this.getLayoutParams().width, this.getLayoutParams().height, Bitmap.Config.ARGB_8888);
-        Bitmap b = Bitmap.createBitmap( this.getMeasuredWidth(), this.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+    private void PatternTest(Bitmap b){
 
         //Moje testy plz no delete
 
@@ -145,7 +141,13 @@ public class DrawArea extends View
         Log.d("GOOD", String.valueOf(comparator.isGood()));
         Log.d("ratio", String.valueOf(comparator.getBlacksRatio()));
 
+    }
 
+    public Bitmap getBitmapFromView() {
+
+        System.out.println(this.getMeasuredWidth() + " " + this.getMeasuredHeight());
+        //Bitmap b = Bitmap.createBitmap( this.getLayoutParams().width, this.getLayoutParams().height, Bitmap.Config.ARGB_8888);
+        Bitmap b = Bitmap.createBitmap( this.getMeasuredWidth(), this.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
         this.layout(this.getLeft(), this.getTop(), this.getRight(), this.getBottom());
         this.draw(c);
@@ -240,6 +242,11 @@ public class DrawArea extends View
     private TensorBuffer makeNumberModelCalculations(float pixelBlackVal, float pixelWhiteVal){
 
         Bitmap bitmap = this.getBitmapFromView();
+
+        //Filip Test Fun//////////////////
+        PatternTest(bitmap);
+        /////////////////////////////////
+
         Bitmap scaledBitmap = getResizedBitmap(bitmap, modelSize, modelSize);
 
         //DEBUG

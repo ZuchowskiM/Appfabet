@@ -143,6 +143,7 @@ public class DrawArea extends View
         comparator.setBlacks_ratio_minimum(70);
         System.out.println("\n\nGOOD? " + comparator.isGood());
         Log.d("GOOD", String.valueOf(comparator.isGood()));
+        Log.d("ratio", String.valueOf(comparator.getBlacksRatio()));
 
 
         Canvas c = new Canvas(b);

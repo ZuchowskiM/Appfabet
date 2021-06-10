@@ -14,6 +14,10 @@ public class ImageComparatorBMP {
     private final boolean coverage_error;
     private double blacks_ratio_minimum;
 
+    public double getBlacksRatio() {
+        return blacksRatio;
+    }
+
     public ImageComparatorBMP(ByteBuffer pattern, ByteBuffer toCompare, double coverage_tolerance) {
         this.bbA = pattern;
         this.bbB = toCompare;
@@ -38,7 +42,7 @@ public class ImageComparatorBMP {
     private double calc_whiteA(){
         double whites = 0;
         for (int y = 0; y < bbA.capacity(); ++y)
-            if (bbA.get(y) == -1)
+            if (bbA.get(y) == 0.0)
                 whites++;
         return whites;
     }
@@ -46,7 +50,7 @@ public class ImageComparatorBMP {
     private double calc_whiteB(){
         double whites = 0;
         for (int y = 0; y < bbB.capacity(); ++y)
-            if (bbB.get(y) == -1)
+            if (bbB.get(y) == 0.0)
                 whites++;
         return whites;
     }
@@ -57,12 +61,13 @@ public class ImageComparatorBMP {
         double blacksBoth = 0;
         for (int y = 0; y < bbA.capacity(); ++y) {
 
-            if(bbA.get(y) != -1)
+            if(bbA.get(y) != 0.0)
                 blacksA++;
 
-            if(bbA.get(y) != -1 && bbB.get(y) != -1)
+            if(bbA.get(y) != 0.0 && bbB.get(y) != 0.0)
                 blacksBoth++;
         }
+        System.out.println("blacksA: " + blacksA + "  blacksBoth: " + blacksBoth);
         return blacksBoth / blacksA * 100;
     }
 

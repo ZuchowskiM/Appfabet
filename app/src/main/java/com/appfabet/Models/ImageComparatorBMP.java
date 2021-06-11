@@ -82,6 +82,8 @@ public class ImageComparatorBMP {
 
         double ratio = (Math.abs(diffCustom / diffPattern * 100 - 100));
 
+        System.out.println("############# RATIO: " + ratio);
+
         return !(ratio > tolerance);
     }
 

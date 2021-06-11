@@ -112,7 +112,7 @@ public class DrawArea extends View
         drawPaint = new Paint();
         drawPaint.setColor(paintColor);
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(40);
+        drawPaint.setStrokeWidth(20);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
         drawPaint.setStyle(Paint.Style.STROKE);
@@ -128,14 +128,17 @@ public class DrawArea extends View
         b_.copyPixelsToBuffer(bb);
         System.out.println("bb: " + bb.capacity());
 
-        Bitmap bmp = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.pattern4);
+        Bitmap bmp = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.pattern2);
         Bitmap bmp_ = getResizedBitmap(bmp, 600, 300);
         ByteBuffer bb2 = ByteBuffer.allocate(bmp_.getByteCount());
         bmp_.copyPixelsToBuffer(bb2);
         System.out.println("bb2: " + bb2.capacity());
 
+        for (int i=0;i<1000;++i){
+            System.out.println(bb.get(i));
+        }
 
-        ImageComparatorBMP comparator = new ImageComparatorBMP(bb, bb2, 70);
+        ImageComparatorBMP comparator = new ImageComparatorBMP(bb2, bb, 70);
         comparator.setBlacks_ratio_minimum(70);
         System.out.println("\n\nGOOD? " + comparator.isGood());
         Log.d("GOOD", String.valueOf(comparator.isGood()));

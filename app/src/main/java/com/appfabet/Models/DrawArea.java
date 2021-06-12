@@ -123,7 +123,7 @@ public class DrawArea extends View
         b_.copyPixelsToBuffer(bb);
         System.out.println("bb: " + bb.capacity());
 
-        Bitmap bmp = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.pattern2);
+        Bitmap bmp = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.pattern3);
         Bitmap bmp_ = getResizedBitmap(bmp, 796, 912);
         ByteBuffer bb2 = ByteBuffer.allocate(bmp_.getByteCount());
         bmp_.copyPixelsToBuffer(bb2);

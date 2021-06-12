@@ -126,7 +126,7 @@ public class DrawArea extends View
         ByteBuffer bb2 = ByteBuffer.allocate(bmp_.getByteCount());
         bmp_.copyPixelsToBuffer(bb2);
 
-        ImageComparatorBMP comparator = new ImageComparatorBMP(bb2, bb, 70);
+        ImageComparatorBMP comparator = new ImageComparatorBMP(bb2, bb, 4);
         comparator.setBlacks_ratio_minimum(70);
         System.out.println("\n\nGOOD? " + comparator.isGood());
 

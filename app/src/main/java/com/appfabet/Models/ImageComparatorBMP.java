@@ -1,5 +1,7 @@
 package com.appfabet.Models;
 
+import android.util.Log;
+
 import java.nio.ByteBuffer;
 
 public class ImageComparatorBMP {
@@ -7,18 +9,13 @@ public class ImageComparatorBMP {
     private final ByteBuffer bbA;
     private final ByteBuffer bbB;
 
-    private final double whitesA;
-    private final double whitesB;
+    private final double blacksA;
+    private final double blacksB;
     private final double blacksRatio;
-    private final int allPixels;
-    private final boolean coverage_error;
     private double blacks_ratio_minimum;
+    private final boolean blacks_overfit;
 
-    public double getBlacksRatio() {
-        return blacksRatio;
-    }
-
-    public ImageComparatorBMP(ByteBuffer pattern, ByteBuffer toCompare, double coverage_tolerance) {
+    public ImageComparatorBMP(ByteBuffer pattern, ByteBuffer toCompare, double blacks_tolerance) {
         this.bbA = pattern;
         this.bbB = toCompare;
 
@@ -28,66 +25,52 @@ public class ImageComparatorBMP {
 
         this.blacks_ratio_minimum = 0.0;
 
-        this.whitesA = calc_whiteA();
-        this.whitesB = calc_whiteB();
+        this.blacksA = calc_blackA();
+        this.blacksB = calc_blackB();
         this.blacksRatio = calc_blacks();
-        this.allPixels = bbA.capacity();
-        this.coverage_error = calc_coverageError(coverage_tolerance);
+        this.blacks_overfit = blacks_overfit(blacks_tolerance);
     }
 
     public void setBlacks_ratio_minimum(double blacks_ratio_minimum) {
         this.blacks_ratio_minimum = blacks_ratio_minimum;
     }
 
-    private double calc_whiteA(){
-        double whites = 0;
+    private double calc_blackA(){
+        double blacks = 0;
         for (int y = 3; y < bbA.capacity(); y+=4)
-            if (bbA.get(y) == 0)
-                whites++;
-        return whites;
+            if (bbA.get(y) != 0)
+                blacks++;
+        return blacks;
     }
 
-    private double calc_whiteB(){
-        double whites = 0;
+    private double calc_blackB(){
+        double blacks = 0;
         for (int y = 3; y < bbB.capacity(); y+=4)
-            if (bbB.get(y) == 0)
-                whites++;
-        return whites;
+            if (bbB.get(y) != 0)
+                blacks++;
+        return blacks;
     }
 
     private double calc_blacks()
     {
-        double blacksA = 0;
         double blacksBoth = 0;
         for (int y = 3; y < bbA.capacity(); y+=4) {
-
-            if(bbA.get(y) != 0)
-                blacksA++;
 
             if(bbA.get(y) != 0 && bbB.get(y) != 0)
                 blacksBoth++;
         }
-        System.out.println("blacksA: " + blacksA + "  blacksBoth: " + blacksBoth);
-        return blacksBoth / blacksA * 100;
+        System.out.println("blacksA: " + this.blacksA + " blacksB: " + this.blacksB +  "  blacksBoth: " + blacksBoth);
+        return blacksBoth / this.blacksA * 100;
     }
 
-    private boolean calc_coverageError(double tolerance){
-        double diffPattern = 0.0, diffCustom = 0.0;
-
-        //Pattern difference
-        diffPattern = this.allPixels - this.whitesA;
-
-        //Custom difference
-        diffCustom = this.allPixels - this.whitesB;
-
-        double ratio = (Math.abs(diffCustom / diffPattern * 100 - 100));
-
-        return !(ratio > tolerance);
+    private boolean blacks_overfit(double tolerance) {
+        Log.d("fit", String.valueOf(this.blacksA * tolerance));
+        return this.blacksA * tolerance > this.blacksB;
     }
 
     public boolean isGood() {
         if (blacksRatio > blacks_ratio_minimum)
-            return coverage_error;
+            return blacks_overfit;
 
         return false;
     }

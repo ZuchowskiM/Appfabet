@@ -60,10 +60,6 @@ public class LevelBrowser extends Activity {
             variantPosition = args.getInt("variantPosition");
             try{
                 learnType=args.getString("LearnType");
-                if(learnType.equals("Trening")){
-
-                }
-
             } catch (Exception e){
 
             }

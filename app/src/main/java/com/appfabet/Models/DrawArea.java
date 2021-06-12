@@ -2,6 +2,7 @@ package com.appfabet.Models;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
@@ -10,15 +11,19 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 
+import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 
 
+import com.appfabet.R;
 import com.appfabet.ml.ConvEmnistEnBig;
 import com.appfabet.ml.ConvEmnistEnSmall;
 import com.appfabet.ml.ConvMnist;
+import com.appfabet.ml.ConvPolcharsB95V2;
 import com.appfabet.ml.ConvPolcharsBigV2;
 import com.appfabet.ml.ConvPolcharsSmallV2;
 
@@ -26,6 +31,7 @@ import com.appfabet.ml.ConvPolcharsSmallV2;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -106,10 +112,38 @@ public class DrawArea extends View
         drawPaint = new Paint();
         drawPaint.setColor(paintColor);
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(50);
+        drawPaint.setStrokeWidth(20);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
         drawPaint.setStyle(Paint.Style.STROKE);
+    }
+
+    private void PatternTest(Bitmap b){
+
+        //Moje testy plz no delete
+
+        Bitmap b_ = getResizedBitmap(b, 600, 300);
+
+        ByteBuffer bb = ByteBuffer.allocate(b_.getByteCount());
+        b_.copyPixelsToBuffer(bb);
+        System.out.println("bb: " + bb.capacity());
+
+        Bitmap bmp = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.pattern2);
+        Bitmap bmp_ = getResizedBitmap(bmp, 600, 300);
+        ByteBuffer bb2 = ByteBuffer.allocate(bmp_.getByteCount());
+        bmp_.copyPixelsToBuffer(bb2);
+        System.out.println("bb2: " + bb2.capacity());
+
+        for (int i=0;i<1000;++i){
+            System.out.println(bb.get(i));
+        }
+
+        ImageComparatorBMP comparator = new ImageComparatorBMP(bb2, bb, 70);
+        comparator.setBlacks_ratio_minimum(70);
+        System.out.println("\n\nGOOD? " + comparator.isGood());
+        Log.d("GOOD", String.valueOf(comparator.isGood()));
+        Log.d("ratio", String.valueOf(comparator.getBlacksRatio()));
+
     }
 
     public Bitmap getBitmapFromView() {
@@ -117,7 +151,6 @@ public class DrawArea extends View
         System.out.println(this.getMeasuredWidth() + " " + this.getMeasuredHeight());
         //Bitmap b = Bitmap.createBitmap( this.getLayoutParams().width, this.getLayoutParams().height, Bitmap.Config.ARGB_8888);
         Bitmap b = Bitmap.createBitmap( this.getMeasuredWidth(), this.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-
         Canvas c = new Canvas(b);
         this.layout(this.getLeft(), this.getTop(), this.getRight(), this.getBottom());
         this.draw(c);
@@ -135,10 +168,10 @@ public class DrawArea extends View
 
             modelSize = 32;
 
-            ConvPolcharsBigV2 model = ConvPolcharsBigV2.newInstance(this.getContext());
+            ConvPolcharsB95V2 model = ConvPolcharsB95V2.newInstance(this.getContext());
             TensorBuffer inputFeature0 = makeNumberModelCalculations(0.0f,1.0f);
 
-            ConvPolcharsBigV2.Outputs outputs = model.process(inputFeature0);
+            ConvPolcharsB95V2.Outputs outputs = model.process(inputFeature0);
             model.close();
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
@@ -149,6 +182,7 @@ public class DrawArea extends View
 
             OutputInterpreter outputInterpreter = new OutputInterpreter(getContext());
 
+            Log.d("finalIndex", finalIndex.toString());
             for (int i: finalIndex) {
                 results.add(outputInterpreter.getResultFromBigDictionary(i));
             }
@@ -211,6 +245,11 @@ public class DrawArea extends View
     private TensorBuffer makeNumberModelCalculations(float pixelBlackVal, float pixelWhiteVal){
 
         Bitmap bitmap = this.getBitmapFromView();
+
+        //Filip Test Fun//////////////////
+        PatternTest(bitmap);
+        /////////////////////////////////
+
         Bitmap scaledBitmap = getResizedBitmap(bitmap, modelSize, modelSize);
 
         //DEBUG
@@ -244,7 +283,7 @@ public class DrawArea extends View
         }
 
         //DEBUG
-        //printByteBufferAs2DArray(byteBuffer);
+        printByteBufferAs2DArray(byteBuffer);
 
         TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, modelSize, modelSize}, DataType.FLOAT32);
         inputFeature0.loadBuffer(byteBuffer);
@@ -261,6 +300,7 @@ public class DrawArea extends View
         pairList.add(Pair.create(0f,0));
         pairList.add(Pair.create(0f,0));
         pairList.add(Pair.create(0f,0));
+        Log.d("floatArray", String.valueOf(tensorBuffer.getFloatArray().length));
 
         for(float i: tensorBuffer.getFloatArray())
         {

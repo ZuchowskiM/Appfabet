@@ -91,7 +91,6 @@ public class ScorePopup extends AppCompatDialogFragment {
         }
 
 
-        ArticlesFinder articlesFinder = new ArticlesFinder();
 
 
         if (bundle != null) {
@@ -143,8 +142,8 @@ public class ScorePopup extends AppCompatDialogFragment {
                btnEnabled=false;
                accept.setVisibility(View.GONE);
                scoreImageView.setImageResource(R.drawable.fail);
-               String str = articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + " :(" + '\n' +
-                       articlesFinder.getArticle2(targetValue.charAt(0)) + targetValue ;
+               String str = "Myślimy, że to " + charRecon.get(0) + " :(" + '\n' +
+                      "Powinno być " + targetValue ;
                infoTextView.setText(str);
                infoTextView.setTextColor(randomColorGenerator.getColor());
 

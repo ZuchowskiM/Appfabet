@@ -9,37 +9,6 @@
     tools:context=".DrawActivity">
 
 
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/gifImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="150dp"
-        android:src="@drawable/gif1"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </pl.droidsonroids.gif.GifImageView>
-
-    <ImageView
-        android:id="@+id/pencilImage"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:maxWidth="200dp"
-        android:maxHeight="200dp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/patternPic"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/pencil_cloud_text_noarrow" />
-
-
     <ImageButton
         android:id="@+id/buttonHide"
         android:layout_width="match_parent"
@@ -121,8 +90,8 @@
             android:id="@+id/trainingImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="15dp"
             android:background="#27FFFFFF"
+            android:scaleType="fitXY"
             android:visibility="invisible"
             tools:srcCompat="@tools:sample/avatars" />
 
@@ -214,5 +183,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/patternPic"
         app:srcCompat="@drawable/accept" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="150dp"
+        android:src="@drawable/drawing_gif"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </pl.droidsonroids.gif.GifImageView>
+
+    <ImageView
+        android:id="@+id/pencilImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:maxWidth="200dp"
+        android:maxHeight="200dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/patternPic"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/pencil_cloud_text_noarrow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

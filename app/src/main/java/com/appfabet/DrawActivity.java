@@ -58,6 +58,8 @@ public class DrawActivity extends AppCompatActivity {
     String learnType = null;
     int streakCount;
     GifImageView gifImageView;
+    boolean correct = false;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -137,6 +139,7 @@ public class DrawActivity extends AppCompatActivity {
 
             if(streakArgs != null){
                 streakCount = streakArgs.getInt("streakCount");
+                learnType = streakArgs.getString("learnType");
             }
 
 
@@ -173,46 +176,6 @@ public class DrawActivity extends AppCompatActivity {
         }
 
 
-        view.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
-            @Override
-            public void onSwipeLeft() {
-
-                Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).setCurrentLevel(++currentLevelPosition);
-                Intent intent = new Intent(DrawActivity.this, DrawActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                try {
-                    if (LevelBrowser.gridView != null)
-                        LevelBrowser.gridView.invalidateViews();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                startActivity(intent);
-
-
-            }
-
-            @Override
-            public void onSwipeRight() {
-
-                Initializer.learnTypesList.get(learnPosition).getVariants().get(variantPosition).setCurrentLevel(--currentLevelPosition);
-                Intent intent = new Intent(DrawActivity.this, DrawActivity.class);
-
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                try {
-                    if (LevelBrowser.gridView != null)
-                        LevelBrowser.gridView.invalidateViews();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                startActivity(intent);
-
-            }
-        });
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,27 +183,55 @@ public class DrawActivity extends AppCompatActivity {
 
                 List<String> result = null;
 
+                if(learnType!=null) {
+                    if(learnType.equals("Trening")){
+                        trainingImage.setImageResource(levels.get(currentLevelPosition).getResource());
+                        trainingImage.setVisibility(View.VISIBLE);
+                        correct = drawArea.patternTest(drawArea.getBitmapFromView(),levels.get(currentLevelPosition).getPatternPic());
+                        result = new ArrayList<>();
+                        result.add("Things");
 
-                try {
-                    result = drawArea.checkModel();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                        Bundle args = new Bundle();
+                        args.putStringArrayList("result", (ArrayList<String>) result);
+                        args.putString("learnType", "Trening");
+                        args.putInt("levelPosition", currentLevelPosition);
+                        args.putBoolean("isGood", correct);
+                        args.putFloat("percentage", 100f);
+                        args.putInt("learnPosition", learnPosition);
+                        args.putInt("variantPosition", variantPosition);
+                        args.putString("targetValue", levels.get(currentLevelPosition).getDescription());
+                        args.putInt("streakCount", streakCount);
+                        popup.setArguments(args);
+                        popup.show(getSupportFragmentManager(), "Popup");
+
+                    }
+                } else {
+
+
+
+                    try {
+                        result = drawArea.checkModel();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Float procentage = drawArea.getPercentage();
+                    procentage = procentage * 10;
+
+                    Bundle args = new Bundle();
+                    args.putStringArrayList("result", (ArrayList<String>) result);
+                    args.putInt("levelPosition", currentLevelPosition);
+                    args.putFloat("percentage", procentage);
+                    args.putInt("learnPosition", learnPosition);
+                    args.putInt("variantPosition", variantPosition);
+                    args.putString("targetValue", levels.get(currentLevelPosition).getDescription());
+                    args.putInt("streakCount", streakCount);
+                    //args.putSerializable("activity");
+                    popup.setArguments(args);
+                    popup.show(getSupportFragmentManager(), "Popup");
+
                 }
 
-                Float procentage = drawArea.getPercentage();
-                procentage = procentage * 10;
-
-                Bundle args = new Bundle();
-                args.putStringArrayList("result", (ArrayList<String>) result);
-                args.putInt("levelPosition", currentLevelPosition);
-                args.putFloat("percentage", procentage);
-                args.putInt("learnPosition", learnPosition);
-                args.putInt("variantPosition", variantPosition);
-                args.putString("targetValue", levels.get(currentLevelPosition).getDescription());
-                args.putInt("streakCount", streakCount);
-                //args.putSerializable("activity");
-                popup.setArguments(args);
-                popup.show(getSupportFragmentManager(), "Popup");
 
             }
         });

@@ -37,6 +37,7 @@ public class ScorePopup extends AppCompatDialogFragment {
     int levelPosition;
     int variantPosition;
     int learnPosition;
+    String learnType;
     String targetValue;
     ArrayList<String> charRecon;
     SoundNotifier soundNotifier;
@@ -45,6 +46,7 @@ public class ScorePopup extends AppCompatDialogFragment {
     LinearLayout linearLayoutStreakCount;
     List<ImageView> streakFieldsImageView = new ArrayList<>();
     int longAnimationDuration;
+    boolean correct;
 
 
     @SuppressLint("ResourceAsColor")
@@ -78,84 +80,121 @@ public class ScorePopup extends AppCompatDialogFragment {
         //odbieranie wartosci przyznanych przez model
         Bundle bundle=getArguments();
         if (bundle != null) {
+            RandomColorGenerator randomColorGenerator = new RandomColorGenerator();
             charRecon = bundle.getStringArrayList("result");
             learnPosition = bundle.getInt("learnPosition");
+            correct = bundle.getBoolean("isGood");
             variantPosition = bundle.getInt("variantPosition");
             levelPosition = bundle.getInt("levelPosition");
             targetValue = bundle.getString("targetValue");
             streakCount = bundle.getInt("streakCount");
 
+            try{
+               learnType = bundle.getString("learnType");
+               if(learnType!=null && learnType.equals("Trening")){
+                   if(correct){
+                       scoreImageView.setImageResource(R.drawable.smile);
+                       infoTextView.setText("Brawo !");
+                       infoTextView.setTextColor(randomColorGenerator.getColor());
+                       btnEnabled=true;
+                       streakCount++;
+
+                       new Handler().postDelayed(new Runnable() {
+                           @Override
+                           public void run() {
+                               soundNotifier.playSuccessNotifier();
+                           }
+                       }, 500);
+
+                   } else{
+                       scoreImageView.setImageResource(R.drawable.fail);
+                       infoTextView.setText("Niestety to nie to :(");
+                       infoTextView.setTextColor(randomColorGenerator.getColor());
+                       btnEnabled=false;
+                       accept.setVisibility(View.GONE);
+                       new Handler().postDelayed(new Runnable() {
+                           @Override
+                           public void run() {
+                               soundNotifier.playFailNotifier();
+                           }
+                       }, 500);
+                   }
+
+
+               } else {
+
+
+                   Float score =  bundle.getFloat("percentage");
+                   int scoreInt = Math.round(score);
+                   String value = String.valueOf(scoreInt + " / " + "10");
+
+
+
+                   if(charRecon.contains(targetValue))
+                   {
+                       if(scoreInt>=1 && scoreInt<4){
+                           String message = //articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
+                                   "Dobra robota :D";
+                           scoreImageView.setImageResource(R.drawable.smile);
+                           infoTextView.setText(message);
+                           infoTextView.setTextColor(randomColorGenerator.getColor());
+                           btnEnabled=true;
+                       }
+                       if(scoreInt>=4 && scoreInt<8)
+                       {
+                           String message = //articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
+                                   "Świetnie :D";
+                           scoreImageView.setImageResource(R.drawable.smile_ok1);
+                           infoTextView.setText(message);
+                           infoTextView.setTextColor(randomColorGenerator.getColor());
+                           btnEnabled=true;
+                       }
+                       if(scoreInt>=8){
+                           String message = //articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
+                                   "Wybitnie! :D";
+                           scoreImageView.setImageResource(R.drawable.smile_ok);
+                           infoTextView.setText(message);
+                           infoTextView.setTextColor(randomColorGenerator.getColor());
+                           btnEnabled=true;
+                       }
+
+                       streakCount++;
+
+                       new Handler().postDelayed(new Runnable() {
+                           @Override
+                           public void run() {
+                               soundNotifier.playSuccessNotifier();
+                           }
+                       }, 500);
+
+
+                   } else {
+                       btnEnabled=false;
+                       accept.setVisibility(View.GONE);
+                       scoreImageView.setImageResource(R.drawable.fail);
+                       String str = "Myślimy, że to " + charRecon.get(0) + " :(" + '\n' +
+                               "Powinno być " + targetValue ;
+                       infoTextView.setText(str);
+                       infoTextView.setTextColor(randomColorGenerator.getColor());
+
+                       new Handler().postDelayed(new Runnable() {
+                           @Override
+                           public void run() {
+                               soundNotifier.playFailNotifier();
+                           }
+                       }, 500);
+                   }
+
+               }
+            } catch (Exception e){}
+
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("Recognized character: ").append(charRecon);
-
         }
 
 
 
 
-        if (bundle != null) {
-           Float score =  bundle.getFloat("percentage");
-           int scoreInt = Math.round(score);
-           String value = String.valueOf(scoreInt + " / " + "10");
-
-            RandomColorGenerator randomColorGenerator = new RandomColorGenerator();
-
-           if(charRecon.contains(targetValue))
-           {
-               if(scoreInt>=1 && scoreInt<4){
-                   String message = //articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
-                           "Dobra robota :D";
-                   scoreImageView.setImageResource(R.drawable.smile);
-                   infoTextView.setText(message);
-                   infoTextView.setTextColor(randomColorGenerator.getColor());
-                   btnEnabled=true;
-               }
-               if(scoreInt>=4 && scoreInt<8)
-               {
-                   String message = //articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
-                           "Świetnie :D";
-                   scoreImageView.setImageResource(R.drawable.smile_ok1);
-                   infoTextView.setText(message);
-                   infoTextView.setTextColor(randomColorGenerator.getColor());
-                   btnEnabled=true;
-               }
-               if(scoreInt>=8){
-                   String message = //articlesFinder.getArticle(charRecon.get(0).charAt(0)) + charRecon.get(0) + '\n' +
-                           "Wybitnie! :D";
-                   scoreImageView.setImageResource(R.drawable.smile_ok);
-                   infoTextView.setText(message);
-                   infoTextView.setTextColor(randomColorGenerator.getColor());
-                   btnEnabled=true;
-               }
-
-               streakCount++;
-
-               new Handler().postDelayed(new Runnable() {
-                   @Override
-                   public void run() {
-                       soundNotifier.playSuccessNotifier();
-                   }
-               }, 500);
-
-
-           } else {
-               btnEnabled=false;
-               accept.setVisibility(View.GONE);
-               scoreImageView.setImageResource(R.drawable.fail);
-               String str = "Myślimy, że to " + charRecon.get(0) + " :(" + '\n' +
-                      "Powinno być " + targetValue ;
-               infoTextView.setText(str);
-               infoTextView.setTextColor(randomColorGenerator.getColor());
-
-               new Handler().postDelayed(new Runnable() {
-                   @Override
-                   public void run() {
-                       soundNotifier.playFailNotifier();
-                   }
-               }, 500);
-           }
-
-        }
 
         setStreakCountImages(streakCount);
 
@@ -183,7 +222,13 @@ public class ScorePopup extends AppCompatDialogFragment {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
+
                     Bundle args = new Bundle();
+                    if(learnType!=null && learnType.equals("Trening")){
+                        args.putString("learnType","Trening");
+                        System.out.println("Wysylam");
+                    }
+
                     args.putInt("streakCount", streakCount);
                     intent.putExtra("STREAK", args);
 

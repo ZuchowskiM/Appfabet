@@ -1,6 +1,7 @@
 package com.appfabet.Models;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -113,14 +114,14 @@ public class DrawArea extends View
         drawPaint.setStyle(Paint.Style.STROKE);
     }
 
-    private void PatternTest(Bitmap b){
+    public boolean patternTest(Bitmap b, int resource){
 
         Bitmap b_ = getResizedBitmap(b, 796, 912);
 
         ByteBuffer bb = ByteBuffer.allocate(b_.getByteCount());
         b_.copyPixelsToBuffer(bb);
 
-        Bitmap bmp = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.pattern1);
+        Bitmap bmp = BitmapFactory.decodeResource(getContext().getResources(), resource);
         Bitmap bmp_ = getResizedBitmap(bmp, 796, 912);
         ByteBuffer bb2 = ByteBuffer.allocate(bmp_.getByteCount());
         bmp_.copyPixelsToBuffer(bb2);
@@ -128,6 +129,9 @@ public class DrawArea extends View
         ImageComparatorBMP comparator = new ImageComparatorBMP(bb2, bb, 70);
         comparator.setBlacks_ratio_minimum(70);
         System.out.println("\n\nGOOD? " + comparator.isGood());
+
+        return comparator.isGood();
+
     }
 
     public Bitmap getBitmapFromView() {
@@ -230,9 +234,7 @@ public class DrawArea extends View
 
         Bitmap bitmap = this.getBitmapFromView();
 
-        //Filip Test Fun//////////////////
-        PatternTest(bitmap);
-        /////////////////////////////////
+
 
         Bitmap scaledBitmap = getResizedBitmap(bitmap, modelSize, modelSize);
 

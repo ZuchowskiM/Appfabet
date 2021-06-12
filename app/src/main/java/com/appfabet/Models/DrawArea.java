@@ -115,26 +115,19 @@ public class DrawArea extends View
 
     private void PatternTest(Bitmap b){
 
-        //Moje testy plz no delete
-
         Bitmap b_ = getResizedBitmap(b, 796, 912);
 
         ByteBuffer bb = ByteBuffer.allocate(b_.getByteCount());
         b_.copyPixelsToBuffer(bb);
-        System.out.println("bb: " + bb.capacity());
 
-        Bitmap bmp = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.pattern3);
+        Bitmap bmp = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.pattern1);
         Bitmap bmp_ = getResizedBitmap(bmp, 796, 912);
         ByteBuffer bb2 = ByteBuffer.allocate(bmp_.getByteCount());
         bmp_.copyPixelsToBuffer(bb2);
-        System.out.println("bb2: " + bb2.capacity());
 
         ImageComparatorBMP comparator = new ImageComparatorBMP(bb2, bb, 70);
         comparator.setBlacks_ratio_minimum(70);
         System.out.println("\n\nGOOD? " + comparator.isGood());
-        Log.d("GOOD", String.valueOf(comparator.isGood()));
-        Log.d("ratio", String.valueOf(comparator.getBlacksRatio()));
-
     }
 
     public Bitmap getBitmapFromView() {

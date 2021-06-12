@@ -11,7 +11,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Pair;
@@ -20,18 +19,14 @@ import android.view.View;
 
 
 import com.appfabet.R;
-import com.appfabet.ml.ConvEmnistEnBig;
-import com.appfabet.ml.ConvEmnistEnSmall;
 import com.appfabet.ml.ConvMnist;
 import com.appfabet.ml.ConvPolcharsB95V2;
-import com.appfabet.ml.ConvPolcharsBigV2;
 import com.appfabet.ml.ConvPolcharsSmallV2;
 
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -122,22 +117,18 @@ public class DrawArea extends View
 
         //Moje testy plz no delete
 
-        Bitmap b_ = getResizedBitmap(b, 600, 300);
+        Bitmap b_ = getResizedBitmap(b, 796, 912);
 
         ByteBuffer bb = ByteBuffer.allocate(b_.getByteCount());
         b_.copyPixelsToBuffer(bb);
         System.out.println("bb: " + bb.capacity());
 
         Bitmap bmp = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.pattern2);
-        Bitmap bmp_ = getResizedBitmap(bmp, 600, 300);
+        Bitmap bmp_ = getResizedBitmap(bmp, 796, 912);
         ByteBuffer bb2 = ByteBuffer.allocate(bmp_.getByteCount());
         bmp_.copyPixelsToBuffer(bb2);
         System.out.println("bb2: " + bb2.capacity());
-
-        for (int i=0;i<1000;++i){
-            System.out.println(bb.get(i));
-        }
-
+        
         ImageComparatorBMP comparator = new ImageComparatorBMP(bb2, bb, 70);
         comparator.setBlacks_ratio_minimum(70);
         System.out.println("\n\nGOOD? " + comparator.isGood());

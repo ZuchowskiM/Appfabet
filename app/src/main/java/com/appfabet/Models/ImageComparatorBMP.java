@@ -41,16 +41,16 @@ public class ImageComparatorBMP {
 
     private double calc_whiteA(){
         double whites = 0;
-        for (int y = 0; y < bbA.capacity(); ++y)
-            if (bbA.get(y) == -1)
+        for (int y = 3; y < bbA.capacity(); y+=4)
+            if (bbA.get(y) == 0)
                 whites++;
         return whites;
     }
 
     private double calc_whiteB(){
         double whites = 0;
-        for (int y = 0; y < bbB.capacity(); ++y)
-            if (bbB.get(y) == -1)
+        for (int y = 3; y < bbB.capacity(); y+=4)
+            if (bbB.get(y) == 0)
                 whites++;
         return whites;
     }
@@ -59,12 +59,12 @@ public class ImageComparatorBMP {
     {
         double blacksA = 0;
         double blacksBoth = 0;
-        for (int y = 0; y < bbA.capacity(); ++y) {
+        for (int y = 3; y < bbA.capacity(); y+=4) {
 
-            if(bbA.get(y) != -1)
+            if(bbA.get(y) != 0)
                 blacksA++;
 
-            if(bbA.get(y) != -1 && bbB.get(y) != -1)
+            if(bbA.get(y) != 0 && bbB.get(y) != 0)
                 blacksBoth++;
         }
         System.out.println("blacksA: " + blacksA + "  blacksBoth: " + blacksBoth);
@@ -81,8 +81,6 @@ public class ImageComparatorBMP {
         diffCustom = this.allPixels - this.whitesB;
 
         double ratio = (Math.abs(diffCustom / diffPattern * 100 - 100));
-
-        System.out.println("############# RATIO: " + ratio);
 
         return !(ratio > tolerance);
     }

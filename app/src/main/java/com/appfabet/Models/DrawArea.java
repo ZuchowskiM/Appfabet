@@ -22,6 +22,7 @@ import android.view.View;
 import com.appfabet.R;
 import com.appfabet.ml.ConvMnist;
 import com.appfabet.ml.ConvPolcharsB95V2;
+import com.appfabet.ml.ConvPolcharsNums98;
 import com.appfabet.ml.ConvPolcharsSmallV2;
 
 
@@ -44,7 +45,7 @@ public class DrawArea extends View
     private Paint drawPaint;
     private Path path = new Path();
     private boolean isToClear = false;
-    private int modelSize = 32;
+    private final int modelSize = 32;
     private float percentage;
     private LevelType currentLevelType;
 
@@ -108,7 +109,7 @@ public class DrawArea extends View
         drawPaint = new Paint();
         drawPaint.setColor(paintColor);
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(20);
+        drawPaint.setStrokeWidth(30);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
         drawPaint.setStyle(Paint.Style.STROKE);
@@ -154,8 +155,6 @@ public class DrawArea extends View
 
         if(currentLevelType == LevelType.BIG_LETTERS) {
 
-            modelSize = 32;
-
             ConvPolcharsB95V2 model = ConvPolcharsB95V2.newInstance(this.getContext());
             TensorBuffer inputFeature0 = makeNumberModelCalculations(0.0f,1.0f);
 
@@ -179,8 +178,6 @@ public class DrawArea extends View
         }
         else if(currentLevelType == LevelType.SMALL_LETTERS){
 
-            modelSize = 32;
-
             ConvPolcharsSmallV2 model = ConvPolcharsSmallV2.newInstance(this.getContext());
             TensorBuffer inputFeature0 = makeNumberModelCalculations(0.0f,1.0f);
 
@@ -203,12 +200,10 @@ public class DrawArea extends View
         }
         else {
 
-            modelSize = 28;
+            ConvPolcharsNums98 model = ConvPolcharsNums98.newInstance(this.getContext());
+            TensorBuffer inputFeature0 = makeNumberModelCalculations(0.0f,1.0f);
 
-            ConvMnist model = ConvMnist.newInstance(this.getContext());
-            TensorBuffer inputFeature0 = makeNumberModelCalculations(1.0f,0.0f);
-
-            ConvMnist.Outputs outputs = model.process(inputFeature0);
+            ConvPolcharsNums98.Outputs outputs = model.process(inputFeature0);
             model.close();
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
